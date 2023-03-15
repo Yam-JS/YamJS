@@ -1,0 +1,12 @@
+{
+  "name": "yamjs-core",
+  "private": true,
+  "version": "0.0.1",
+  "main": "./src/index.ts",
+  "license": "MIT",
+  "devDependencies": {
+    "@graal-types/java-16": "^1.0.0",
+    "@graal-types/paper-1.19": "^1.0.1",
+    "type-fest": "^3.6.1"
+  }
+}

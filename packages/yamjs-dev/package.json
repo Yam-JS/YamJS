@@ -1,0 +1,40 @@
+{
+  "name": "yamjs-dev",
+  "private": true,
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "tsnode": "tsx --tsconfig tsconfig-node.json ",
+    "setup:yam": "yarn tsnode ./scripts/setupYam",
+    "setup:paper": "yarn tsnode ./scripts/setupPaper",
+    "setup:plugman": "yarn tsnode ./scripts/setupPlugman",
+    "start": "yarn setup:yam & concurrently -c \"auto\" \"yarn:start:*\"",
+    "start:yam": "yarn tsnode ./scripts/startYam",
+    "start:js": "yarn tsnode ./scripts/start",
+    "start:server": "cd server & java -Xms2G -Xmx2G -jar server.jar -nogui"
+  },
+  "dependencies": {
+    "yamjs-core": "0.0.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.14.3",
+    "@babel/core": "^7.14.3",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@babel/preset-env": "^7.14.2",
+    "@babel/preset-typescript": "^7.13.0",
+    "@graal-types/java-16": "^1.0.0",
+    "@graal-types/paper-1.18": "^1.0.0",
+    "@types/node": "^18.15.2",
+    "babel-loader": "^8.2.2",
+    "babel-plugin-add-module-exports": "^1.0.4",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-graal-imports": "^0.0.3",
+    "chokidar": "^3.5.3",
+    "concurrently": "^7.6.0",
+    "tsx": "^3.12.5",
+    "typescript": "^4.9.5",
+    "webpack": "^5.76.1",
+    "webpack-cli": "^4.7.0"
+  }
+}

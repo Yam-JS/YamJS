@@ -1,0 +1,8 @@
+{
+  "proseWrap": "never",
+  "singleQuote": true,
+  "jsxBracketSameLine": true,
+  "semi": false,
+  "tabWidth": 2,
+  "printWidth": 100
+}
