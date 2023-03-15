@@ -27,6 +27,7 @@ import org.graalvm.polyglot.Engine;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.function.Consumer;
 
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Value;
@@ -55,15 +56,12 @@ public class Instance {
    public String root;
 
    /**
-    * The tick function associated with this instance, if any.
-    * This is provided by the JavaScript implementation.
+    * The tick function associated with this instance.
     */
-   public Value tickFn;
+   public Consumer<Void> tickFn;
 
-   /**
-    * The close function associated with this instance, if any.
-    */
-   public Value onClose;
+   /** The close function associated with this instance. */
+   public Consumer<Void> onCloseFn;
 
    /** All queued tasks linked to this instance. */
    public final Queue tasks = new Queue();
@@ -76,26 +74,21 @@ public class Instance {
 
    /** Closes this instance's context. */
    public void close() {
-      if (this.isContextActive == false) {
-         return;
-      }
-
-      Context context = this.context;
-      if (this.onClose != null) {
+      if (this.onCloseFn != null) {
          try {
-            this.onClose.executeVoid();
+            this.onCloseFn.accept(null);
          } catch (Throwable error) {
             error.printStackTrace();
          }
       }
 
-      this.tasks.release();
+      Context context = this.context;
       this.hooks.release();
-      this.tickFn = null;
-      this.onClose = null;
 
       context.close();
-
+      // if (this.isContextActive) {
+      // this.isContextActive = false;
+      // }
    }
 
    /** Closes this instance and removes it from the instance registry. */
@@ -131,14 +124,12 @@ public class Instance {
 
    /** Executes the tick loop for this instance. */
    public void tick() {
-      if (this.tickFn != null && this.isContextActive == true) {
+      if (this.tickFn != null) {
          try {
-            this.tickFn.executeVoid();
-         } catch (IllegalStateException error) {
-            // do nothing when context is already closed
-            error.printStackTrace();
+            this.tickFn.accept(null);
          } catch (Throwable error) {
-            error.printStackTrace();
+            // TODO: Log error; this would be a serious error
+            // do nothing
          }
       }
 
@@ -157,11 +148,13 @@ public class Instance {
       });
    }
 
-   public void registerTickFn(Value fn) {
+   public void registerTickFn(Consumer<Void> fn) {
+      // Finding: This is a `Consumer` as it works best with the reload configuration.
+      // If we change it to `Value`, it breaks reloading.
       this.tickFn = fn;
    }
 
-   public void registerOnClose(Value fn) {
-      this.onClose = fn;
+   public void registerOnClose(Consumer<Void> fn) {
+      this.onCloseFn = fn;
    }
 }

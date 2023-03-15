@@ -7,13 +7,13 @@ const watcher = watch(`${paths.yamPlugin.path}/**/*.java`, {})
 
 let isProcessing = false
 
-watcher.on('change', () => {
+watcher.on('change', async () => {
   if (isProcessing) return
   console.log('Compiling plugin...')
   isProcessing = true
 
   try {
-    setupYam()
+    await setupYam()
   } catch (err) {
     console.log(err)
     isProcessing = false

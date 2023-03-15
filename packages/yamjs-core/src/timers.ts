@@ -7,7 +7,17 @@ const baseTimer = (
 ) => {
   const modifier = delay / 50
 
-  return yamTickerTasks.add(callback, modifier, options)
+  return yamTickerTasks.add(
+    () => {
+      try {
+        callback()
+      } catch (err) {
+        console.error('Unhandled timer', err)
+      }
+    },
+    modifier,
+    options
+  )
 }
 
 const yamSetTimeout = (callback: () => void, delay: number) => baseTimer(callback, delay)

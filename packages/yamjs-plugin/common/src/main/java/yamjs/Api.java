@@ -32,6 +32,7 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 import org.graalvm.polyglot.Value;
 
@@ -89,7 +90,11 @@ public class Api {
       return YamJS.config;
    }
 
-   /** Adds an unload hook to be executed just before the instance is closed. */
+   /**
+    * Adds an unload hook to be executed just before the instance is closed.
+    * 
+    * @deprecated Use the registerOnClose method instead.
+    */
    public void hook(Value script) {
       this.instance.hooks.list.add(script);
    }
@@ -164,11 +169,11 @@ public class Api {
     * 
     * @param fn The function to be registered.
     */
-   public void registerTickFn(Value fn) {
+   public void registerTickFn(Consumer<Void> fn) {
       this.instance.registerTickFn(fn);
    }
 
-   public void registerOnClose(Value fn) {
+   public void registerOnClose(Consumer<Void> fn) {
       this.instance.registerOnClose(fn);
    }
 }

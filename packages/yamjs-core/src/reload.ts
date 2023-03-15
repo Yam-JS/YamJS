@@ -29,8 +29,6 @@ const createReloadHandler = () => {
 
       delete callbacks[i]
     }
-
-    await new Promise((resolve) => setTimeout(resolve, 10))
   }
 
   return {
@@ -62,9 +60,9 @@ const createReloadHandler = () => {
     },
 
     initialize: () => {
-      // Yam.registerOnClose(async () => {
-      //   await executeRegisteredCallbacks()
-      // })
+      Yam.registerOnClose(async () => {
+        await executeRegisteredCallbacks()
+      })
     },
   }
 }
