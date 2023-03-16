@@ -146,7 +146,7 @@ public class Api {
     * tick loop.
     */
    public void swap() {
-      this.hook(Value.asValue((Runnable) () -> this.instance.open()));
+      this.instance.hooks.list.add(Value.asValue((Runnable) () -> this.instance.open()));
       this.instance.close();
    }
 

@@ -454,6 +454,9 @@ export const env = (() => {
     const manager = Bukkit.getPluginManager()
     const plugin = manager.getPlugin('YamJS')
 
+    // TODO: This seems odd. Why would this be here, versus within the plugin?
+    // I would be worried that a context being closed would cause this to be called
+    // and all events to be unregistered.
     Yam.hook(() => {
       //@ts-expect-error
       type('org.bukkit.event.HandlerList').unregisterAll(plugin)

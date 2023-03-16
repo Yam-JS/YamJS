@@ -86,9 +86,6 @@ public class Instance {
       this.hooks.release();
 
       context.close();
-      // if (this.isContextActive) {
-      // this.isContextActive = false;
-      // }
    }
 
    /** Closes this instance and removes it from the instance registry. */
