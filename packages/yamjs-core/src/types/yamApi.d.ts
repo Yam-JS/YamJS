@@ -122,7 +122,3 @@ export interface YamApi {
 
   registerOnClose: (fn: () => void) => void
 }
-
-declare global {
-  const Yam: YamApi
-}

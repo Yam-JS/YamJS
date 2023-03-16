@@ -1,3 +1,5 @@
+import { YamApi } from './yamApi'
+
 export type Java = {
   type: <T = any>(name: string) => T
   extend: any
@@ -10,4 +12,5 @@ export type Polyglot = {
 declare global {
   const Java: Java
   const Polyglot: Polyglot
+  const Yam: YamApi
 }

@@ -1,7 +1,7 @@
 // TODO: This needs to be fixed and clarified.
 
-export * from './graalvm'
+export type { Java, Polyglot } from './types/global'
 
-export * from './plugin/yamApi'
+export type { YamApi, YamConfig, YamFileInstance } from './types/yamApi'
 export { yamInitialize } from './initialize'
 export { load, reload, command, record, file, context } from './legacy'

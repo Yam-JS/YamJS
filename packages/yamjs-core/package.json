@@ -1,7 +1,7 @@
 {
   "name": "@yam-js/core",
   "version": "0.0.1",
-  "main": "./src/index.ts",
+  "main": "./dist/index",
   "license": "MIT",
   "devDependencies": {
     "@graal-types/java-16": "^1.0.0",
