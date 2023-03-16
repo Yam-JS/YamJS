@@ -728,8 +728,8 @@ export function file(path: string | record | jiFile, ...more: string[]) {
   return record
 }
 
-/** Imports classes from external files. */
-export function load(path: string | record | jiFile, name: string) {
+/** Imports classes from external files.123 */
+export function load<T>(path: string | record | jiFile, name: string): T {
   if (session.load.has(name)) {
     return session.load.get(name)
   } else {

@@ -6,17 +6,17 @@ const Iterator = type('java.util.Iterator')
 const Spliterator = type('java.util.Spliterator')
 
 /** Converts array-like objects or iterators into arrays. */
-export function array(object: any): any[] {
+export function array(object: any): any[] | null {
   if (object instanceof Array) {
     return [...object]
   } else if (object instanceof Iterable) {
-    const output = []
+    const output: any[] = []
     object.forEach((value: any) => {
       output.push(value)
     })
     return output
   } else if (object instanceof Iterator || object instanceof Spliterator) {
-    const output = []
+    const output: any[] = []
     object.forEachRemaining((value: any) => {
       output.push(value)
     })
@@ -87,6 +87,7 @@ export const format = {
       if (object === circular) {
         return '...'
       } else {
+        // @ts-expect-error -- Investigate. Why is this a thing?
         const type = toString.call(object)
         switch (type) {
           case '[object Array]':
@@ -128,6 +129,7 @@ export const format = {
         }
       }
     } else {
+      // @ts-expect-error -- Investigate. Why is this a thing?
       switch (toString.call(object)) {
         case '[object Array]':
           return `[ ${[...object]
@@ -176,13 +178,16 @@ command({
   message: `\xa7cYou do not have the required permission to run this command!`,
   execute(context, ...args) {
     const self = globalThis.hasOwnProperty('self')
+    // @ts-ignore - Investigate. Why is this a thing?
     self || (globalThis.self = context)
     let output: string
     try {
       const result = Polyglot.eval('js', args.join(' '))
+      // @ts-ignore - Investigate. Why is this a thing?
       self || delete globalThis.self
       output = format.output(result)
     } catch (whoops) {
+      // @ts-ignore - Investigate. Why is this a thing?
       self || delete globalThis.self
       output = format.error(whoops)
     }

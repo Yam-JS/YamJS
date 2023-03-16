@@ -1,6 +1,5 @@
 {
-  "name": "yamjs-core",
-  "private": true,
+  "name": "@yam-js/core",
   "version": "0.0.1",
   "main": "./src/index.ts",
   "license": "MIT",

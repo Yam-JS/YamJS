@@ -43,6 +43,8 @@ export const yamInitializeTimers = () => {
   globalThis.setInterval = yamSetInterval
   // @ts-expect-error
   globalThis.setImmediate = yamSetImmediate
+  // @ts-ignore
   globalThis.clearTimeout = yamClearTimeout
+  // @ts-ignore
   globalThis.clearInterval = yamClearTimeout
 }

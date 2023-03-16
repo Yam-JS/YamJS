@@ -40,8 +40,7 @@ export interface YamApi {
    * @param main The main index path.
    * @param meta The meta data for the instance.
    */
-  fileInstance: (main: string) => any
-  fileInstance: (main: string, string: meta) => any
+  fileInstance: (main: string, meta?: string) => any
 
   /**
    * Gets the "meta" value of the current instance.
@@ -102,8 +101,7 @@ export interface YamApi {
    * @param main The main source code.
    * @param meta The meta data for the instance.
    */
-  scriptInstance: (main: string) => any
-  scriptInstance: (main: string, string: meta) => any
+  scriptInstance: (main: string, meta?: string) => any
 
   /**
    * Closes and re-opens the current instance. Works best when pushed into the tick loop.
