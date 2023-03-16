@@ -1,5 +1,5 @@
 import { Opaque } from 'type-fest'
-import { yamTicker } from './ticker'
+import { ticker } from './ticker'
 
 type TickerTask = () => void
 type TaskId = Opaque<number, 'TaskId'>
@@ -41,7 +41,7 @@ const createTickerTasks = () => {
     if (!isTick(baseTick)) return
 
     const id = taskId(options?.nextId ?? context.nextId++)
-    const targetTick = tick(yamTicker.getTick() + Math.max(baseTick, 1))
+    const targetTick = tick(ticker.getTick() + Math.max(baseTick, 1))
 
     // Handle TaskIdMap
     taskIdMap.set(id, {
@@ -79,9 +79,9 @@ const createTickerTasks = () => {
     run,
     remove,
     initialize: () => {
-      yamTicker.registerTickFn((tick) => run(tick))
+      ticker.registerTickFn((tick) => run(tick))
     },
   }
 }
 
-export const yamTickerTasks = createTickerTasks()
+export const tickerTasks = createTickerTasks()

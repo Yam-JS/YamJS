@@ -11,7 +11,7 @@ interface TickContext {
 const Context = Symbol('TickContext')
 
 const nextTick = () => {
-  const ctx = yamTicker[Context]
+  const ctx = ticker[Context]
   if (!ctx.isActive) return
 
   for (const fn of ctx.tickFns) {
@@ -56,4 +56,4 @@ const createTicker = () => {
   }
 }
 
-export const yamTicker = createTicker()
+export const ticker = createTicker()

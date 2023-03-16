@@ -1,13 +1,13 @@
-import { yamTickerTasks } from './tasks'
+import { tickerTasks } from './tasks'
 
 const baseTimer = (
   callback: () => void,
   delay: number,
-  options?: Parameters<typeof yamTickerTasks['add']>[2]
+  options?: Parameters<typeof tickerTasks['add']>[2]
 ) => {
   const modifier = delay / 50
 
-  return yamTickerTasks.add(
+  return tickerTasks.add(
     () => {
       try {
         callback()
@@ -20,8 +20,8 @@ const baseTimer = (
   )
 }
 
-const yamSetTimeout = (callback: () => void, delay: number) => baseTimer(callback, delay)
-const yamSetInterval = (callback: () => void, delay: number) =>
+const setTimeout = (callback: () => void, delay: number) => baseTimer(callback, delay)
+const setInterval = (callback: () => void, delay: number) =>
   baseTimer(
     () => {
       callback()
@@ -32,19 +32,19 @@ const yamSetInterval = (callback: () => void, delay: number) =>
     }
   )
 
-const yamSetImmediate = (callback: () => void) => yamSetTimeout(callback, 0)
+const setImmediate = (callback: () => void) => setTimeout(callback, 0)
 
-const yamClearTimeout = (id: number) => yamTickerTasks.remove(id)
+const clearTimeout = (id: number) => tickerTasks.remove(id)
 
-export const yamInitializeTimers = () => {
+export const initializeTimers = () => {
   // @ts-expect-error
-  globalThis.setTimeout = yamSetTimeout
+  globalThis.setTimeout = setTimeout
   // @ts-expect-error
-  globalThis.setInterval = yamSetInterval
+  globalThis.setInterval = setInterval
   // @ts-expect-error
-  globalThis.setImmediate = yamSetImmediate
+  globalThis.setImmediate = setImmediate
   // @ts-ignore
-  globalThis.clearTimeout = yamClearTimeout
+  globalThis.clearTimeout = clearTimeout
   // @ts-ignore
-  globalThis.clearInterval = yamClearTimeout
+  globalThis.clearInterval = clearTimeout
 }

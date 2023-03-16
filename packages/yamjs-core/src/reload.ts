@@ -67,4 +67,4 @@ const createReloadHandler = () => {
   }
 }
 
-export const yamReloadHandler = createReloadHandler()
+export const reloadHandler = createReloadHandler()

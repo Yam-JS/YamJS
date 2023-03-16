@@ -838,15 +838,6 @@ Object.assign(globalThis, {
     }
     return output
   },
-  clearImmediate(handle?: number) {
-    task.cancel(session.poly.list.get(handle))
-  },
-  clearInterval(handle?: number) {
-    task.cancel(session.poly.list.get(handle))
-  },
-  clearTimeout(handle?: number) {
-    task.cancel(session.poly.list.get(handle))
-  },
   queueMicrotask(callback: () => void) {
     promise.then(callback).catch((error) => {
       task.timeout(() => {
@@ -854,51 +845,4 @@ Object.assign(globalThis, {
       })
     })
   },
-  // setInterval(script: string | Function, period = 0, ...args: any[]) {
-  //   session.poly.list.set(
-  //     session.poly.index,
-  //     task.interval(
-  //       typeof script === 'string' ? () => Polyglot.eval('js', script) : script,
-  //       Math.ceil(period / 50),
-  //       ...args
-  //     )
-  //   )
-  //   return session.poly.index++
-  // },
-  // setTimeout(script: string | Function, period = 0, ...args: any[]) {
-  //   session.poly.list.set(
-  //     session.poly.index,
-  //     task.timeout(
-  //       typeof script === 'string' ? () => Polyglot.eval('js', script) : script,
-  //       Math.ceil(period / 50),
-  //       ...args
-  //     )
-  //   )
-  //   return session.poly.index++
-  // },
-  // setImmediate(script: string | Function, ...args: any[]) {
-  //   // console.log('setImmediate')
-  //   session.poly.list.set(
-  //     session.poly.index,
-  //     task.timeout(
-  //       typeof script === 'string' ? () => Polyglot.eval('js', script) : script,
-  //       0,
-  //       ...args
-  //     )
-  //   )
-  //   return session.poly.index++
-  // },
 })
-
-// export const setImmediate = (script: string | Function, ...args: any[]) => {
-//   // console.log('environment setImmediate')
-//   session.poly.list.set(
-//     session.poly.index,
-//     task.timeout(
-//       typeof script === 'string' ? () => Polyglot.eval('js', script) : script,
-//       0,
-//       ...args
-//     )
-//   )
-//   return session.poly.index++
-// }
