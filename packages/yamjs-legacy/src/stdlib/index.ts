@@ -1,11 +1,16 @@
-// @ts-nocheck
-import { catchAndLogUnhandledError } from '../../errors'
+import YamJS from '@yam-js/core'
 
 type classes = any
 type jiFile = any
 type jiInputStream = any
 type ogpContext = any
-type juLinkedList = any
+type juLinkedList<T> = any
+type Yam = any
+type Java = any
+
+const Yam = globalThis.Yam
+const Core = Yam
+const Java = globalThis.Java
 
 /** A serializable object. */
 export type basic =
@@ -234,7 +239,7 @@ export function command(options: {
         options.permission || '',
         options.message || '',
         (sender: any, label: string, args: string[]) => {
-          catchAndLogUnhandledError(() => {
+          YamJS.catchAndLogUnhandledError(() => {
             if (!options.permission || sender.hasPermission(options.permission)) {
               options.execute && options.execute(sender, ...args)
             } else {
@@ -244,7 +249,7 @@ export function command(options: {
         },
         (sender: any, alias: string, args: string[]) => {
           return (
-            catchAndLogUnhandledError(
+            YamJS.catchAndLogUnhandledError(
               () => (options.tabComplete && options.tabComplete(sender, ...args)) || [],
               `An error occured while attempting to tab-complete the "${alias}" command!`
             ) ?? []
@@ -268,6 +273,7 @@ export function command(options: {
         },
         env.content.ArgumentType.StringArray('tab-complete').setSuggestionCallback(
           (sender, context, suggestion) => {
+            // @ts-expect-error
             for (const completion of options.tabComplete(
               sender,
               ...context.getInput().split(' ').slice(1)
@@ -383,7 +389,6 @@ export function data(path: string, ...more: string[]) {
 /** The environment that this module is currently running in. */
 export const env = (() => {
   try {
-    //@ts-expect-error
     const Bukkit: any = type('org.bukkit.Bukkit')
 
     /* bukkit detected */
@@ -395,15 +400,12 @@ export const env = (() => {
     // I would be worried that a context being closed would cause this to be called
     // and all events to be unregistered.
     Yam.hook(() => {
-      //@ts-expect-error
       type('org.bukkit.event.HandlerList').unregisterAll(plugin)
     })
 
     return {
       content: {
-        //@ts-expect-error
         EventPriority: type('org.bukkit.event.EventPriority') as any,
-        //@ts-expect-error
         instance: new (Java.extend(type('org.bukkit.event.Listener'), {}))(),
         manager,
         plugin,
@@ -414,7 +416,6 @@ export const env = (() => {
     }
   } catch (error) {
     try {
-      //@ts-expect-error
       const MinecraftServer: any = type('net.minestom.server.MinecraftServer')
 
       /* minestom detected */
@@ -424,16 +425,13 @@ export const env = (() => {
 
       return {
         content: {
-          //@ts-expect-error
           ArgumentType: type('net.minestom.server.command.builder.arguments.ArgumentType') as any,
-          //@ts-expect-error
           Command: type('net.minestom.server.command.builder.Command') as any,
           extension,
           manager,
           node: extension.getEventNode(),
           registry: MinecraftServer.getCommandManager(),
           server: MinecraftServer,
-          //@ts-expect-error
           SuggestionEntry: type(
             'net.minestom.server.command.builder.suggestion.SuggestionEntry'
           ) as any,
@@ -459,6 +457,7 @@ export function event<X extends events>(
       {
         let list: cascade
         if (session.event.has(name)) {
+          // @ts-expect-error
           list = session.event.get(name)
         } else {
           list = new Set()
@@ -482,7 +481,6 @@ export function event<X extends events>(
         for (const target of targets) {
           const emitter = type(name)
           env.content.manager.registerEvent(
-            // @ts-expect-error
             emitter.class,
             env.content.instance,
             env.content.EventPriority.valueOf(target),
@@ -512,6 +510,7 @@ export function event<X extends events>(
       {
         let list: cascade
         if (session.event.has(name)) {
+          // @ts-expect-error
           list = session.event.get(name)
         } else {
           list = new Set()
@@ -519,7 +518,6 @@ export function event<X extends events>(
         }
         if (list.size === 0) {
           const emitter = type(name)
-          // @ts-expect-error
           env.content.node.addListener(emitter.class, (signal: any) => {
             try {
               for (const listener of list) {
@@ -555,7 +553,6 @@ export function fetch(link: string) {
         }
       }
     },
-    //@ts-expect-error
     read(async?: boolean) {
       if (async) {
         return desync.request(aux, { link, operation: 'fetch.read' }) as Promise<string>
@@ -577,6 +574,7 @@ export function file(path: string | record | jiFile, ...more: string[]) {
     .normalize()
     .toFile()
   const record: record = {
+    // @ts-expect-error
     get children() {
       return record.type === 'folder' ? [...io.listFiles()].map((sub) => file(sub.getPath())) : null
     },
@@ -630,7 +628,6 @@ export function file(path: string | record | jiFile, ...more: string[]) {
     get path() {
       return regex.replace(io.getPath(), '(\\\\)', '/')
     },
-    //@ts-expect-error
     read(async?: boolean) {
       if (async) {
         return desync.request(aux, { operation: 'file.read', path: record.path }) as Promise<string>
@@ -693,7 +690,6 @@ export const regex = {
     return input.matches(expression)
   },
   replace(input: string, expression: string, replacement: string) {
-    //@ts-expect-error
     return Pattern.compile(expression).matcher(input).replaceAll(replacement)
   },
 }

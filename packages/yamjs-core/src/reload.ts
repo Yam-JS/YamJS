@@ -1,5 +1,3 @@
-import { reload } from './legacy'
-
 export type CloseCallback = () => any
 
 export interface CloseCallbackHandle {
@@ -12,7 +10,7 @@ const createReloadHandler = () => {
   let nextId = 0
 
   const executeReload = async () => {
-    reload()
+    Yam.reload()
   }
 
   const executeRegisteredCallbacks = async () => {
@@ -47,7 +45,7 @@ const createReloadHandler = () => {
 
       await executeRegisteredCallbacks()
 
-      reload()
+      executeReload()
     },
 
     register: (name: string, callback: CloseCallback): CloseCallbackHandle => {

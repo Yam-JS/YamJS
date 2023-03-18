@@ -12,6 +12,7 @@
   },
   "workspaces": [
     "packages/yamjs-core",
-    "packages/yamjs-dev"
+    "packages/yamjs-dev",
+    "packages/yamjs-legacy"
   ]
 }

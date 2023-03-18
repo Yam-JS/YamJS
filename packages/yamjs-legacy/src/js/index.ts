@@ -1,3 +1,4 @@
+import { Polyglot } from '@yam-js/core'
 import { command, env, regex, type } from '../stdlib'
 
 const Class = type('java.lang.Class')
@@ -87,7 +88,6 @@ export const format = {
       if (object === circular) {
         return '...'
       } else {
-        // @ts-expect-error -- Investigate. Why is this a thing?
         const type = toString.call(object)
         switch (type) {
           case '[object Array]':
@@ -129,7 +129,6 @@ export const format = {
         }
       }
     } else {
-      // @ts-expect-error -- Investigate. Why is this a thing?
       switch (toString.call(object)) {
         case '[object Array]':
           return `[ ${[...object]
@@ -182,6 +181,7 @@ command({
     self || (globalThis.self = context)
     let output: string
     try {
+      // @ts-expect-error
       const result = Polyglot.eval('js', args.join(' '))
       // @ts-ignore - Investigate. Why is this a thing?
       self || delete globalThis.self
