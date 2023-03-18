@@ -89,6 +89,11 @@ public class Instance {
       Context context = this.context;
       this.hooks.release();
 
+      // TODO: Validate
+      // this.onCloseFn = null;
+      // this.tickFn = null;
+      // this.loggerFn = null;
+
       context.close();
    }
 

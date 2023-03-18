@@ -1,4 +1,5 @@
 import { mapLineToSource } from './sourceMap'
+
 const Bukkit = Java.type('org.bukkit.Bukkit')
 const MiniMessage = Java.type('net.kyori.adventure.text.minimessage.MiniMessage')
 
