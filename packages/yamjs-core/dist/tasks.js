@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.yamTickerTasks = void 0;
+exports.tickerTasks = void 0;
 const ticker_1 = require("./ticker");
 const isTick = (tick) => true;
 const isTaskId = (id) => true;
@@ -20,12 +20,12 @@ const createTickerTasks = () => {
         if (!isTick(baseTick))
             return;
         const id = taskId(options?.nextId ?? context.nextId++);
-        const targetTick = tick(ticker_1.yamTicker.getTick() + Math.max(baseTick, 1));
+        const targetTick = tick(ticker_1.ticker.getTick() + Math.max(baseTick, 1));
         // Handle TaskIdMap
         taskIdMap.set(id, {
             baseTick,
             tick: targetTick,
-            fn: fn,
+            fn,
             reset: options?.reset || false,
             id,
         });
@@ -52,8 +52,8 @@ const createTickerTasks = () => {
         run,
         remove,
         initialize: () => {
-            ticker_1.yamTicker.registerTickFn((tick) => run(tick));
+            ticker_1.ticker.registerTickFn((tick) => run(tick));
         },
     };
 };
-exports.yamTickerTasks = createTickerTasks();
+exports.tickerTasks = createTickerTasks();

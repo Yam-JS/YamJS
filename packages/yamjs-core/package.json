@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "main": "./dist/index",
   "license": "MIT",
+  "scripts": {
+    "build": "tsc"
+  },
   "devDependencies": {
     "@graal-types/adventure-text-minimessage": "^4.11.0",
     "@graal-types/java-16": "^1.0.0",

@@ -135,7 +135,10 @@ export declare function command(options: {
     permission?: string;
     tabComplete?: (sender: any, ...args: string[]) => string[];
 }): void;
-/** A simple task scheduler. */
+/**
+ * A simple task scheduler.
+ * @deprecated
+ */
 export declare const task: {
     /** Cancels a previously scheduled task. */
     cancel(handle: future): void;

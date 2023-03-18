@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.yamTicker = void 0;
+exports.ticker = void 0;
 const util_1 = require("./util");
 const Context = Symbol('TickContext');
 const nextTick = () => {
-    const ctx = exports.yamTicker[Context];
+    const ctx = exports.ticker[Context];
     if (!ctx.isActive)
         return;
     for (const fn of ctx.tickFns) {
@@ -24,7 +24,7 @@ const createTicker = () => {
     };
     const start = () => {
         ctx.isActive = true;
-        Yam.registerTickFn(nextTick);
+        Yam.instance.setTickFn(nextTick);
     };
     const stop = async () => {
         ctx.isActive = false;
@@ -42,4 +42,4 @@ const createTicker = () => {
         },
     };
 };
-exports.yamTicker = createTicker();
+exports.ticker = createTicker();

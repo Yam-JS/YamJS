@@ -1,1 +1,1 @@
-export declare const yamInitialize: () => void;
+export declare const initialize: () => void;

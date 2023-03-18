@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.yamReloadHandler = void 0;
+exports.reloadHandler = void 0;
 const legacy_1 = require("./legacy");
 const createReloadHandler = () => {
     const callbacks = {};
@@ -44,10 +44,10 @@ const createReloadHandler = () => {
             };
         },
         initialize: () => {
-            Yam.registerOnClose(async () => {
+            Yam.instance.setOnCloseFn(async () => {
                 await executeRegisteredCallbacks();
             });
         },
     };
 };
-exports.yamReloadHandler = createReloadHandler();
+exports.reloadHandler = createReloadHandler();

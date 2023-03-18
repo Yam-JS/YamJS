@@ -1,36 +1,28 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.yamInitializeTimers = void 0;
+exports.initializeTimers = void 0;
+const errors_1 = require("./errors");
 const tasks_1 = require("./tasks");
 const baseTimer = (callback, delay, options) => {
     const modifier = delay / 50;
-    return tasks_1.yamTickerTasks.add(() => {
-        try {
-            callback();
-        }
-        catch (err) {
-            console.error('Unhandled timer', err);
-        }
-    }, modifier, options);
+    return tasks_1.tickerTasks.add((0, errors_1.createCatchAndLogUnhandledErrorHandler)(callback, 'Unhandled timer'), modifier, options);
 };
-const yamSetTimeout = (callback, delay) => baseTimer(callback, delay);
-const yamSetInterval = (callback, delay) => baseTimer(() => {
-    callback();
-}, delay, {
+const setTimeout = (callback, delay) => baseTimer(callback, delay);
+const setInterval = (callback, delay) => baseTimer(callback, delay, {
     reset: true,
 });
-const yamSetImmediate = (callback) => yamSetTimeout(callback, 0);
-const yamClearTimeout = (id) => tasks_1.yamTickerTasks.remove(id);
-const yamInitializeTimers = () => {
+const setImmediate = (callback) => setTimeout(callback, 0);
+const clearTimeout = (id) => tasks_1.tickerTasks.remove(id);
+const initializeTimers = () => {
     // @ts-expect-error
-    globalThis.setTimeout = yamSetTimeout;
+    globalThis.setTimeout = setTimeout;
     // @ts-expect-error
-    globalThis.setInterval = yamSetInterval;
+    globalThis.setInterval = setInterval;
     // @ts-expect-error
-    globalThis.setImmediate = yamSetImmediate;
+    globalThis.setImmediate = setImmediate;
     // @ts-ignore
-    globalThis.clearTimeout = yamClearTimeout;
+    globalThis.clearTimeout = clearTimeout;
     // @ts-ignore
-    globalThis.clearInterval = yamClearTimeout;
+    globalThis.clearInterval = clearTimeout;
 };
-exports.yamInitializeTimers = yamInitializeTimers;
+exports.initializeTimers = initializeTimers;

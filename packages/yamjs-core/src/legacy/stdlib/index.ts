@@ -1,6 +1,6 @@
+// @ts-nocheck
 import { catchAndLogUnhandledError } from '../../errors'
 
-// @ts-nocheck
 type classes = any
 type jiFile = any
 type jiInputStream = any

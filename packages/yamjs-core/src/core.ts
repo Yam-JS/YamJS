@@ -1,3 +1,4 @@
+import { catchAndLogUnhandledError, logError } from './errors'
 import { initialize } from './initialize'
 import { command, load } from './legacy'
 import { reloadHandler } from './reload'
@@ -7,4 +8,6 @@ export const YamJSCore = {
   initialize,
   loadJar: load,
   reload: reloadHandler.reload,
+  logError,
+  catchAndLogUnhandledError,
 }

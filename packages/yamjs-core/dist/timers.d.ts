@@ -1,1 +1,1 @@
-export declare const yamInitializeTimers: () => void;
+export declare const initializeTimers: () => void;

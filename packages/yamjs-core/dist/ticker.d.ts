@@ -6,7 +6,7 @@ interface TickContext {
     tickFns: ((tick: number) => void)[];
 }
 declare const Context: unique symbol;
-export declare const yamTicker: {
+export declare const ticker: {
     [Context]: TickContext;
     start: () => void;
     stop: () => Promise<void>;

@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sync = exports.simplify = exports.root = exports.reload = exports.regex = exports.push = exports.load = exports.file = exports.fetch = exports.event = exports.env = exports.data = exports.context = exports.task = exports.command = exports.chain = exports.desync = exports.type = exports.session = void 0;
+// @ts-nocheck
+const errors_1 = require("../../errors");
 if ('Yam' in globalThis) {
     Object.assign(globalThis, { Core: Yam });
 }
@@ -122,27 +124,16 @@ function command(options) {
     switch (exports.env.name) {
         case 'bukkit': {
             exports.env.content.plugin.register(options.namespace || exports.env.content.plugin.getName(), options.name, options.aliases || [], options.permission || '', options.message || '', (sender, label, args) => {
-                try {
+                (0, errors_1.catchAndLogUnhandledError)(() => {
                     if (!options.permission || sender.hasPermission(options.permission)) {
                         options.execute && options.execute(sender, ...args);
                     }
                     else {
                         sender.sendMessage(options.message || '');
                     }
-                }
-                catch (error) {
-                    console.error(`An error occured while attempting to execute the "${label}" command!`);
-                    console.error(error.stack || error.message || error);
-                }
+                }, `An error occured while attempting to execute the "${label}" command!`);
             }, (sender, alias, args) => {
-                try {
-                    return (options.tabComplete && options.tabComplete(sender, ...args)) || [];
-                }
-                catch (error) {
-                    console.error(`An error occured while attempting to tab-complete the "${alias}" command!`);
-                    console.error(error.stack || error.message || error);
-                    return [];
-                }
+                return ((0, errors_1.catchAndLogUnhandledError)(() => (options.tabComplete && options.tabComplete(sender, ...args)) || [], `An error occured while attempting to tab-complete the "${alias}" command!`) ?? []);
             });
             break;
         }
@@ -166,7 +157,10 @@ function command(options) {
     }
 }
 exports.command = command;
-/** A simple task scheduler. */
+/**
+ * A simple task scheduler.
+ * @deprecated
+ */
 exports.task = {
     /** Cancels a previously scheduled task. */
     cancel(handle) {
@@ -203,100 +197,40 @@ exports.task = {
         return future;
     },
 };
-exports.context = (() => {
-    try {
-        /* Yam v5 */
-        return {
-            /** Creates a new context and returns its instance. If `type` is file, `content` refers to a JS file path relative to the JS root folder. If `type` is script, `content` refers to a piece of JS code. */
-            create(type, content, meta) {
-                return Yam[`${type}Instance`](content, meta);
-            },
-            /** Destroys the currently running context. */
-            destroy() {
-                Yam.destroy();
-            },
-            emit(channel, message) {
-                Yam.emit(channel, message);
-            },
-            meta: Yam.getMeta(),
-            off(channel, listener) {
-                return Yam.off(channel, listener);
-            },
-            on: ((channel, listener) => {
-                if (listener) {
-                    return Yam.on(channel, listener);
-                }
-                else {
-                    return new Promise((resolve) => {
-                        const dummy = (response) => {
-                            exports.context.off(channel, dummy);
-                            resolve(response);
-                        };
-                        exports.context.on(channel, dummy);
-                    });
-                }
-            }),
-            swap() {
-                push(Yam.swap);
-            },
-        };
-    }
-    catch (error) {
-        /* Yam v4 */
-        const channels = {};
-        const messages = [];
-        exports.task.interval(() => {
-            for (const message of messages.splice(0, messages.length)) {
-                if (message.channel in channels) {
-                    for (const listener of channels[message.channel]) {
-                        try {
-                            listener(message.content);
-                        }
-                        catch (error) {
-                            console.error('An error occured while attempting to listen for a message!');
-                            console.error(error.stack || error.message || error);
-                        }
-                    }
-                }
-            }
-        });
-        return {
-            create() {
-                throw 'Your current version of Yam does not support creating new contexts!';
-            },
-            destroy() {
-                throw 'The primary instance cannot be destroyed!';
-            },
-            emit(channel, content) {
-                messages.push({ channel, content });
-            },
-            meta: 'Yam',
-            off(channel, listener) {
-                if (channel in channels) {
-                    const list = channels[channel];
-                    list.includes(listener) && list.splice(list.indexOf(listener), 1);
-                }
-            },
-            on: ((channel, listener) => {
-                if (listener) {
-                    channels[channel] || (channels[channel] = []).push(listener);
-                }
-                else {
-                    return new Promise((resolve) => {
-                        const dummy = (response) => {
-                            exports.context.off(channel, dummy);
-                            resolve(response);
-                        };
-                        exports.context.on(channel, dummy);
-                    });
-                }
-            }),
-            swap() {
-                push(Yam.swap);
-            },
-        };
-    }
-})();
+exports.context = {
+    /** Creates a new context and returns its instance. If `type` is file, `content` refers to a JS file path relative to the JS root folder. If `type` is script, `content` refers to a piece of JS code. */
+    create(type, content, meta) {
+        return Yam[`${type}Instance`](content, meta);
+    },
+    /** Destroys the currently running context. */
+    destroy() {
+        Yam.destroy();
+    },
+    emit(channel, message) {
+        Yam.emit(channel, message);
+    },
+    meta: Yam.getMeta(),
+    off(channel, listener) {
+        return Yam.off(channel, listener);
+    },
+    on: ((channel, listener) => {
+        if (listener) {
+            return Yam.on(channel, listener);
+        }
+        else {
+            return new Promise((resolve) => {
+                const dummy = (response) => {
+                    exports.context.off(channel, dummy);
+                    resolve(response);
+                };
+                exports.context.on(channel, dummy);
+            });
+        }
+    }),
+    swap() {
+        push(Yam.swap);
+    },
+};
 /** Stores data on a per-path basis. */
 function data(path, ...more) {
     const name = Paths.get(path, ...more)
@@ -696,15 +630,6 @@ Object.assign(globalThis, {
         }
         return output;
     },
-    clearImmediate(handle) {
-        exports.task.cancel(exports.session.poly.list.get(handle));
-    },
-    clearInterval(handle) {
-        exports.task.cancel(exports.session.poly.list.get(handle));
-    },
-    clearTimeout(handle) {
-        exports.task.cancel(exports.session.poly.list.get(handle));
-    },
     queueMicrotask(callback) {
         promise.then(callback).catch((error) => {
             exports.task.timeout(() => {
@@ -712,50 +637,4 @@ Object.assign(globalThis, {
             });
         });
     },
-    // setInterval(script: string | Function, period = 0, ...args: any[]) {
-    //   session.poly.list.set(
-    //     session.poly.index,
-    //     task.interval(
-    //       typeof script === 'string' ? () => Polyglot.eval('js', script) : script,
-    //       Math.ceil(period / 50),
-    //       ...args
-    //     )
-    //   )
-    //   return session.poly.index++
-    // },
-    // setTimeout(script: string | Function, period = 0, ...args: any[]) {
-    //   session.poly.list.set(
-    //     session.poly.index,
-    //     task.timeout(
-    //       typeof script === 'string' ? () => Polyglot.eval('js', script) : script,
-    //       Math.ceil(period / 50),
-    //       ...args
-    //     )
-    //   )
-    //   return session.poly.index++
-    // },
-    // setImmediate(script: string | Function, ...args: any[]) {
-    //   // console.log('setImmediate')
-    //   session.poly.list.set(
-    //     session.poly.index,
-    //     task.timeout(
-    //       typeof script === 'string' ? () => Polyglot.eval('js', script) : script,
-    //       0,
-    //       ...args
-    //     )
-    //   )
-    //   return session.poly.index++
-    // },
 });
-// export const setImmediate = (script: string | Function, ...args: any[]) => {
-//   // console.log('environment setImmediate')
-//   session.poly.list.set(
-//     session.poly.index,
-//     task.timeout(
-//       typeof script === 'string' ? () => Polyglot.eval('js', script) : script,
-//       0,
-//       ...args
-//     )
-//   )
-//   return session.poly.index++
-// }
