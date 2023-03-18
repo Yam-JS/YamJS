@@ -1,5 +1,5 @@
 {
-  "name": "yamjs-dev",
+  "name": "@yam-js/dev",
   "private": true,
   "version": "0.0.1",
   "main": "index.js",
@@ -15,7 +15,8 @@
     "start:server": "cd server & java -Xms2G -Xmx2G -jar -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 server.jar -nogui"
   },
   "dependencies": {
-    "yamjs-core": "0.0.1"
+    "@yam-js/core": "0.0.1",
+    "vlq": "^2.0.4"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.3",

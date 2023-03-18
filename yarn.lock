@@ -1090,6 +1090,13 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.17.11.tgz#9be796d93ae27b636da32d960899a4912bca27a1"
   integrity sha512-N9vXqLP3eRL8BqSy8yn4Y98cZI2pZ8fyuHx6lKjiG2WABpT2l01TXdzq5Ma2ZUBzfB7tx5dXVhge8X9u0S70ZQ==
 
+"@graal-types/adventure-text-minimessage@^4.11.0":
+  version "4.11.0"
+  resolved "https://registry.yarnpkg.com/@graal-types/adventure-text-minimessage/-/adventure-text-minimessage-4.11.0.tgz#5e437e172c9a5f4bc86dd8ea4973f59823e34c3b"
+  integrity sha512-S7dRxs5R3FKP9qUfW4krXriCGMfYCb+M1X70vgRmkq5B3FytH2Tfm0thDhA891tbqIhpbM2OuUVrBD/sbVZGZQ==
+  dependencies:
+    "@graal-types/java-16" "^1.0.0"
+
 "@graal-types/java-16@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@graal-types/java-16/-/java-16-1.0.0.tgz#2929d6a775251b837a81702a6eb673fd98425826"
@@ -2879,6 +2886,11 @@ uri-js@^4.2.2:
   integrity sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==
   dependencies:
     punycode "^2.1.0"
+
+vlq@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/vlq/-/vlq-2.0.4.tgz#6057b85729245b9829e3cc7755f95b228d4fe041"
+  integrity sha512-aodjPa2wPQFkra1G8CzJBTHXhgk3EVSwxSWXNPr1fgdFLUb8kvLV1iEb6rFgasIsjP82HWI6dsb5Io26DDnasA==
 
 watchpack@^2.4.0:
   version "2.4.0"

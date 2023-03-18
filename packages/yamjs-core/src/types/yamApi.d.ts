@@ -1,7 +1,66 @@
-export interface YamFileInstance {
-  main: string
-}
+type Queue = any
+type Message = any
 
+export class YamInstance {
+  /** The underlying context associated with this instance. */
+  context: any
+
+  /* Track whether the context is active, to safely close if needed. */
+  isContextActive: boolean = false
+
+  /** The engine used for all instance contexts. */
+  static readonly engine: any
+
+  /** All registered unload hooks tied to this instance. */
+  readonly hooks: Queue
+
+  /** All queued messages created by this instance. */
+  readonly messages: Message[]
+
+  /** Metadata associated with this instance. */
+  meta: string
+
+  /** The root directory of this instance. */
+  root: string
+
+  /**
+   * The tick function associated with this instance.
+   */
+  tickFn: () => void
+
+  /** The close function associated with this instance. */
+  onCloseFn: () => void
+
+  /** The logger function associated with this instance. */
+  loggerFn: (error: JsError) => void
+
+  /** All queued tasks linked to this instance. */
+  readonly tasks: Queue
+
+  /** Builds a new instance from the given paths. */
+  constructor(root: string, meta: string)
+
+  /** Closes this instance's context. */
+  close(): void
+
+  /** Closes this instance and removes it from the instance registry. */
+  destroy(): void
+
+  /** Executes this instance by calling its entry point. */
+  execute(): void
+
+  /** Opens this instance's context. */
+  open(): void
+
+  /** Executes the tick loop for this instance. */
+  tick(): void
+
+  logError(error: Throwable): void
+
+  setTickFn(fn: () => void): void
+  setOnCloseFn(fn: () => void): void
+  setLoggerFn(fn: (error: JsError) => void): void
+}
 export interface YamConfig {
   /*
    * The "main" property within the config.
@@ -21,6 +80,8 @@ export interface YamConfig {
 }
 
 export interface YamApi {
+  instance: YamInstance
+
   /**
    * Destroys the current instance.
    */
@@ -112,13 +173,4 @@ export interface YamApi {
    * Closes all open instances, resets everything, and swaps the main instance.
    */
   reload: () => void
-
-  /**
-   * Registers a tick function.
-   *
-   * @param fn The function to be registered.
-   */
-  registerTickFn: (fn: () => void) => void
-
-  registerOnClose: (fn: () => void) => void
 }

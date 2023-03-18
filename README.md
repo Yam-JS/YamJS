@@ -10,13 +10,14 @@ The original implementation is in maintenance mode, which means it is no longer 
 
 Please note that YamJS is currently in alpha and as such, there may be changes to the APIs and other aspects of the codebase as we continue to refine and improve it. While most APIs may be stable, it is possible that the next minor release may feature a breaking change during this phase.
 
-# Opinionated
+# What will be different?
 
-Our version of YamJS is opinionated, meaning that we have made certain decisions about how the code should be written, structured, and organized. These decisions are based on our years of experience in the industry and our deep understanding of best practices and emerging trends.
+- Improved Developer Experience
 
-# Getting Started
+  - Better Error Handling
+  - Source Map Support
 
-To get started with YamJS, simply clone the repository and follow the instructions in the README file. We encourage you to explore the codebase.
+- TDB
 
 # Conclusion
 

@@ -4,8 +4,12 @@
   "main": "./dist/index",
   "license": "MIT",
   "devDependencies": {
+    "@graal-types/adventure-text-minimessage": "^4.11.0",
     "@graal-types/java-16": "^1.0.0",
     "@graal-types/paper-1.19": "^1.0.1",
     "type-fest": "^3.6.1"
+  },
+  "dependencies": {
+    "vlq": "^2.0.4"
   }
 }

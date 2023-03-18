@@ -1,6 +1,5 @@
 import { Bukkit } from 'org.bukkit'
-import { reload as reloadYamJs } from 'yamjs-core'
-import { yamReloadHandler } from 'yamjs-core/src/reload'
+import { reloadHandler } from '@yam-js/core/src/reload'
 import { WebServer } from './webServer'
 
 interface AutoReloadOpts {
@@ -39,24 +38,37 @@ export function initializeAutoReload(opts?: AutoReloadOpts) {
       WebServer.start()
       WebServer.listen(4000)
 
+      WebServer.get('/command', (req, res) => {
+        try {
+          console.log(Object.keys(req))
+          const command = req.getQuery('command')
+          Bukkit.dispatchCommand(Bukkit.getConsoleSender(), `/${command}`)
+
+          res.send('done')
+        } catch (err) {
+          console.error(err)
+          res.send('error')
+        }
+      })
+
       WebServer.get('/reload', (req, res) => {
         res.send('done')
 
         onStop?.()
 
-        yamReloadHandler.reload()
+        reloadHandler.reload()
       })
 
-      yamReloadHandler.register('WebServer', () => {
+      reloadHandler.register('WebServer', () => {
         WebServer.stop()
       })
 
       WebServer.get('/reload-plugin', (req, res) => {
-        res.send('done')
-
         setTimeout(() => {
           Bukkit.dispatchCommand(Bukkit.getConsoleSender(), 'plugman reload yamjs')
         }, 1)
+
+        res.send('done')
       })
     } catch (err) {
       console.error(err)

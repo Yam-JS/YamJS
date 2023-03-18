@@ -1,3 +1,4 @@
+import { logError } from './errors'
 import { reloadHandler } from './reload'
 import { tickerTasks } from './tasks'
 import { ticker } from './ticker'
@@ -13,6 +14,9 @@ export const initialize = () => {
   tickerTasks.initialize()
   initializeTimers()
   reloadHandler.initialize()
+
+  Yam.instance.setLoggerFn((error) => logError(error))
+
   isInitialized = true
 }
 

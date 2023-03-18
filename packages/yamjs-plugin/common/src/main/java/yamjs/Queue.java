@@ -33,6 +33,13 @@ public class Queue {
    /** The list of values in the queue. */
    public final LinkedList<Value> list = new LinkedList<>();
 
+   /** The underlying instance to which this API is linked. */
+   public Instance instance;
+
+   public Queue(Instance instance) {
+      this.instance = instance;
+   }
+
    /** Executes and removes all values from the queue. */
    public void release() {
       new ArrayList<>(this.list).forEach(value -> {
@@ -40,7 +47,7 @@ public class Queue {
          try {
             value.executeVoid();
          } catch (Throwable error) {
-            error.printStackTrace();
+            this.instance.logError(error);
          }
       });
    }

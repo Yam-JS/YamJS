@@ -60,7 +60,7 @@ const createReloadHandler = () => {
     },
 
     initialize: () => {
-      Yam.registerOnClose(async () => {
+      Yam.instance.setOnCloseFn(async () => {
         await executeRegisteredCallbacks()
       })
     },

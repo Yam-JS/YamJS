@@ -1,3 +1,5 @@
+import { catchAndLogUnhandledError } from '../../errors'
+
 // @ts-nocheck
 type classes = any
 type jiFile = any
@@ -232,27 +234,21 @@ export function command(options: {
         options.permission || '',
         options.message || '',
         (sender: any, label: string, args: string[]) => {
-          try {
+          catchAndLogUnhandledError(() => {
             if (!options.permission || sender.hasPermission(options.permission)) {
               options.execute && options.execute(sender, ...args)
             } else {
               sender.sendMessage(options.message || '')
             }
-          } catch (error) {
-            console.error(`An error occured while attempting to execute the "${label}" command!`)
-            console.error(error.stack || error.message || error)
-          }
+          }, `An error occured while attempting to execute the "${label}" command!`)
         },
         (sender: any, alias: string, args: string[]) => {
-          try {
-            return (options.tabComplete && options.tabComplete(sender, ...args)) || []
-          } catch (error) {
-            console.error(
+          return (
+            catchAndLogUnhandledError(
+              () => (options.tabComplete && options.tabComplete(sender, ...args)) || [],
               `An error occured while attempting to tab-complete the "${alias}" command!`
-            )
-            console.error(error.stack || error.message || error)
-            return []
-          }
+            ) ?? []
+          )
         }
       )
       break
@@ -286,7 +282,10 @@ export function command(options: {
   }
 }
 
-/** A simple task scheduler. */
+/**
+ * A simple task scheduler.
+ * @deprecated
+ */
 export const task = {
   /** Cancels a previously scheduled task. */
   cancel(handle: future) {
@@ -326,108 +325,46 @@ export const task = {
   },
 }
 
-export const context = (() => {
-  try {
-    /* Yam v5 */
-    return {
-      /** Creates a new context and returns its instance. If `type` is file, `content` refers to a JS file path relative to the JS root folder. If `type` is script, `content` refers to a piece of JS code. */
-      create<X extends 'file' | 'script'>(
-        type: X,
-        content: string,
-        meta?: string
-      ): { file: instance & { main: string }; script: instance & { code: string } }[X] {
-        return Yam[`${type}Instance`](content, meta) as any
-      },
-      /** Destroys the currently running context. */
-      destroy() {
-        Yam.destroy()
-      },
-      emit(channel: string, message: string) {
-        Yam.emit(channel, message)
-      },
-      meta: Yam.getMeta(),
-      off(channel: string, listener: (data: string) => void) {
-        return Yam.off(channel, listener)
-      },
-      on: ((channel: string, listener?: (data: string) => void) => {
-        if (listener) {
-          return Yam.on(channel, listener)
-        } else {
-          return new Promise((resolve) => {
-            const dummy = (response: string) => {
-              context.off(channel, dummy)
-              resolve(response)
-            }
-            context.on(channel, dummy)
-          })
+export const context = {
+  /** Creates a new context and returns its instance. If `type` is file, `content` refers to a JS file path relative to the JS root folder. If `type` is script, `content` refers to a piece of JS code. */
+  create<X extends 'file' | 'script'>(
+    type: X,
+    content: string,
+    meta?: string
+  ): { file: instance & { main: string }; script: instance & { code: string } }[X] {
+    return Yam[`${type}Instance`](content, meta)
+  },
+  /** Destroys the currently running context. */
+  destroy() {
+    Yam.destroy()
+  },
+  emit(channel: string, message: string) {
+    Yam.emit(channel, message)
+  },
+  meta: Yam.getMeta(),
+  off(channel: string, listener: (data: string) => void) {
+    return Yam.off(channel, listener)
+  },
+  on: ((channel: string, listener?: (data: string) => void) => {
+    if (listener) {
+      return Yam.on(channel, listener)
+    } else {
+      return new Promise((resolve) => {
+        const dummy = (response: string) => {
+          context.off(channel, dummy)
+          resolve(response)
         }
-      }) as {
-        (channel: string): Promise<string>
-        (channel: string, listener: (data: string) => void)
-      },
-      swap() {
-        push(Yam.swap)
-      },
+        context.on(channel, dummy)
+      })
     }
-  } catch (error) {
-    /* Yam v4 */
-    const channels = {} as { [x in string]: ((data: string) => void)[] }
-    const messages = [] as { channel: string; content: string }[]
-
-    task.interval(() => {
-      for (const message of messages.splice(0, messages.length)) {
-        if (message.channel in channels) {
-          for (const listener of channels[message.channel]) {
-            try {
-              listener(message.content)
-            } catch (error) {
-              console.error('An error occured while attempting to listen for a message!')
-              console.error(error.stack || error.message || error)
-            }
-          }
-        }
-      }
-    })
-
-    return {
-      create() {
-        throw 'Your current version of Yam does not support creating new contexts!'
-      },
-      destroy() {
-        throw 'The primary instance cannot be destroyed!'
-      },
-      emit(channel: string, content: string) {
-        messages.push({ channel, content })
-      },
-      meta: 'Yam',
-      off(channel: string, listener: (data: string) => void) {
-        if (channel in channels) {
-          const list = channels[channel]
-          list.includes(listener) && list.splice(list.indexOf(listener), 1)
-        }
-      },
-      on: ((channel: string, listener?: (data: string) => void) => {
-        if (listener) {
-          channels[channel] || (channels[channel] = []).push(listener)
-        } else {
-          return new Promise((resolve) => {
-            const dummy = (response: string) => {
-              context.off(channel, dummy)
-              resolve(response)
-            }
-            context.on(channel, dummy)
-          })
-        }
-      }) as {
-        (channel: string): Promise<string>
-        (channel: string, listener: (data: string) => void)
-      },
-      swap() {
-        push(Yam.swap)
-      },
-    }
-  }
-})()
+  }) as {
+    (channel: string): Promise<string>
+    (channel: string, listener: (data: string) => void)
+  },
+  swap() {
+    push(Yam.swap)
+  },
+}
 
 /** Stores data on a per-path basis. */
 export function data(path: string, ...more: string[]) {

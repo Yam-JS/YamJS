@@ -24,6 +24,7 @@
 package yamjs;
 
 import org.graalvm.polyglot.Engine;
+import org.graalvm.polyglot.PolyglotException;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -44,7 +45,7 @@ public class Instance {
    public static final Engine engine = Engine.newBuilder().option("engine.WarnInterpreterOnly", "false").build();
 
    /** All registered unload hooks tied to this instance. */
-   public final Queue hooks = new Queue();
+   public final Queue hooks = new Queue(this);
 
    /** All queued messages created by this instance. */
    public final LinkedList<Message> messages = new LinkedList<>();
@@ -58,13 +59,16 @@ public class Instance {
    /**
     * The tick function associated with this instance.
     */
-   public Consumer<Void> tickFn;
+   public Consumer<Value> tickFn;
 
    /** The close function associated with this instance. */
-   public Consumer<Void> onCloseFn;
+   public Consumer<Value> onCloseFn;
+
+   /** The logger function associated with this instance. */
+   public Consumer<JsError> loggerFn;
 
    /** All queued tasks linked to this instance. */
-   public final Queue tasks = new Queue();
+   public final Queue tasks = new Queue(this);
 
    /** Builds a new instance from the given paths. */
    public Instance(String root, String meta) {
@@ -78,7 +82,7 @@ public class Instance {
          try {
             this.onCloseFn.accept(null);
          } catch (Throwable error) {
-            error.printStackTrace();
+            logError(error);
          }
       }
 
@@ -110,12 +114,14 @@ public class Instance {
             .option("js.ecmascript-version", "2022")
             .option("js.commonjs-require-cwd", this.root)
             .build();
+      this.context.getBindings("js").putMember("__interop", Value.asValue(new Interop()));
       this.context.getBindings("js").putMember("Yam", Value.asValue(new Api(this)));
+
       try {
          this.execute();
          this.isContextActive = true;
       } catch (Throwable error) {
-         error.printStackTrace();
+         logError(error);
       }
    }
 
@@ -125,8 +131,7 @@ public class Instance {
          try {
             this.tickFn.accept(null);
          } catch (Throwable error) {
-            // TODO: Log error; this would be a serious error
-            // do nothing
+            logError(error);
          }
       }
 
@@ -138,20 +143,44 @@ public class Instance {
                try {
                   listener.executeVoid(message.content);
                } catch (Throwable error) {
-                  // do nothing
+                  logError(error);
                }
             });
          }
       });
    }
 
-   public void registerTickFn(Consumer<Void> fn) {
-      // Finding: This is a `Consumer` as it works best with the reload configuration.
-      // If we change it to `Value`, it breaks reloading.
-      this.tickFn = fn;
+   public void logError(Throwable error) {
+      if (error instanceof PolyglotException) {
+         PolyglotException polyglotException = (PolyglotException) error;
+
+         if (this.loggerFn != null) {
+            JsError jsError = new JsError(polyglotException);
+
+            try {
+               this.loggerFn.accept(jsError);
+               return;
+            } catch (Throwable errorError) {
+               error.printStackTrace();
+               return;
+            }
+         }
+      }
+
+      error.printStackTrace();
    }
 
-   public void registerOnClose(Consumer<Void> fn) {
-      this.onCloseFn = fn;
+   // Finding: This is a `Consumer` as it works best with the reload configuration.
+   // If we change it to `Value`, it breaks reloading.
+   public void setTickFn(Consumer<Value> tickFn) {
+      this.tickFn = tickFn;
+   }
+
+   public void setOnCloseFn(Consumer<Value> onCloseFn) {
+      this.onCloseFn = onCloseFn;
+   }
+
+   public void setLoggerFn(Consumer<JsError> loggerFn) {
+      this.loggerFn = loggerFn;
    }
 }

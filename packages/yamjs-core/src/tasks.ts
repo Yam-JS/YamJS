@@ -34,6 +34,11 @@ const createTickerTasks = () => {
     fn: TickerTask,
     baseTick: number,
     options?: {
+      /**
+       * Reset the task after it has been run
+       *
+       * @default false
+       */
       reset?: boolean
       nextId?: number
     }
@@ -47,7 +52,7 @@ const createTickerTasks = () => {
     taskIdMap.set(id, {
       baseTick,
       tick: targetTick,
-      fn: fn,
+      fn,
       reset: options?.reset || false,
       id,
     })

@@ -35,7 +35,7 @@ const createTicker = () => {
 
   const start = () => {
     ctx.isActive = true
-    Yam.registerTickFn(nextTick)
+    Yam.instance.setTickFn(nextTick)
   }
 
   const stop = async () => {

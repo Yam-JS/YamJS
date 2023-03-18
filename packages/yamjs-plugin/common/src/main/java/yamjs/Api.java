@@ -32,14 +32,13 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 import org.graalvm.polyglot.Value;
 
 public class Api {
 
    /** The underlying instance to which this API is linked. */
-   private Instance instance;
+   public Instance instance;
 
    /** Builds a new YamJS API object around the given instance. */
    public Api(Instance instance) {
@@ -162,18 +161,5 @@ public class Api {
       } else {
          throw new Exception("This method may only be called from the main context!");
       }
-   }
-
-   /**
-    * Registers a tick function.
-    * 
-    * @param fn The function to be registered.
-    */
-   public void registerTickFn(Consumer<Void> fn) {
-      this.instance.registerTickFn(fn);
-   }
-
-   public void registerOnClose(Consumer<Void> fn) {
-      this.instance.registerOnClose(fn);
    }
 }

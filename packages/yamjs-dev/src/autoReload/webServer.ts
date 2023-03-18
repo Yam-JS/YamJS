@@ -1,4 +1,4 @@
-import { load } from 'yamjs-core'
+import { load } from '@yam-js/core/src'
 
 export class WebServer {
   static app: undefined | { listen: Function; stop: Function; get: Function } = undefined
@@ -9,7 +9,7 @@ export class WebServer {
   ) => {
     if (WebServer.app) return
 
-    const Express = load(`./plugins/yamjs/${jarFile}`, className)
+    const Express = load<any>(`./plugins/yamjs/${jarFile}`, className)
 
     if (!Express) {
       throw new Error(`Unable to load "${jarFile}" in the "plugins/yamjs" folder.`)

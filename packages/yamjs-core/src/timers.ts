@@ -1,3 +1,4 @@
+import { createCatchAndLogUnhandledErrorHandler } from './errors'
 import { tickerTasks } from './tasks'
 
 const baseTimer = (
@@ -8,13 +9,7 @@ const baseTimer = (
   const modifier = delay / 50
 
   return tickerTasks.add(
-    () => {
-      try {
-        callback()
-      } catch (err) {
-        console.error('Unhandled timer', err)
-      }
-    },
+    createCatchAndLogUnhandledErrorHandler(callback, 'Unhandled timer'),
     modifier,
     options
   )
@@ -22,15 +17,9 @@ const baseTimer = (
 
 const setTimeout = (callback: () => void, delay: number) => baseTimer(callback, delay)
 const setInterval = (callback: () => void, delay: number) =>
-  baseTimer(
-    () => {
-      callback()
-    },
-    delay,
-    {
-      reset: true,
-    }
-  )
+  baseTimer(callback, delay, {
+    reset: true,
+  })
 
 const setImmediate = (callback: () => void) => setTimeout(callback, 0)
 
