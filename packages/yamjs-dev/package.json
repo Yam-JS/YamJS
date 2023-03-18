@@ -12,7 +12,7 @@
     "start": "yarn setup:yam & concurrently -c \"auto\" \"yarn:start:*\"",
     "start:yam": "yarn tsnode ./scripts/startYam",
     "start:js": "yarn tsnode ./scripts/start",
-    "start:server": "cd server & java -Xms2G -Xmx2G -jar server.jar -nogui"
+    "start:server": "cd server & java -Xms2G -Xmx2G -jar -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 server.jar -nogui"
   },
   "dependencies": {
     "yamjs-core": "0.0.1"
