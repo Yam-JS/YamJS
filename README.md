@@ -16,6 +16,7 @@ Please note that YamJS is currently in alpha and as such, there may be changes t
 
   - Better Error Handling
   - Source Map Support
+  - Improved Type Definition support
 
 - TDB
 

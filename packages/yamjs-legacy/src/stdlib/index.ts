@@ -6,11 +6,10 @@ type jiInputStream = any
 type ogpContext = any
 type juLinkedList<T> = any
 type Yam = any
-type Java = any
 
+// @ts-expect-error
 const Yam = globalThis.Yam
 const Core = Yam
-const Java = globalThis.Java
 
 /** A serializable object. */
 export type basic =
@@ -128,24 +127,13 @@ export const session = {
   type: new Map<keyof classes, any>(),
 }
 
-/** Imports the specified type from java. */
-export function type<X extends keyof classes>(name: X): classes[X] {
-  if (session.type.has(name)) {
-    return session.type.get(name)
-  } else {
-    const value = Java.type(name)
-    session.type.set(name, value)
-    return value
-  }
-}
-
-const Files = type('java.nio.file.Files')
-const JavaString = type('java.lang.String')
-const Paths = type('java.nio.file.Paths')
-const Pattern = type('java.util.regex.Pattern')
-const Scanner = type('java.util.Scanner')
-const URL = type('java.net.URL')
-const UUID = type('java.util.UUID')
+const Files = Java.type('java.nio.file.Files')
+const JavaString = Java.type('java.lang.String')
+const Paths = Java.type('java.nio.file.Paths')
+const Pattern = Java.type('java.util.regex.Pattern')
+const Scanner = Java.type('java.util.Scanner')
+const URL = Java.type('java.net.URL')
+const UUID = Java.type('java.util.UUID')
 
 /** A system which simplifies asynchronous cross-context code execution. */
 export const desync = {
@@ -183,6 +171,7 @@ export const desync = {
         return new Promise<X>((resolve, reject) => {
           env.content.server.getScheduler().runTaskAsynchronously(
             env.content.plugin,
+            // @ts-expect-error
             new env.content.Runnable(async () => {
               try {
                 resolve(await script())
@@ -273,7 +262,6 @@ export function command(options: {
         },
         env.content.ArgumentType.StringArray('tab-complete').setSuggestionCallback(
           (sender, context, suggestion) => {
-            // @ts-expect-error
             for (const completion of options.tabComplete(
               sender,
               ...context.getInput().split(' ').slice(1)
@@ -389,7 +377,7 @@ export function data(path: string, ...more: string[]) {
 /** The environment that this module is currently running in. */
 export const env = (() => {
   try {
-    const Bukkit: any = type('org.bukkit.Bukkit')
+    const Bukkit: any = Java.type('org.bukkit.Bukkit')
 
     /* bukkit detected */
 
@@ -400,23 +388,23 @@ export const env = (() => {
     // I would be worried that a context being closed would cause this to be called
     // and all events to be unregistered.
     Yam.hook(() => {
-      type('org.bukkit.event.HandlerList').unregisterAll(plugin)
+      Java.type('org.bukkit.event.HandlerList').unregisterAll(plugin)
     })
 
     return {
       content: {
-        EventPriority: type('org.bukkit.event.EventPriority') as any,
-        instance: new (Java.extend(type('org.bukkit.event.Listener'), {}))(),
+        EventPriority: Java.type('org.bukkit.event.EventPriority'),
+        instance: new (Java.extend(Java.type('org.bukkit.event.Listener'), {}))(),
         manager,
         plugin,
-        Runnable: type('java.lang.Runnable'),
+        Runnable: Java.type('java.lang.Runnable'),
         server: Bukkit.getServer(),
       },
       name: 'bukkit',
     }
   } catch (error) {
     try {
-      const MinecraftServer: any = type('net.minestom.server.MinecraftServer')
+      const MinecraftServer: any = Java.type('net.minestom.server.MinecraftServer')
 
       /* minestom detected */
 
@@ -425,14 +413,16 @@ export const env = (() => {
 
       return {
         content: {
-          ArgumentType: type('net.minestom.server.command.builder.arguments.ArgumentType') as any,
-          Command: type('net.minestom.server.command.builder.Command') as any,
+          ArgumentType: Java.type(
+            'net.minestom.server.command.builder.arguments.ArgumentType'
+          ) as any,
+          Command: Java.type('net.minestom.server.command.builder.Command') as any,
           extension,
           manager,
           node: extension.getEventNode(),
           registry: MinecraftServer.getCommandManager(),
           server: MinecraftServer,
-          SuggestionEntry: type(
+          SuggestionEntry: Java.type(
             'net.minestom.server.command.builder.suggestion.SuggestionEntry'
           ) as any,
         },
@@ -457,7 +447,6 @@ export function event<X extends events>(
       {
         let list: cascade
         if (session.event.has(name)) {
-          // @ts-expect-error
           list = session.event.get(name)
         } else {
           list = new Set()
@@ -479,12 +468,14 @@ export function event<X extends events>(
           }
         }
         for (const target of targets) {
-          const emitter = type(name)
+          const emitter = Java.type(name)
           env.content.manager.registerEvent(
+            // @ts-expect-error
             emitter.class,
             env.content.instance,
             env.content.EventPriority.valueOf(target),
             (x: any, signal: any) => {
+              // @ts-expect-error
               if (signal instanceof emitter) {
                 try {
                   for (const listener of list) {
@@ -510,14 +501,14 @@ export function event<X extends events>(
       {
         let list: cascade
         if (session.event.has(name)) {
-          // @ts-expect-error
           list = session.event.get(name)
         } else {
           list = new Set()
           session.event.set(name, list)
         }
         if (list.size === 0) {
-          const emitter = type(name)
+          const emitter = Java.type(name)
+          // @ts-expect-error
           env.content.node.addListener(emitter.class, (signal: any) => {
             try {
               for (const listener of list) {
@@ -553,6 +544,7 @@ export function fetch(link: string) {
         }
       }
     },
+    // @ts-expect-error
     read(async?: boolean) {
       if (async) {
         return desync.request(aux, { link, operation: 'fetch.read' }) as Promise<string>
@@ -561,6 +553,7 @@ export function fetch(link: string) {
       }
     },
     stream() {
+      // @ts-expect-error
       return new URL(link).openStream()
     },
   }
@@ -574,7 +567,6 @@ export function file(path: string | record | jiFile, ...more: string[]) {
     .normalize()
     .toFile()
   const record: record = {
-    // @ts-expect-error
     get children() {
       return record.type === 'folder' ? [...io.listFiles()].map((sub) => file(sub.getPath())) : null
     },
@@ -633,7 +625,8 @@ export function file(path: string | record | jiFile, ...more: string[]) {
         return desync.request(aux, { operation: 'file.read', path: record.path }) as Promise<string>
       } else {
         return record.type === 'file'
-          ? new JavaString(Files.readAllBytes(io.toPath())).toString()
+          ? // @ts-expect-error
+            new JavaString(Files.readAllBytes(io.toPath())).toString()
           : null
       }
     },
@@ -654,6 +647,7 @@ export function file(path: string | record | jiFile, ...more: string[]) {
           .request(aux, { content, operation: 'file.write', path: record.path })
           .then(() => record)
       } else {
+        // @ts-expect-error
         record.type === 'file' && Files.write(io.toPath(), new JavaString(content).getBytes())
         return record
       }
@@ -690,6 +684,7 @@ export const regex = {
     return input.matches(expression)
   },
   replace(input: string, expression: string, replacement: string) {
+    // @ts-expect-error
     return Pattern.compile(expression).matcher(input).replaceAll(replacement)
   },
 }

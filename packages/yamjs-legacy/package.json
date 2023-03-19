@@ -11,6 +11,7 @@
     "typescript": "^5.0.2"
   },
   "dependencies": {
-    "@yam-js/core": "^0.0.1"
+    "@yam-js/core": "^0.0.1",
+    "@yam-js/graal-type-introspection": "0.0.1"
   }
 }

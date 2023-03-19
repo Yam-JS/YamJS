@@ -11,6 +11,7 @@
     "typescript": "^4.9.5"
   },
   "workspaces": [
+    "packages/graal-type-introspection",
     "packages/yamjs-core",
     "packages/yamjs-dev",
     "packages/yamjs-legacy"

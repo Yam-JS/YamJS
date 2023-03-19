@@ -1,7 +1,8 @@
+import { JavaTypes } from '@yam-js/graal-type-introspection/JavaTypes'
 import { YamApi } from './yamApi'
 
 export type Java = {
-  type: <T = any>(name: string) => T
+  type: <Key extends keyof JavaTypes>(name: Key) => JavaTypes[Key]
   extend: any
 }
 

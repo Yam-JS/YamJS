@@ -20,6 +20,7 @@
     "vite-plugin-dts": "^2.1.0"
   },
   "dependencies": {
+    "@yam-js/graal-type-introspection": "0.0.1",
     "vlq": "^2.0.4"
   }
 }
