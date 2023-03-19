@@ -124,7 +124,6 @@ export const session = {
   load: new Map<string, any>(),
   poly: { index: 0, list: new Map<number, future>() },
   task: { list: new Set<future>(), tick: 0 },
-  type: new Map<keyof classes, any>(),
 }
 
 const Files = Java.type('java.nio.file.Files')
