@@ -40,7 +40,7 @@ export function generateTypedefs(fileContent: string) {
 }
 
 async function findGraalTypeFiles(root: string) {
-  const pattern = 'node_modules/@graal-types/**/*.d.ts'
+  const pattern = '@graal-types/**/*.d.ts'
   const files = await fg(pattern, {
     cwd: root,
   })
