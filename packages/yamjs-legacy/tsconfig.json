@@ -10,6 +10,6 @@
     "outDir": "dist",
     "baseUrl": "."
   },
-  "typeRoots": ["node_modules/@graal-types", "@yam-js/graal-type-introspection"],
+  "typeRoots": ["node_modules/@graal-types", "@yam-js"],
   "include": ["src/**/*", "../../node_modules/@graal-types"]
 }

@@ -4,8 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node ./index.ts",
-    "postinstall": "ts-node ./index.ts"
+    "postinstall": "ts-node ./src/index.ts"
   },
   "dependencies": {
     "fast-glob": "^3.2.12",

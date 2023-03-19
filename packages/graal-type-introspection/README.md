@@ -4,4 +4,4 @@ This is an experimental package that scans the user's installed graal-types, gen
 
 # Note
 
-The developer will need to add `@yam-js/graal-type-introspection` into `typeRoots` within their `tsconfig.json` file
+The developer will need to add `@yam-js` into `typeRoots` within their `tsconfig.json` file

@@ -1,4 +1,4 @@
-import { JavaTypes } from '@yam-js/graal-type-introspection/JavaTypes'
+import { JavaTypes } from '@yam-js/graal-type-introspection'
 import { YamApi } from './yamApi'
 
 export type Java = {

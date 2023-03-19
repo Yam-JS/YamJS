@@ -10,15 +10,7 @@
     "outDir": "dist",
     "baseUrl": "."
   },
-  "typeRoots": [
-    "node_modules/@graal-types",
-    "src/types",
-    "@yam-js/graal-type-introspection/JavaTypes"
-  ],
-  "include": [
-    "src/**/*",
-    "../../node_modules/@graal-types",
-    "../../node_modules/@yam-js/graal-type-introspection/JavaTypes"
-  ],
+  "typeRoots": ["node_modules/@graal-types", "src/types", "@yam-js"],
+  "include": ["src/**/*", "../../node_modules/@graal-types"],
   "files": ["src/types/global.d.ts"]
 }
