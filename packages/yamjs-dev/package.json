@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@yam-js/core": "0.0.1",
+    "@yam-js/legacy": "0.0.1",
     "vlq": "^2.0.4"
   },
   "devDependencies": {

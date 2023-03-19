@@ -1,9 +1,8 @@
-import { command, load } from './legacy';
+import { cacheSourceMap } from './sourceMap';
 export declare const YamJSCore: {
-    createCommand: typeof command;
     initialize: () => void;
-    loadJar: typeof load;
     reload: () => Promise<void>;
     logError: (error: unknown, msg?: string) => void;
     catchAndLogUnhandledError: <R>(fn: () => R, msg: string) => R;
+    cacheSourceMap: typeof cacheSourceMap;
 };

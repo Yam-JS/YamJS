@@ -5,7 +5,7 @@
   "main": "index.js",
   "author": "Kyle <kyle.mercer.89@gmail.com>",
   "license": "MIT",
-  "dependencies": {
+  "devDependencies": {
     "got": "^11.8.6",
     "tsx": "^3.12.5",
     "typescript": "^4.9.5"
