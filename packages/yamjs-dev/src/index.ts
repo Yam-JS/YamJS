@@ -1,5 +1,5 @@
-import { command, file } from '@yam-js/legacy/src'
 import YamJS from '@yam-js/core'
+import { command, file } from '@yam-js/legacy/src'
 import { initializeAutoReload } from './autoReload/autoReload'
 
 initializeAutoReload()
@@ -16,5 +16,3 @@ command({
     throw new Error('Oh no')
   },
 })
-
-// throw new Error('Oh no! Error went off!')

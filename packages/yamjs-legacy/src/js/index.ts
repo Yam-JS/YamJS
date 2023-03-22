@@ -1,10 +1,9 @@
-import { Polyglot } from '@yam-js/core'
-import { command, env, regex, type } from '../stdlib'
+import { command, env, regex } from '../stdlib'
 
-const Class = type('java.lang.Class')
-const Iterable = type('java.lang.Iterable')
-const Iterator = type('java.util.Iterator')
-const Spliterator = type('java.util.Spliterator')
+const Class = Java.type('java.lang.Class')
+const Iterable = Java.type('java.lang.Iterable')
+const Iterator = Java.type('java.util.Iterator')
+const Spliterator = Java.type('java.util.Spliterator')
 
 /** Converts array-like objects or iterators into arrays. */
 export function array(object: any): any[] | null {
@@ -12,12 +11,14 @@ export function array(object: any): any[] | null {
     return [...object]
   } else if (object instanceof Iterable) {
     const output: any[] = []
+    // @ts-expect-error
     object.forEach((value: any) => {
       output.push(value)
     })
     return output
   } else if (object instanceof Iterator || object instanceof Spliterator) {
     const output: any[] = []
+    // @ts-expect-error
     object.forEachRemaining((value: any) => {
       output.push(value)
     })
@@ -88,6 +89,7 @@ export const format = {
       if (object === circular) {
         return '...'
       } else {
+        // @ts-expect-error
         const type = toString.call(object)
         switch (type) {
           case '[object Array]':
@@ -129,6 +131,7 @@ export const format = {
         }
       }
     } else {
+      // @ts-expect-error
       switch (toString.call(object)) {
         case '[object Array]':
           return `[ ${[...object]
@@ -181,7 +184,6 @@ command({
     self || (globalThis.self = context)
     let output: string
     try {
-      // @ts-expect-error
       const result = Polyglot.eval('js', args.join(' '))
       // @ts-ignore - Investigate. Why is this a thing?
       self || delete globalThis.self

@@ -1,6 +1,5 @@
 import { context, desync, fetch, file, push } from './index'
 
-// @ts-expect-error
 desync.provide(async (info: { content: string; operation: string; link: string; path: string }) => {
   return await desync.shift(() => {
     try {

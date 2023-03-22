@@ -1563,11 +1563,6 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-18.15.2.tgz#0407ceb15647f186318101546d5ae40725b73810"
   integrity sha512-sDPHm2wfx2QhrMDK0pOt2J4KLJMAcerqWNvnED0itPRJWvI+bK+uNHzcH1dFsBlf7G3u8tqXmRF3wkvL9yUwMw==
 
-"@types/node@^18.15.3":
-  version "18.15.3"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.15.3.tgz#f0b991c32cfc6a4e7f3399d6cb4b8cf9a0315014"
-  integrity sha512-p6ua9zBxz5otCmbpb5D3U4B5Nanw6Pk3PPyX05xnxbB/fRv71N7CPmORg7uAD5P70T0xmx1pzAx/FUfa5X+3cw==
-
 "@types/responselike@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@types/responselike/-/responselike-1.0.0.tgz#251f4fe7d154d2bad125abe1b429b23afd262e29"
@@ -1722,6 +1717,15 @@
   version "4.2.2"
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
+
+"@yam-js/graal-type-introspection@0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@yam-js/graal-type-introspection/-/graal-type-introspection-0.0.2.tgz#c155934354e905ab9d513ecd36a9cbe735265867"
+  integrity sha512-Ib2aQ1ftODhM99BrzEBN4XBFEFH2r8Ye/rjl/aBN1zn1JKtvSX+WLS0bwrRDxzc2/hiPjmWmlnTdiDTVxxbjyQ==
+  dependencies:
+    fast-glob "^3.2.12"
+    ts-node "^10.9.1"
+    typescript "^5.0.2"
 
 acorn-import-assertions@^1.7.6:
   version "1.8.0"

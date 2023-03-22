@@ -1,5 +1,5 @@
 import { Bukkit } from 'org.bukkit'
-import { reloadHandler } from '@yam-js/core/src/reload'
+import YamJS, { internal } from '@yam-js/core'
 import { WebServer } from './webServer'
 
 interface AutoReloadOpts {
@@ -56,10 +56,10 @@ export function initializeAutoReload(opts?: AutoReloadOpts) {
 
         onStop?.()
 
-        reloadHandler.reload()
+        YamJS.reload()
       })
 
-      reloadHandler.register('WebServer', () => {
+      YamJS[internal].reloadHandler.register('WebServer', () => {
         WebServer.stop()
       })
 

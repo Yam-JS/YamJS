@@ -1,4 +1,5 @@
 import { YamJSCore } from './core';
+export { internal } from './core';
 export type { Java, Polyglot } from './types/global';
 export type { YamApi, YamConfig, YamInstance } from './types/yamApi';
 export { initialize } from './initialize';

@@ -34,6 +34,9 @@ const createConfig = (env) => ({
     http: 'http',
   },
   resolve: {
+    alias: {
+      '@yam-js/core': path.resolve(__dirname, '..', './yamjs-core/src'),
+    },
     extensions: ['.json', '.js', '.ts', '.jsx', '.tsx'],
   },
   plugins: [
