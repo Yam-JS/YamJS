@@ -65,7 +65,7 @@ export function initializeAutoReload(opts?: AutoReloadOpts) {
 
       WebServer.get('/reload-plugin', (req, res) => {
         setTimeout(() => {
-          Bukkit.dispatchCommand(Bukkit.getConsoleSender(), 'plugman reload yamjs')
+          Bukkit.dispatchCommand(Bukkit.getConsoleSender(), 'plugman reload YamJS')
         }, 1)
 
         res.send('done')

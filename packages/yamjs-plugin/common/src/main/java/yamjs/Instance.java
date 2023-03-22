@@ -35,11 +35,12 @@ import org.graalvm.polyglot.Value;
 
 public class Instance {
 
+   public static int nextId = 0;
+
+   public int id = -1;
+
    /** The underlying context associated with this instance. */
    public Context context;
-
-   /* Track whether the context is active, to safely close if needed. */
-   public boolean isContextActive = false;
 
    /** The engine used for all instance contexts. */
    public static final Engine engine = Engine.newBuilder().option("engine.WarnInterpreterOnly", "false").build();
@@ -56,16 +57,18 @@ public class Instance {
    /** The root directory of this instance. */
    public String root;
 
+   public int tickCount = 0;
+
    /**
     * The tick function associated with this instance.
     */
-   public Consumer<Value> tickFn;
+   public JsCallback<Void> tickFn = new JsCallback<Void>(this);
 
    /** The close function associated with this instance. */
-   public Consumer<Value> onCloseFn;
+   public JsCallback<Void> onCloseFn = new JsCallback<Void>(this);
 
    /** The logger function associated with this instance. */
-   public Consumer<JsError> loggerFn;
+   public JsCallback<JsError> loggerFn = new JsCallback<JsError>(this, true);
 
    /** All queued tasks linked to this instance. */
    public final Queue tasks = new Queue(this);
@@ -78,21 +81,9 @@ public class Instance {
 
    /** Closes this instance's context. */
    public void close() {
-      if (this.onCloseFn != null) {
-         try {
-            this.onCloseFn.accept(null);
-         } catch (Throwable error) {
-            logError(error);
-         }
-      }
-
+      this.onCloseFn.execute(null);
       Context context = this.context;
       this.hooks.release();
-
-      // TODO: Validate
-      // this.onCloseFn = null;
-      // this.tickFn = null;
-      // this.loggerFn = null;
 
       context.close();
    }
@@ -110,6 +101,8 @@ public class Instance {
 
    /** Opens this instance's context. */
    public void open() {
+      this.id = Instance.nextId++;
+      this.tickCount = 0;
       this.context = Context.newBuilder("js")
             .engine(Instance.engine)
             .allowAllAccess(true)
@@ -124,21 +117,15 @@ public class Instance {
 
       try {
          this.execute();
-         this.isContextActive = true;
       } catch (Throwable error) {
-         logError(error);
+         error.printStackTrace();
       }
    }
 
    /** Executes the tick loop for this instance. */
    public void tick() {
-      if (this.tickFn != null) {
-         try {
-            this.tickFn.accept(null);
-         } catch (Throwable error) {
-            logError(error);
-         }
-      }
+      this.tickCount++;
+      this.tickFn.execute(null);
 
       this.tasks.release();
       new ArrayList<>(this.messages).forEach(message -> {
@@ -148,7 +135,7 @@ public class Instance {
                try {
                   listener.executeVoid(message.content);
                } catch (Throwable error) {
-                  logError(error);
+                  error.printStackTrace();
                }
             });
          }
@@ -156,19 +143,29 @@ public class Instance {
    }
 
    public void logError(Throwable error) {
+      if (error instanceof IllegalStateException) {
+         // Ignore the error when spinning up the environment. This happens more from
+         // reloading.
+         if (error.getMessage().contains("Multi threaded access requested by thread Thread") && this.tickCount < 100) {
+            return;
+         }
+
+         error.printStackTrace();
+
+         return;
+      }
+
       if (error instanceof PolyglotException) {
          PolyglotException polyglotException = (PolyglotException) error;
 
-         if (this.loggerFn != null) {
-            JsError jsError = new JsError(polyglotException);
+         JsError jsError = new JsError(polyglotException);
 
-            try {
-               this.loggerFn.accept(jsError);
-               return;
-            } catch (Throwable errorError) {
-               error.printStackTrace();
-               return;
-            }
+         try {
+            this.loggerFn.execute(jsError);
+            return;
+         } catch (Throwable errorError) {
+            error.printStackTrace();
+            return;
          }
       }
 
@@ -177,15 +174,17 @@ public class Instance {
 
    // Finding: This is a `Consumer` as it works best with the reload configuration.
    // If we change it to `Value`, it breaks reloading.
-   public void setTickFn(Consumer<Value> tickFn) {
-      this.tickFn = tickFn;
+   public void setTickFn(Consumer<Void> tickFn) {
+      this.tickFn.register(tickFn);
    }
 
-   public void setOnCloseFn(Consumer<Value> onCloseFn) {
-      this.onCloseFn = onCloseFn;
+   public void setOnCloseFn(Consumer<Void> onCloseFn) {
+      this.onCloseFn.register(onCloseFn);
+
    }
 
    public void setLoggerFn(Consumer<JsError> loggerFn) {
-      this.loggerFn = loggerFn;
+      this.loggerFn.register(loggerFn);
+
    }
 }
