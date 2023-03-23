@@ -1,5 +1,19 @@
 import { Runtime, System } from 'java.lang'
 
+const scan = (javaObject: any) => {
+  const keys = Object.keys(javaObject)
+
+  const result = keys.reduce((acc, key) => {
+    const value = javaObject[key]
+
+    acc[key] = value?.toString?.()
+
+    return acc
+  }, {} as any)
+
+  return result
+}
+
 export const getDebugInfo = () => {
   const Long = Java.type('java.lang.Long') as any
   const Bukkit = Java.type('org.bukkit.Bukkit')
@@ -14,6 +28,8 @@ export const getDebugInfo = () => {
       coreVersion: '0.0.1',
       pluginVersion: '0.0.1',
       legacyVersion: '0.0.1',
+
+      instance: scan(Yam.instance),
     },
 
     server: {

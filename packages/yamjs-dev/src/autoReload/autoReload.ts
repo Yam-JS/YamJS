@@ -42,7 +42,7 @@ export function initializeAutoReload(opts?: AutoReloadOpts) {
         try {
           console.log(Object.keys(req))
           const command = req.getQuery('command')
-          Bukkit.dispatchCommand(Bukkit.getConsoleSender(), `/${command}`)
+          Bukkit.dispatchCommand(Bukkit.getConsoleSender(), `${command}`)
 
           res.send('done')
         } catch (err) {

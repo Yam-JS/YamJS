@@ -35,10 +35,6 @@ import org.graalvm.polyglot.Value;
 
 public class Instance {
 
-   public static int nextId = 0;
-
-   public int id = -1;
-
    /** The underlying context associated with this instance. */
    public Context context;
 
@@ -57,8 +53,6 @@ public class Instance {
    /** The root directory of this instance. */
    public String root;
 
-   public int tickCount = 0;
-
    /**
     * The tick function associated with this instance.
     */
@@ -73,6 +67,13 @@ public class Instance {
    /** All queued tasks linked to this instance. */
    public final Queue tasks = new Queue(this);
 
+   // nextId, id, tickCount, ignoreMultiThreadError: All are here to minimize
+   // multithreading errors.
+   public static int nextId = 0;
+   public int id = -1;
+   public int tickCount = 0;
+   public boolean ignoreMultiThreadError = false;
+
    /** Builds a new instance from the given paths. */
    public Instance(String root, String meta) {
       this.meta = meta;
@@ -81,6 +82,7 @@ public class Instance {
 
    /** Closes this instance's context. */
    public void close() {
+      this.ignoreMultiThreadError = true;
       this.onCloseFn.execute(null);
       Context context = this.context;
       this.hooks.release();
@@ -101,6 +103,7 @@ public class Instance {
 
    /** Opens this instance's context. */
    public void open() {
+      this.ignoreMultiThreadError = true;
       this.id = Instance.nextId++;
       this.tickCount = 0;
       this.context = Context.newBuilder("js")
@@ -143,10 +146,15 @@ public class Instance {
    }
 
    public void logError(Throwable error) {
+      if (this.tickCount > 100 && this.ignoreMultiThreadError) {
+         this.ignoreMultiThreadError = false;
+      }
+
       if (error instanceof IllegalStateException) {
          // Ignore the error when spinning up the environment. This happens more from
          // reloading.
-         if (error.getMessage().contains("Multi threaded access requested by thread Thread") && this.tickCount < 100) {
+         if (error.getMessage().contains("Multi threaded access requested by thread Thread")
+               && this.ignoreMultiThreadError) {
             return;
          }
 

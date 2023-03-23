@@ -7,7 +7,6 @@ import { initializeTimers } from './timers'
 let isInitialized = false
 
 export const initialize = () => {
-  console.log('Initializing YamJS...', isInitialized)
   if (isInitialized) return
 
   ticker.start()

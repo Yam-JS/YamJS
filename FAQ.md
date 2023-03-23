@@ -1,3 +1,3 @@
-# I reloaded the plugin and got `java.lang.IllegalStateException: Multi threaded access requested by thread Thread[Server thread,7,main] but is not allowed for language(s) js.`
+# What does `java.lang.IllegalStateException: Multi threaded access requested by thread Thread[Server thread,7,main] but is not allowed for language(s) js.` mean when I reload the plugin?
 
-This doesn't seem to cause any errors or issues within YamJS. You can safety ignore the error message.
+This error message may appear when you reload the YamJS plugin and is usually isolated to reloading the YamJS GraalVM Context. It does not typically cause any errors or issues within YamJS, so you can safely ignore the message. However, we understand that this is not an ideal situation. If you have suggestions for how to improve the plugin to avoid this error message, please feel free to submit a pull request with your changes.
