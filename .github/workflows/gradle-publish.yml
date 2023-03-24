@@ -38,5 +38,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            ./yamjs-paper.jar
-            ./yamjs-paper-legacy.jar
+            ./yamjs-paper-${{ env.TAG_NAME}}.jar
+            ./yamjs-paper-legacy-${{ env.TAG_NAME}}.jar
+        env:
+          TAG_NAME: ${{ github.ref_name }}
