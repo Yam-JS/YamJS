@@ -1,5 +1,5 @@
-/// <reference types="@graal-types/paper-1.18/org_bukkit" />
 /// <reference types="@graal-types/paper-1.19/org_bukkit" />
+/// <reference types="@graal-types/paper-1.18/org_bukkit" />
 import { cacheSourceMap } from './sourceMap';
 export declare const internal: unique symbol;
 /**
