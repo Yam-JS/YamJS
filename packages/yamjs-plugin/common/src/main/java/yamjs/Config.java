@@ -29,7 +29,9 @@ public class Config {
    /**
     * Creates a new configuration from the given options.
     */
-   public Config(String root, String path) {
+   public Config(String root, String path, String pluginName) {
+      this.pluginName = pluginName;
+
       Path info = Paths.get(root, path);
       if (info.toFile().exists()) {
          try {
@@ -39,7 +41,6 @@ public class Config {
             ConfigurationSection object = YamlFile.loadConfiguration(info.toFile()).getRoot();
 
             this.main = object.getString("main") != null ? object.getString("main") : this.main;
-            this.pluginName = object.getString("pluginName") != null ? object.getString("pluginName") : this.pluginName;
          } catch (Throwable error) {
             error.printStackTrace();
          }

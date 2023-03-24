@@ -11,28 +11,29 @@ on:
     types: [published]
   workflow_dispatch:
     tags:
-      - "v*.*.*"
+      - 'v*.*.*'
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK 17
-      uses: actions/setup-java@v2
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-    - name: Build projects
-      run: |
-        export MAIN_DIR=$(pwd)
-        cd ${GITHUB_WORKSPACE}
-        chmod +x ./gradlew
-        ./gradlew shadowJar
-        cd ${MAIN_DIR}
-        cp ${GITHUB_WORKSPACE}/paper/build/libs/paper-all.jar ./yamjs-paper.jar
-    - name: Publish to GitHub Packages
-      uses: softprops/action-gh-release@v1
-      with:
-        files: |
-          ./yamjs-paper.jar
+      - uses: actions/checkout@v2
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Build projects
+        run: |
+          export MAIN_DIR=$(pwd)
+          cd ${GITHUB_WORKSPACE}
+          chmod +x ./gradlew
+          ./gradlew buildJars
+          cd ${MAIN_DIR}
+          cp ${GITHUB_WORKSPACE}/paper/build/libs/yamjs-paper.jar ./yamjs-paper.jar
+          cp ${GITHUB_WORKSPACE}/paper/build/libs/yamjs-paper-legacy.jar ./yamjs-paper-legacy.jar
+      - name: Publish to GitHub Packages
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            ./yamjs-paper.jar

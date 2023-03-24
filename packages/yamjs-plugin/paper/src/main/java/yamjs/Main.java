@@ -23,12 +23,16 @@
  */
 package yamjs;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.sql.DriverManager;
 
 import java.util.HashMap;
 
 import org.bukkit.command.CommandMap;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import org.graalvm.polyglot.Value;
@@ -40,6 +44,19 @@ public class Main extends JavaPlugin {
 
    /** The internal command map used to register commands. */
    public static CommandMap registry;
+
+   private String getPluginName() {
+      // Get the input stream for the plugin.yml file
+      InputStream inputStream = getResource("plugin.yml");
+
+      // Create an InputStreamReader using the input stream and UTF-8 encoding
+      InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+
+      // Load the YAML configuration from the reader
+      YamlConfiguration config = YamlConfiguration.loadConfiguration(reader);
+
+      return config.getString("name");
+   }
 
    @Override
    public void onLoad() {
@@ -64,7 +81,7 @@ public class Main extends JavaPlugin {
       } catch (Throwable error) {
          // none
       }
-      YamJS.init(this.getDataFolder().getPath()); // CORE - initialize
+      YamJS.init(this.getDataFolder().getPath(), this.getPluginName()); // CORE - initialize
    }
 
    @Override

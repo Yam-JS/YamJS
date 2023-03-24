@@ -26,14 +26,15 @@ jar {
 
 shadowJar {
    mergeServiceFiles()
-   baseName = 'yamjs-paper'
-   // version = project.property('yamjsVersion')
+   archiveBaseName.set('yamjs-paper')
+   archiveClassifier.set('paper')
+   archiveFileName.set('yamjs-paper.jar')
 }
 
 processResources {
    // populate version
    filesMatching('**/plugin.yml') {
-      expand project.properties
+      expand project.properties + [yamjsPluginName: 'YamJS']
    }
 }
 
@@ -45,3 +46,31 @@ repositories {
    maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
 }
 
+task processResourcesLegacy(type: Copy, dependsOn: processResources) {
+   from 'src/main/resources'
+   into "$buildDir/resources/legacy/main"
+   filesMatching('**/plugin.yml') {
+      expand project.properties + [yamjsPluginName: 'grakkit']
+   }
+}
+
+
+task buildLegacy(type: com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar) {
+   dependsOn shadowJar, processResourcesLegacy
+   configurations = shadowJar.configurations
+   mergeServiceFiles()
+   archiveBaseName.set('yamjs-legacy')
+   archiveClassifier.set('paper-legacy')
+   archiveVersion.set(project.property('yamjsVersion'))
+   archiveFileName.set('yamjs-paper-legacy.jar')
+
+   from("$buildDir/resources/legacy/main") {
+      include 'plugin.yml'
+   }
+   from(sourceSets.main.output) {
+      exclude 'plugin.yml'
+   }
+}
+
+
+task buildJars(dependsOn: [shadowJar, processResourcesLegacy, buildLegacy])

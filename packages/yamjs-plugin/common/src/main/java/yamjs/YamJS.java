@@ -58,9 +58,9 @@ public class YamJS {
    }
 
    /** Initializes the YamJS Environment. */
-   public static void init(String root) {
+   public static void init(String root, String pluginName) {
       Paths.get(root).toFile().mkdir();
-      YamJS.config = new Config(root, "config.yml");
+      YamJS.config = new Config(root, "config.yml", pluginName);
       YamJS.driver = new FileInstance(root, YamJS.config.main, "yamjs");
 
       try {

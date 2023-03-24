@@ -1,3 +1,3 @@
-name: YamJS
+name: ${yamjsPluginName}
 main: yamjs.Main
 version: '${yamjsVersion}'
