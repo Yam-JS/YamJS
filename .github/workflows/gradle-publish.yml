@@ -30,8 +30,10 @@ jobs:
           chmod +x ./gradlew
           ./gradlew buildJars
           cd ${MAIN_DIR}
-          cp ${GITHUB_WORKSPACE}/packages/yamjs-plugin/paper/build/libs/yamjs-paper.jar ./yamjs-paper.jar
-          cp ${GITHUB_WORKSPACE}/packages/yamjs-plugin/paper/build/libs/yamjs-paper-legacy.jar ./yamjs-paper-legacy.jar
+          cp ${GITHUB_WORKSPACE}/packages/yamjs-plugin/paper/build/libs/yamjs-paper.jar ./yamjs-paper-${{ env.TAG_NAME}}.jar
+          cp ${GITHUB_WORKSPACE}/packages/yamjs-plugin/paper/build/libs/yamjs-paper-legacy.jar ./yamjs-paper-legacy-${{ env.TAG_NAME}}.jar
+        env:
+          TAG_NAME: ${{ env.GITHUB_REF#refs/tags/ }}
       - name: Publish to GitHub Packages
         uses: softprops/action-gh-release@v1
         with:
