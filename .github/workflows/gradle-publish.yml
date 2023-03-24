@@ -33,7 +33,7 @@ jobs:
           cp ${GITHUB_WORKSPACE}/packages/yamjs-plugin/paper/build/libs/yamjs-paper.jar ./yamjs-paper-${{ env.TAG_NAME}}.jar
           cp ${GITHUB_WORKSPACE}/packages/yamjs-plugin/paper/build/libs/yamjs-paper-legacy.jar ./yamjs-paper-legacy-${{ env.TAG_NAME}}.jar
         env:
-          TAG_NAME: ${{ env.GITHUB_REF#refs/tags/ }}
+          TAG_NAME: ${{ github.ref_name }}
       - name: Publish to GitHub Packages
         uses: softprops/action-gh-release@v1
         with:
