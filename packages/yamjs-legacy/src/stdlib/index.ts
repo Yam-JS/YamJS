@@ -22,16 +22,8 @@ export type basic =
   | undefined
   | void
 
-/** A set of listeners attached to an event. */
-export type cascade = Set<
-  ((event: any) => void) | { script: (event: any) => void; priority: priority }
->
-
 /** A pending task. */
 export type future = { tick: number; args: any[]; script: Function }
-
-/** A valid event name. */
-export type events = keyof classes & `${string}Event`
 
 /** A Yam context instance. */
 export type instance = {
@@ -47,9 +39,6 @@ export type instance = {
   open(): void
   tick(): void
 }
-
-/** A valid event priority. */
-export type priority = 'HIGH' | 'HIGHEST' | 'LOW' | 'LOWEST' | 'MONITOR' | 'NORMAL'
 
 /** File system utilities for a specific path. */
 export type record = {
@@ -120,7 +109,6 @@ if ('Yam' in globalThis) {
 /** A session container for this module. */
 export const session = {
   data: new Map<string, any>(),
-  event: new Map<events, cascade>(),
   load: new Map<string, any>(),
   poly: { index: 0, list: new Map<number, future>() },
   task: { list: new Set<future>(), tick: 0 },
@@ -220,6 +208,7 @@ export function command(options: {
 }) {
   switch (env.name) {
     case 'bukkit': {
+      // @ts-expect-error
       env.content.plugin.register(
         options.namespace || env.content.plugin.getName(),
         options.name,
@@ -376,28 +365,12 @@ export function data(path: string, ...more: string[]) {
 /** The environment that this module is currently running in. */
 export const env = (() => {
   try {
-    const Bukkit: any = Java.type('org.bukkit.Bukkit')
-
-    /* bukkit detected */
-
-    const manager = Bukkit.getPluginManager()
-    const plugin = manager.getPlugin('YamJS')
-
-    // TODO: This seems odd. Why would this be here, versus within the plugin?
-    // I would be worried that a context being closed would cause this to be called
-    // and all events to be unregistered.
-    Yam.hook(() => {
-      Java.type('org.bukkit.event.HandlerList').unregisterAll(plugin)
-    })
-
     return {
       content: {
-        EventPriority: Java.type('org.bukkit.event.EventPriority'),
-        instance: new (Java.extend(Java.type('org.bukkit.event.Listener'), {}))(),
-        manager,
-        plugin,
+        manager: YamJS.manager,
+        plugin: YamJS.plugin,
         Runnable: Java.type('java.lang.Runnable'),
-        server: Bukkit.getServer(),
+        server: YamJS.server,
       },
       name: 'bukkit',
     }
@@ -432,102 +405,6 @@ export const env = (() => {
     }
   }
 })()
-
-/** Attaches one or more listeners to a server event. */
-export function event<X extends events>(
-  name: X,
-  ...listeners: (
-    | ((event: InstanceType<classes[X]>) => void)
-    | { script: (event: InstanceType<classes[X]>) => void; priority: priority }
-  )[]
-) {
-  switch (env.name) {
-    case 'bukkit':
-      {
-        let list: cascade
-        if (session.event.has(name)) {
-          list = session.event.get(name)
-        } else {
-          list = new Set()
-          session.event.set(name, list)
-        }
-        const targets: Set<priority> = new Set()
-        for (const listener of listeners) {
-          if (typeof listener === 'function') {
-            targets.has('HIGHEST') || targets.add('HIGHEST')
-          } else {
-            targets.has(listener.priority) || targets.add(listener.priority)
-          }
-        }
-        for (const listener of list) {
-          if (typeof listener === 'function') {
-            targets.has('HIGHEST') && targets.delete('HIGHEST')
-          } else {
-            targets.has(listener.priority) && targets.delete(listener.priority)
-          }
-        }
-        for (const target of targets) {
-          const emitter = Java.type(name)
-          env.content.manager.registerEvent(
-            // @ts-expect-error
-            emitter.class,
-            env.content.instance,
-            env.content.EventPriority.valueOf(target),
-            (x: any, signal: any) => {
-              // @ts-expect-error
-              if (signal instanceof emitter) {
-                try {
-                  for (const listener of list) {
-                    if (typeof listener === 'function') {
-                      target === 'HIGHEST' && listener(signal)
-                    } else {
-                      target === listener.priority && listener.script(signal)
-                    }
-                  }
-                } catch (error) {
-                  console.error(`An error occured while attempting to handle the "${name}" event!`)
-                  console.error(error.stack || error.message || error)
-                }
-              }
-            },
-            env.content.plugin
-          )
-        }
-        for (const listener of listeners) list.has(listener) || list.add(listener)
-      }
-      break
-    case 'minestom':
-      {
-        let list: cascade
-        if (session.event.has(name)) {
-          list = session.event.get(name)
-        } else {
-          list = new Set()
-          session.event.set(name, list)
-        }
-        if (list.size === 0) {
-          const emitter = Java.type(name)
-          // @ts-expect-error
-          env.content.node.addListener(emitter.class, (signal: any) => {
-            try {
-              for (const listener of list) {
-                if (typeof listener === 'function') {
-                  listener(signal)
-                } else {
-                  listener.script(signal)
-                }
-              }
-            } catch (error) {
-              console.error(`An error occured while attempting to handle the "${name}" event!`)
-              console.error(error.stack || error.message || error)
-            }
-          })
-        }
-        for (const listener of listeners) list.has(listener) || list.add(listener)
-      }
-      break
-  }
-}
 
 /** Sends a GET request to the given URL. */
 export function fetch(link: string) {

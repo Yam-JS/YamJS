@@ -1,5 +1,4 @@
 import { watch } from 'chokidar'
-import got, { RequestError } from 'got'
 import { paths } from './paths'
 import { setupYam } from './setupYam'
 
@@ -20,19 +19,20 @@ watcher.on('change', async () => {
     return
   }
 
-  got
-    .get('http://localhost:4000/reload-plugin')
-    .then(() => {
-      console.log('Plugin reloaded.')
-      isProcessing = false
-    })
-    .catch((err: RequestError) => {
-      if (err.code === 'ECONNREFUSED') {
-        console.log('Server is not running.')
-      } else {
-        console.log(err)
-      }
+  // THis isn't reliable
+  // got
+  //   .get('http://localhost:4000/reload-plugin')
+  //   .then(() => {
+  //     console.log('Plugin reloaded.')
+  //     isProcessing = false
+  //   })
+  //   .catch((err: RequestError) => {
+  //     if (err.code === 'ECONNREFUSED') {
+  //       console.log('Server is not running.')
+  //     } else {
+  //       console.log(err)
+  //     }
 
-      isProcessing = false
-    })
+  //     isProcessing = false
+  //   })
 })

@@ -77,6 +77,8 @@ export interface YamConfig {
    * Enables verbose logging
    */
   verbose: boolean
+
+  pluginName: string
 }
 
 export interface YamApi {

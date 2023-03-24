@@ -13,6 +13,8 @@ public class Config {
     */
    public String main = "index.js";
 
+   public String pluginName = "YamJS";
+
    /**
     * This property determines whether or not the JavaScript initialization
     * function should be called.
@@ -36,7 +38,8 @@ public class Config {
 
             ConfigurationSection object = YamlFile.loadConfiguration(info.toFile()).getRoot();
 
-            this.main = object.getString("main");
+            this.main = object.getString("main") != null ? object.getString("main") : this.main;
+            this.pluginName = object.getString("pluginName") != null ? object.getString("pluginName") : this.pluginName;
          } catch (Throwable error) {
             error.printStackTrace();
          }

@@ -1,6 +1,8 @@
+import { bukkitManager, bukkitPlugin, bukkitServer } from './bukkit'
 import { getDebugInfo } from './debug'
 import { catchAndLogUnhandledError, logError } from './errors'
 import { initialize } from './initialize'
+import { registerEvent, createEventListener } from './registerEvent'
 import { reloadHandler } from './reload'
 import { cacheSourceMap } from './sourceMap'
 
@@ -16,6 +18,11 @@ export const YamJSCore = {
   catchAndLogUnhandledError,
   cacheSourceMap,
   getDebugInfo,
+  registerEvent,
+  createEventListener,
+  manager: bukkitManager,
+  plugin: bukkitPlugin,
+  server: bukkitServer,
 
   /**
    * This is used internally by YamJS to store internal data.

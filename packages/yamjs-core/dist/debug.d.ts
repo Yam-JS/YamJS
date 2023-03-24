@@ -3,6 +3,7 @@ export declare const getDebugInfo: () => {
         coreVersion: string;
         pluginVersion: string;
         legacyVersion: string;
+        instance: any;
     };
     server: {
         players: string;

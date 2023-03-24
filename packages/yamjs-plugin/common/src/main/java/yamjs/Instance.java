@@ -121,7 +121,7 @@ public class Instance {
       try {
          this.execute();
       } catch (Throwable error) {
-         error.printStackTrace();
+         logError(error);
       }
    }
 
@@ -193,6 +193,5 @@ public class Instance {
 
    public void setLoggerFn(Consumer<JsError> loggerFn) {
       this.loggerFn.register(loggerFn);
-
    }
 }

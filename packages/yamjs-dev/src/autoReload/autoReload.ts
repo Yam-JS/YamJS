@@ -1,4 +1,3 @@
-import { Bukkit } from 'org.bukkit'
 import YamJS, { internal } from '@yam-js/core'
 import { WebServer } from './webServer'
 
@@ -38,19 +37,6 @@ export function initializeAutoReload(opts?: AutoReloadOpts) {
       WebServer.start()
       WebServer.listen(4000)
 
-      WebServer.get('/command', (req, res) => {
-        try {
-          console.log(Object.keys(req))
-          const command = req.getQuery('command')
-          Bukkit.dispatchCommand(Bukkit.getConsoleSender(), `${command}`)
-
-          res.send('done')
-        } catch (err) {
-          console.error(err)
-          res.send('error')
-        }
-      })
-
       WebServer.get('/reload', (req, res) => {
         res.send('done')
 
@@ -61,14 +47,6 @@ export function initializeAutoReload(opts?: AutoReloadOpts) {
 
       YamJS[internal].reloadHandler.register('WebServer', () => {
         WebServer.stop()
-      })
-
-      WebServer.get('/reload-plugin', (req, res) => {
-        setTimeout(() => {
-          Bukkit.dispatchCommand(Bukkit.getConsoleSender(), 'plugman reload YamJS')
-        }, 1)
-
-        res.send('done')
       })
     } catch (err) {
       console.error(err)
