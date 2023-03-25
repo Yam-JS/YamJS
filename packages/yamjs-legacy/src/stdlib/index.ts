@@ -1,6 +1,5 @@
-import YamJS from '@yam-js/core'
+import { bukkitManager, bukkitPlugin, bukkitServer, catchAndLogUnhandledError } from '@yam-js/core'
 
-type classes = any
 type jiFile = any
 type jiInputStream = any
 type ogpContext = any
@@ -216,7 +215,7 @@ export function command(options: {
         options.permission || '',
         options.message || '',
         (sender: any, label: string, args: string[]) => {
-          YamJS.catchAndLogUnhandledError(() => {
+          catchAndLogUnhandledError(() => {
             if (!options.permission || sender.hasPermission(options.permission)) {
               options.execute && options.execute(sender, ...args)
             } else {
@@ -226,7 +225,7 @@ export function command(options: {
         },
         (sender: any, alias: string, args: string[]) => {
           return (
-            YamJS.catchAndLogUnhandledError(
+            catchAndLogUnhandledError(
               () => (options.tabComplete && options.tabComplete(sender, ...args)) || [],
               `An error occured while attempting to tab-complete the "${alias}" command!`
             ) ?? []
@@ -367,10 +366,10 @@ export const env = (() => {
   try {
     return {
       content: {
-        manager: YamJS.manager,
-        plugin: YamJS.plugin,
+        manager: bukkitManager,
+        plugin: bukkitPlugin,
         Runnable: Java.type('java.lang.Runnable'),
-        server: YamJS.server,
+        server: bukkitServer,
       },
       name: 'bukkit',
     }
@@ -429,7 +428,6 @@ export function fetch(link: string) {
       }
     },
     stream() {
-      // @ts-expect-error
       return new URL(link).openStream()
     },
   }
@@ -501,8 +499,7 @@ export function file(path: string | record | jiFile, ...more: string[]) {
         return desync.request(aux, { operation: 'file.read', path: record.path }) as Promise<string>
       } else {
         return record.type === 'file'
-          ? // @ts-expect-error
-            new JavaString(Files.readAllBytes(io.toPath())).toString()
+          ? new JavaString(Files.readAllBytes(io.toPath())).toString()
           : null
       }
     },
@@ -523,7 +520,6 @@ export function file(path: string | record | jiFile, ...more: string[]) {
           .request(aux, { content, operation: 'file.write', path: record.path })
           .then(() => record)
       } else {
-        // @ts-expect-error
         record.type === 'file' && Files.write(io.toPath(), new JavaString(content).getBytes())
         return record
       }

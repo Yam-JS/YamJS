@@ -24,7 +24,7 @@ public class Config {
    /**
     * Enables verbose logging.
     */
-   public boolean verbose = true;
+   public boolean verbose = false;
 
    /**
     * Creates a new configuration from the given options.
@@ -40,7 +40,8 @@ public class Config {
 
             ConfigurationSection object = YamlFile.loadConfiguration(info.toFile()).getRoot();
 
-            this.main = object.getString("main") != null ? object.getString("main") : this.main;
+            this.main = object.getString("main", this.main);
+            this.verbose = object.getBoolean("verbose", this.verbose);
          } catch (Throwable error) {
             error.printStackTrace();
          }

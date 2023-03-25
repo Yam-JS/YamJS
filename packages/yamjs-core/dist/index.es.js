@@ -1,19 +1,19 @@
-const x = Java.type("org.bukkit.Bukkit"), p = x.getPluginManager(), y = p.getPlugin(Yam.getConfig().pluginName), C = x.getServer(), g = Java.type("java.lang.Runtime"), l = Java.type("java.lang.System"), z = (e) => Object.keys(e).reduce((t, o) => {
-  var s;
-  const a = e[o];
-  return t[o] = (s = a == null ? void 0 : a.toString) == null ? void 0 : s.call(a), t;
-}, {}), N = () => {
-  const e = Java.type("java.lang.Long"), n = Java.type("org.bukkit.Bukkit"), t = n.getPluginManager().getPlugin("YamJS").getDataFolder().getParentFile().getParentFile(), o = n.getPluginManager().getPlugins().map((s) => s.getName());
+const x = Java.type("org.bukkit.Bukkit"), S = x.getPluginManager(), p = S.getPlugin(Yam.getConfig().pluginName), ae = x.getServer(), g = Java.type("java.lang.Runtime"), l = Java.type("java.lang.System"), N = (e) => Object.keys(e).reduce((t, a) => {
+  var i;
+  const o = e[a];
+  return t[a] = (i = o == null ? void 0 : o.toString) == null ? void 0 : i.call(o), t;
+}, {}), re = () => {
+  const e = Java.type("java.lang.Long"), n = Java.type("org.bukkit.Bukkit"), s = p.getDataFolder().getParentFile().getParentFile(), t = n.getPluginManager().getPlugins().map((o) => o.getName());
   return {
     yamJS: {
       coreVersion: "0.0.1",
       pluginVersion: "0.0.1",
       legacyVersion: "0.0.1",
-      instance: z(Yam.instance)
+      instance: N(Yam.instance)
     },
     server: {
       players: `${n.getOnlinePlayers().size()} / ${n.getMaxPlayers()}`,
-      plugins: o,
+      plugins: t,
       minecraftVersion: n.getVersion(),
       bukkitVersion: n.getBukkitVersion(),
       onlineMode: n.getOnlineMode()
@@ -41,9 +41,9 @@ const x = Java.type("org.bukkit.Bukkit"), p = x.getPluginManager(), y = p.getPlu
         total: g.getRuntime().totalMemory()
       },
       storage: {
-        free: t == null ? void 0 : t.getFreeSpace(),
-        total: t == null ? void 0 : t.getTotalSpace(),
-        usable: t == null ? void 0 : t.getUsableSpace()
+        free: s == null ? void 0 : s.getFreeSpace(),
+        total: s == null ? void 0 : s.getTotalSpace(),
+        usable: s == null ? void 0 : s.getUsableSpace()
       }
     }
     // TODO: Context count
@@ -57,63 +57,63 @@ let P = {};
 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=".split("").forEach(function(e, n) {
   P[e] = n;
 });
-function R(e) {
-  let n = [], i = 0, t = 0;
-  for (let o = 0; o < e.length; o += 1) {
-    let a = P[e[o]];
-    if (a === void 0)
-      throw new Error("Invalid character (" + e[o] + ")");
-    const s = a & 32;
-    if (a &= 31, t += a << i, s)
-      i += 5;
+function Y(e) {
+  let n = [], s = 0, t = 0;
+  for (let a = 0; a < e.length; a += 1) {
+    let o = P[e[a]];
+    if (o === void 0)
+      throw new Error("Invalid character (" + e[a] + ")");
+    const i = o & 32;
+    if (o &= 31, t += o << s, i)
+      s += 5;
     else {
       const r = t & 1;
-      t >>>= 1, r ? n.push(t === 0 ? -2147483648 : -t) : n.push(t), t = i = 0;
+      t >>>= 1, r ? n.push(t === 0 ? -2147483648 : -t) : n.push(t), t = s = 0;
     }
   }
   return n;
 }
-function O(e) {
-  const i = e.mappings.split(";").map((t) => t.split(",")).map((t) => t.map((o) => R(o)));
+function C(e) {
+  const s = e.mappings.split(";").map((t) => t.split(",")).map((t) => t.map((a) => Y(a)));
   return {
     sources: e.sources,
-    mappings: i,
+    mappings: s,
     startOffset: 0
   };
 }
-function V(e) {
+function z(e) {
   const n = JSON.parse(e);
-  return O(n);
+  return C(n);
 }
-const E = /* @__PURE__ */ new Map();
-function A(e, n, i) {
-  const t = V(n);
-  return t ? (t.startOffset = i, E.set(e, t), !0) : !1;
+const $ = /* @__PURE__ */ new Map();
+function ce(e, n, s) {
+  const t = z(n);
+  return t ? (t.startOffset = s, $.set(e, t), !0) : !1;
 }
 function H({
   mappings: e,
   sources: n
-}, i) {
-  let t = 0, o = 0, a = 0;
-  for (let s = 0; s < e.length; s++)
-    if (e[s].forEach((c) => {
-      t += c[2] ?? 0, o += c[1] ?? 0;
-    }), s + 1 === i)
-      return a = t + 1, {
-        file: n[o],
-        line: a
+}, s) {
+  let t = 0, a = 0, o = 0;
+  for (let i = 0; i < e.length; i++)
+    if (e[i].forEach((c) => {
+      t += c[2] ?? 0, a += c[1] ?? 0;
+    }), i + 1 === s)
+      return o = t + 1, {
+        file: n[a],
+        line: o
       };
-  throw new Error(`source map failed for line ${i}`);
+  throw new Error(`source map failed for line ${s}`);
 }
-function B(e, n) {
-  const i = E.get(`${e}`);
-  if (i) {
-    if (n -= i.startOffset, n <= 0)
+function O(e, n) {
+  const s = $.get(`${e}`);
+  if (s) {
+    if (n -= s.startOffset, n <= 0)
       return {
         file: e,
         line: n
       };
-    const t = H(i, n);
+    const t = H(s, n);
     return t.file.startsWith("webpack://test/") && (t.file = t.file.replace("webpack://test/", "")), t.file.startsWith("../") && (t.file = t.file.replace("../", "./")), t;
   } else
     return {
@@ -121,218 +121,203 @@ function B(e, n) {
       line: n
     };
 }
-const v = Java.type("org.bukkit.Bukkit"), U = Java.type("net.kyori.adventure.text.minimessage.MiniMessage"), M = "      ", _ = ["yamjs.Interop.catchError", "com.oracle.truffle.polyglot.PolyglotFunctionProxyHandler.invoke", "jdk.proxy1.$Proxy75.run"], D = ["webpack/runtime/make"], W = ["catchAndLogUnhandledErrors"], G = (e) => {
+const v = Java.type("org.bukkit.Bukkit"), V = Java.type("net.kyori.adventure.text.minimessage.MiniMessage"), b = "      ", _ = ["yamjs.Interop.catchError", "com.oracle.truffle.polyglot.PolyglotFunctionProxyHandler.invoke", "jdk.proxy1.$Proxy75.run"], A = ["webpack/runtime/make"], B = ["catchAndLogUnhandledErrors"], D = (e) => {
   const n = [];
   n.push(e.name);
-  for (let i = 0; i < e.stack.length; i++) {
-    const t = e.stack[i];
+  for (let s = 0; s < e.stack.length; s++) {
+    const t = e.stack[s];
     if (t.javaFrame) {
       if (_.includes(`${t.source}.${t.methodName}`))
         continue;
-      n.push(`${M}at ${t.source}.${t.methodName}(${t.fileName}:${t.line})`);
+      n.push(`${b}at ${t.source}.${t.methodName}(${t.fileName}:${t.line})`);
       continue;
     }
-    const o = B(t.source, t.line);
-    if (D.some((s) => o.file.includes(s)) || W.includes(t.methodName) || o.line === 0)
+    const a = O(t.source, t.line);
+    if (A.some((i) => a.file.includes(i)) || B.includes(t.methodName) || a.line === 0)
       continue;
-    let a = t.methodName || "<anonymous>";
-    t.methodName === ":=>" && (a = "<anonymous>"), n.push(`${M}at ${a} (${o.file}:${o.line}) [${t.source}:${t.line}]`);
+    let o = t.methodName || "<anonymous>";
+    t.methodName === ":=>" && (o = "<anonymous>"), n.push(`${b}at ${o} (${a.file}:${a.line}) [${t.source}:${t.line}]`);
   }
   return n.join(`
 `);
-}, f = (e, n) => {
-  var t, o, a;
-  let i;
+}, y = (e, n) => {
+  var t, a, o;
+  let s;
   try {
-    const s = ((a = (o = (t = e == null ? void 0 : e.getClass) == null ? void 0 : t.call(e)) == null ? void 0 : o.getName) == null ? void 0 : a.call(o)) ?? void 0;
-    s != null && s.includes("yamjs.JsError") ? i = e : i = __interop.catchError(() => {
+    const i = ((o = (a = (t = e == null ? void 0 : e.getClass) == null ? void 0 : t.call(e)) == null ? void 0 : a.getName) == null ? void 0 : o.call(a)) ?? void 0;
+    i != null && i.includes("yamjs.JsError") ? s = e : s = __interop.catchError(() => {
       throw e;
     });
-    const r = G(i);
-    n && v.getConsoleSender().sendMessage(n), v.getConsoleSender().sendMessage(U.miniMessage().deserialize(`<red>${r}</red>`));
-  } catch (s) {
-    console.log("ERROR: There was an error logging an error. Please report to YamJS. ", s.name), console.log(s.message, s.stack), console.log("Original error: ", e == null ? void 0 : e.name), console.log(e == null ? void 0 : e.message, e == null ? void 0 : e.stack);
+    const r = D(s);
+    n && v.getConsoleSender().sendMessage(n), v.getConsoleSender().sendMessage(V.miniMessage().deserialize(`<red>${r}</red>`));
+  } catch (i) {
+    console.log("ERROR: There was an error logging an error. Please report to YamJS. ", i.name), console.log(i.message, i.stack), console.log("Original error: ", e == null ? void 0 : e.name), console.log(e == null ? void 0 : e.message, e == null ? void 0 : e.stack);
   }
-}, $ = (e, n) => {
+}, R = (e, n) => {
   try {
     return e();
-  } catch (i) {
-    f(i, n);
+  } catch (s) {
+    y(s, n);
   }
-}, X = (e, n) => (...i) => {
+}, U = (e, n) => (...s) => {
   try {
-    return e(...i);
+    return e(...s);
   } catch (t) {
-    f(t, n);
+    y(t, n);
   }
-}, q = Java.type("org.bukkit.event.EventPriority"), K = Java.type("org.bukkit.event.Listener"), I = () => new (Java.extend(K, {}))(), J = I(), Q = (e, n, i = "HIGHEST", t = J) => {
-  const o = {
-    priority: "priority" in n ? n.priority : i,
+}, W = Java.type("org.bukkit.event.EventPriority"), G = Java.type("org.bukkit.event.Listener"), X = () => new (Java.extend(G, {}))(), I = X(), le = (e, n, s = "HIGHEST", t = I) => {
+  const a = {
+    priority: "priority" in n ? n.priority : s,
     script: "script" in n ? n.script : n
-  }, a = e.class.toString();
-  p.registerEvent(
+  }, o = e.class.toString();
+  S.registerEvent(
     // @ts-expect-error [java-ts-bind missing class prototype]
     e.class,
     t,
-    q.valueOf(o.priority),
+    W.valueOf(a.priority),
     // @ts-expect-error [EventExecutor]
-    (s, r) => {
-      r instanceof e && $(() => {
-        o.script(r);
-      }, `An error occured while attempting to handle the "${a}" event!`);
+    (i, r) => {
+      r instanceof e && R(() => {
+        a.script(r);
+      }, `An error occured while attempting to handle the "${o}" event!`);
     },
-    y
+    p
   );
-}, Z = () => {
-  const e = {};
-  let n = !1, i = 0;
-  const t = async () => {
-    Yam.reload();
-  }, o = async () => {
-    var s;
-    const a = {
-      ...e
-    };
-    for (const r in a) {
-      console.log(`Closing ${e[r].name}`);
-      const c = e[r];
-      try {
-        await ((s = c.fn) == null ? void 0 : s.call(c));
-      } catch (u) {
-        console.error(u);
-      }
-      delete e[r];
-    }
-  };
-  return {
-    isReloading: () => n,
-    reload: async () => {
-      if (console.log("Reloading"), n) {
-        console.log("Force reloading"), t();
-        return;
-      }
-      n = !0, await o(), t();
-    },
-    register: (a, s) => {
-      const r = i++;
-      return e[r] = {
-        name: a,
-        fn: s
-      }, {
-        unregister: () => delete e[r]
-      };
-    },
-    initialize: () => {
-      Yam.instance.setOnCloseFn(async () => {
-        await o();
-      });
-    }
-  };
-}, m = Z();
-let k;
-const ee = (...e) => {
-  k === void 0 && (k = Yam.getConfig().verbose), k && console.log(...e);
-}, j = Symbol("TickContext"), te = () => {
-  const e = d[j];
+};
+let d;
+const k = (...e) => {
+  d === void 0 && (d = Yam.getConfig().verbose), d && console.log(...e);
+}, L = Symbol("TickContext"), q = () => {
+  const e = m[L];
   if (e.isActive) {
     for (const n of e.tickFns)
       n(e.tick);
-    e.tick % 20 === 0 && ee("Tick", e.tick), e.tick += 1;
+    e.tick % 20 === 0 && k("Tick", e.tick), e.tick += 1;
   }
-}, ne = () => {
+}, K = () => {
   const e = {
     tick: 0,
     task: void 0,
     isActive: !1,
     tickFns: []
   }, n = () => {
-    e.isActive = !0, Yam.instance.setTickFn(te);
-  }, i = async () => {
+    e.isActive = !0, Yam.instance.setTickFn(q);
+  }, s = async () => {
     e.isActive = !1;
   };
   return {
-    [j]: e,
+    [L]: e,
     start: n,
-    stop: i,
+    stop: s,
     getTick: () => e.tick,
     registerTickFn: (t) => {
       e.tickFns.push(t);
     }
   };
-}, d = ne(), se = (e) => e, ie = (e) => e, oe = () => {
+}, m = K(), Q = (e) => e, Z = (e) => e, ee = () => {
   const e = {
     nextId: 0
-  }, n = /* @__PURE__ */ new Map(), i = (s) => {
-    n.delete(s);
-  }, t = (s, r, c) => {
-    const u = ie((c == null ? void 0 : c.nextId) ?? e.nextId++), Y = se(d.getTick() + Math.max(r, 1));
+  }, n = /* @__PURE__ */ new Map(), s = (i) => {
+    n.delete(i);
+  }, t = (i, r, c) => {
+    const u = Z((c == null ? void 0 : c.nextId) ?? e.nextId++), J = Q(m.getTick() + Math.max(r, 1));
     return n.set(u, {
       baseTick: r,
-      tick: Y,
-      fn: s,
+      tick: J,
+      fn: i,
       reset: (c == null ? void 0 : c.reset) || !1,
       id: u
     }), u;
-  }, o = (s) => {
-    n.delete(s.id), s.fn(), s.reset && t(s.fn, s.baseTick, {
-      reset: s.reset,
-      nextId: s.id
+  }, a = (i) => {
+    n.delete(i.id), i.fn(), i.reset && t(i.fn, i.baseTick, {
+      reset: i.reset,
+      nextId: i.id
     });
-  }, a = (s) => {
+  }, o = (i) => {
     for (const [, r] of n)
-      s >= r.tick && o(r);
+      i >= r.tick && a(r);
   };
   return {
     add: t,
-    run: a,
-    remove: i,
+    run: o,
+    remove: s,
     initialize: () => {
-      d.registerTickFn((s) => a(s));
+      m.registerTickFn((i) => o(i));
     }
   };
-}, h = oe(), F = (e, n, i) => {
+}, h = ee(), F = (e, n, s) => {
   const t = n / 50;
-  return h.add(X(e, "Unhandled timer"), t, i);
-}, w = (e, n) => F(e, n), ae = (e, n) => F(e, n, {
+  return h.add(U(e, "Unhandled timer"), t, s);
+}, j = (e, n) => F(e, n), te = (e, n) => F(e, n, {
   reset: !0
-}), re = (e) => w(e, 0), b = (e) => h.remove(e), ce = () => {
-  globalThis.setTimeout = w, globalThis.setInterval = ae, globalThis.setImmediate = re, globalThis.clearTimeout = b, globalThis.clearInterval = b;
-}, S = Java.type("org.bukkit.event.HandlerList");
+}), ne = (e) => j(e, 0), M = (e) => h.remove(e), se = () => {
+  globalThis.setTimeout = j, globalThis.setInterval = te, globalThis.setImmediate = ne, globalThis.clearTimeout = M, globalThis.clearInterval = M;
+}, w = Symbol("lifecycle"), ie = () => {
+  const e = /* @__PURE__ */ new Map();
+  let n = 0;
+  const s = async (t) => {
+    const a = e.get(t);
+    for (let o = 1; o <= 5; o++) {
+      const i = [...a.values()].filter((r) => r.priority === o);
+      for (const {
+        hook: r,
+        name: c
+      } of i) {
+        c && console.log(`${t === "onEnable" ? "Enabling" : "Disabling"} ${c}`);
+        try {
+          await (r == null ? void 0 : r());
+        } catch (u) {
+          console.error(u);
+        }
+      }
+    }
+    e.delete(t);
+  };
+  return Yam.instance.setOnCloseFn(async () => {
+    await s("onDisable");
+  }), {
+    [w]: {
+      executeHooks: s
+    },
+    reload: async () => {
+      k("Reloading YamJS"), await s("onDisable"), Yam.reload(), k("Finished reloading YamJS");
+    },
+    register: (t, a) => {
+      const o = n++, i = e.get(t) ?? /* @__PURE__ */ new Map();
+      return i.set(o, {
+        priority: 3,
+        ...a
+      }), e.set(t, i), () => delete i[o];
+    }
+  };
+}, f = ie(), E = Java.type("org.bukkit.event.HandlerList");
 let T = !1;
-const L = () => {
-  T || (d.start(), h.initialize(), ce(), m.initialize(), Yam.instance.setLoggerFn((e) => f(e)), Yam.getMeta() === "yamjs" ? m.register("Event Listeners", () => {
-    S.unregisterAll(y);
-  }) : m.register("Context Event Listeners", () => {
-    S.unregisterAll(J);
-  }), T = !0);
+const oe = () => {
+  T || (m.start(), h.initialize(), se(), Yam.instance.setLoggerFn((e) => y(e)), Yam.getMeta() === "yamjs" ? f.register("onDisable", {
+    name: "Event Listeners",
+    hook: () => {
+      E.unregisterAll(p);
+    },
+    priority: 5
+  }) : f.register("onDisable", {
+    name: "Context Event Listeners",
+    hook: () => {
+      E.unregisterAll(I);
+    },
+    priority: 5
+  }), f[w].executeHooks("onEnable"), T = !0);
 };
-Yam.getConfig().initialize && L();
-const le = Symbol("internal"), ue = {
-  initialize: L,
-  reload: m.reload,
-  logError: f,
-  catchAndLogUnhandledError: $,
-  cacheSourceMap: A,
-  getDebugInfo: N,
-  registerEvent: Q,
-  createEventListener: I,
-  manager: p,
-  plugin: y,
-  server: C,
-  /**
-   * This is used internally by YamJS to store internal data.
-   * This is not recommended for use by plugins.
-   *
-   * Use at your own risk.
-   *
-   * @internal
-   */
-  [le]: {
-    reloadHandler: m
-  }
-};
+Yam.getConfig().initialize && oe();
 export {
-  ue as default,
-  L as initialize,
-  le as internal
+  S as bukkitManager,
+  p as bukkitPlugin,
+  ae as bukkitServer,
+  ce as cacheSourceMap,
+  R as catchAndLogUnhandledError,
+  X as createEventListener,
+  re as getDebugInfo,
+  oe as initialize,
+  f as lifecycle,
+  y as logError,
+  le as registerEvent
 };

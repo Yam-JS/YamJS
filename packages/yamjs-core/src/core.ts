@@ -19,7 +19,7 @@ export const YamJSCore = {
   cacheSourceMap,
   getDebugInfo,
   registerEvent,
-  createEventListener,
+  registerEventListener: createEventListener,
   manager: bukkitManager,
   plugin: bukkitPlugin,
   server: bukkitServer,

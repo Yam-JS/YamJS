@@ -4,7 +4,8 @@
   "main": "index.d.ts",
   "license": "MIT",
   "scripts": {
-    "postinstall": "ts-node ./src/index.ts"
+    "postinstall": "ts-node ./src/index.ts",
+    "yamjs": "yarn --cwd ../../"
   },
   "dependencies": {
     "fast-glob": "^3.2.12",

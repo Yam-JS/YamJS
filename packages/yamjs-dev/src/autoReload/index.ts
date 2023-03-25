@@ -1,1 +1,1 @@
-export { initializeAutoReload } from './autoReload'
+export { initializeWebServer } from './autoReload'

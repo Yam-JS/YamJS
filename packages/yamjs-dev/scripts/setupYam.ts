@@ -27,8 +27,8 @@ function runGradle() {
 }
 
 function copyPluginJar() {
-  const src = path.join(paths.yamPlugin.path, 'paper', 'build', 'libs', 'yamjs-paper-all.jar')
-  const dest = path.join(paths.server.plugins.path, 'yamjs-paper-all.jar')
+  const src = path.join(paths.yamPlugin.path, 'paper', 'build', 'libs', 'yamjs-paper.jar')
+  const dest = path.join(paths.server.plugins.path, 'yamjs-paper.jar')
 
   if (!fs.existsSync(paths.server.plugins.path)) {
     fs.mkdirSync(paths.server.plugins.path, {
