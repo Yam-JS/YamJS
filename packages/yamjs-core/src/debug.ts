@@ -1,4 +1,5 @@
 import { Runtime, System } from 'java.lang'
+import { bukkitPlugin } from './bukkit'
 
 const scan = (javaObject: any) => {
   const keys = Object.keys(javaObject)
@@ -17,8 +18,7 @@ const scan = (javaObject: any) => {
 export const getDebugInfo = () => {
   const Long = Java.type('java.lang.Long') as any
   const Bukkit = Java.type('org.bukkit.Bukkit')
-  const YamJS = Bukkit.getPluginManager().getPlugin('YamJS')
-  const serverRoot = YamJS.getDataFolder().getParentFile().getParentFile()
+  const serverRoot = bukkitPlugin.getDataFolder().getParentFile().getParentFile()
   const plugins = Bukkit.getPluginManager()
     .getPlugins()
     .map((plugin) => plugin.getName())
