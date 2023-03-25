@@ -1,15 +1,15 @@
-const x = Java.type("org.bukkit.Bukkit"), p = x.getPluginManager(), y = p.getPlugin(Yam.getConfig().pluginName), C = x.getServer(), g = Java.type("java.lang.Runtime"), l = Java.type("java.lang.System"), z = (e) => Object.keys(e).reduce((t, o) => {
+const E = Java.type("org.bukkit.Bukkit"), T = E.getPluginManager(), x = T.getPlugin(Yam.getConfig().pluginName), ae = E.getServer(), g = Java.type("java.lang.Runtime"), l = Java.type("java.lang.System"), j = (e) => Object.keys(e).reduce((t, o) => {
   var s;
   const a = e[o];
   return t[o] = (s = a == null ? void 0 : a.toString) == null ? void 0 : s.call(a), t;
-}, {}), N = () => {
+}, {}), re = () => {
   const e = Java.type("java.lang.Long"), n = Java.type("org.bukkit.Bukkit"), t = n.getPluginManager().getPlugin("YamJS").getDataFolder().getParentFile().getParentFile(), o = n.getPluginManager().getPlugins().map((s) => s.getName());
   return {
     yamJS: {
       coreVersion: "0.0.1",
       pluginVersion: "0.0.1",
       legacyVersion: "0.0.1",
-      instance: z(Yam.instance)
+      instance: j(Yam.instance)
     },
     server: {
       players: `${n.getOnlinePlayers().size()} / ${n.getMaxPlayers()}`,
@@ -57,7 +57,7 @@ let P = {};
 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=".split("").forEach(function(e, n) {
   P[e] = n;
 });
-function R(e) {
+function F(e) {
   let n = [], i = 0, t = 0;
   for (let o = 0; o < e.length; o += 1) {
     let a = P[e[o]];
@@ -73,24 +73,24 @@ function R(e) {
   }
   return n;
 }
-function O(e) {
-  const i = e.mappings.split(";").map((t) => t.split(",")).map((t) => t.map((o) => R(o)));
+function Y(e) {
+  const i = e.mappings.split(";").map((t) => t.split(",")).map((t) => t.map((o) => F(o)));
   return {
     sources: e.sources,
     mappings: i,
     startOffset: 0
   };
 }
-function V(e) {
+function N(e) {
   const n = JSON.parse(e);
-  return O(n);
+  return Y(n);
 }
-const E = /* @__PURE__ */ new Map();
-function A(e, n, i) {
-  const t = V(n);
-  return t ? (t.startOffset = i, E.set(e, t), !0) : !1;
+const S = /* @__PURE__ */ new Map();
+function ce(e, n, i) {
+  const t = N(n);
+  return t ? (t.startOffset = i, S.set(e, t), !0) : !1;
 }
-function H({
+function C({
   mappings: e,
   sources: n
 }, i) {
@@ -105,15 +105,15 @@ function H({
       };
   throw new Error(`source map failed for line ${i}`);
 }
-function B(e, n) {
-  const i = E.get(`${e}`);
+function z(e, n) {
+  const i = S.get(`${e}`);
   if (i) {
     if (n -= i.startOffset, n <= 0)
       return {
         file: e,
         line: n
       };
-    const t = H(i, n);
+    const t = C(i, n);
     return t.file.startsWith("webpack://test/") && (t.file = t.file.replace("webpack://test/", "")), t.file.startsWith("../") && (t.file = t.file.replace("../", "./")), t;
   } else
     return {
@@ -121,22 +121,22 @@ function B(e, n) {
       line: n
     };
 }
-const v = Java.type("org.bukkit.Bukkit"), U = Java.type("net.kyori.adventure.text.minimessage.MiniMessage"), M = "      ", _ = ["yamjs.Interop.catchError", "com.oracle.truffle.polyglot.PolyglotFunctionProxyHandler.invoke", "jdk.proxy1.$Proxy75.run"], D = ["webpack/runtime/make"], W = ["catchAndLogUnhandledErrors"], G = (e) => {
+const p = Java.type("org.bukkit.Bukkit"), O = Java.type("net.kyori.adventure.text.minimessage.MiniMessage"), y = "      ", V = ["yamjs.Interop.catchError", "com.oracle.truffle.polyglot.PolyglotFunctionProxyHandler.invoke", "jdk.proxy1.$Proxy75.run"], _ = ["webpack/runtime/make"], A = ["catchAndLogUnhandledErrors"], H = (e) => {
   const n = [];
   n.push(e.name);
   for (let i = 0; i < e.stack.length; i++) {
     const t = e.stack[i];
     if (t.javaFrame) {
-      if (_.includes(`${t.source}.${t.methodName}`))
+      if (V.includes(`${t.source}.${t.methodName}`))
         continue;
-      n.push(`${M}at ${t.source}.${t.methodName}(${t.fileName}:${t.line})`);
+      n.push(`${y}at ${t.source}.${t.methodName}(${t.fileName}:${t.line})`);
       continue;
     }
-    const o = B(t.source, t.line);
-    if (D.some((s) => o.file.includes(s)) || W.includes(t.methodName) || o.line === 0)
+    const o = z(t.source, t.line);
+    if (_.some((s) => o.file.includes(s)) || A.includes(t.methodName) || o.line === 0)
       continue;
     let a = t.methodName || "<anonymous>";
-    t.methodName === ":=>" && (a = "<anonymous>"), n.push(`${M}at ${a} (${o.file}:${o.line}) [${t.source}:${t.line}]`);
+    t.methodName === ":=>" && (a = "<anonymous>"), n.push(`${y}at ${a} (${o.file}:${o.line}) [${t.source}:${t.line}]`);
   }
   return n.join(`
 `);
@@ -148,110 +148,65 @@ const v = Java.type("org.bukkit.Bukkit"), U = Java.type("net.kyori.adventure.tex
     s != null && s.includes("yamjs.JsError") ? i = e : i = __interop.catchError(() => {
       throw e;
     });
-    const r = G(i);
-    n && v.getConsoleSender().sendMessage(n), v.getConsoleSender().sendMessage(U.miniMessage().deserialize(`<red>${r}</red>`));
+    const r = H(i);
+    n && p.getConsoleSender().sendMessage(n), p.getConsoleSender().sendMessage(O.miniMessage().deserialize(`<red>${r}</red>`));
   } catch (s) {
     console.log("ERROR: There was an error logging an error. Please report to YamJS. ", s.name), console.log(s.message, s.stack), console.log("Original error: ", e == null ? void 0 : e.name), console.log(e == null ? void 0 : e.message, e == null ? void 0 : e.stack);
   }
-}, $ = (e, n) => {
+}, B = (e, n) => {
   try {
     return e();
   } catch (i) {
     f(i, n);
   }
-}, X = (e, n) => (...i) => {
+}, U = (e, n) => (...i) => {
   try {
     return e(...i);
   } catch (t) {
     f(t, n);
   }
-}, q = Java.type("org.bukkit.event.EventPriority"), K = Java.type("org.bukkit.event.Listener"), I = () => new (Java.extend(K, {}))(), J = I(), Q = (e, n, i = "HIGHEST", t = J) => {
+}, D = Java.type("org.bukkit.event.EventPriority"), R = Java.type("org.bukkit.event.Listener"), W = () => new (Java.extend(R, {}))(), I = W(), le = (e, n, i = "HIGHEST", t = I) => {
   const o = {
     priority: "priority" in n ? n.priority : i,
     script: "script" in n ? n.script : n
   }, a = e.class.toString();
-  p.registerEvent(
+  T.registerEvent(
     // @ts-expect-error [java-ts-bind missing class prototype]
     e.class,
     t,
-    q.valueOf(o.priority),
+    D.valueOf(o.priority),
     // @ts-expect-error [EventExecutor]
     (s, r) => {
-      r instanceof e && $(() => {
+      r instanceof e && B(() => {
         o.script(r);
       }, `An error occured while attempting to handle the "${a}" event!`);
     },
-    y
+    x
   );
-}, Z = () => {
-  const e = {};
-  let n = !1, i = 0;
-  const t = async () => {
-    Yam.reload();
-  }, o = async () => {
-    var s;
-    const a = {
-      ...e
-    };
-    for (const r in a) {
-      console.log(`Closing ${e[r].name}`);
-      const c = e[r];
-      try {
-        await ((s = c.fn) == null ? void 0 : s.call(c));
-      } catch (u) {
-        console.error(u);
-      }
-      delete e[r];
-    }
-  };
-  return {
-    isReloading: () => n,
-    reload: async () => {
-      if (console.log("Reloading"), n) {
-        console.log("Force reloading"), t();
-        return;
-      }
-      n = !0, await o(), t();
-    },
-    register: (a, s) => {
-      const r = i++;
-      return e[r] = {
-        name: a,
-        fn: s
-      }, {
-        unregister: () => delete e[r]
-      };
-    },
-    initialize: () => {
-      Yam.instance.setOnCloseFn(async () => {
-        await o();
-      });
-    }
-  };
-}, m = Z();
-let k;
-const ee = (...e) => {
-  k === void 0 && (k = Yam.getConfig().verbose), k && console.log(...e);
-}, j = Symbol("TickContext"), te = () => {
-  const e = d[j];
+};
+let d;
+const G = (...e) => {
+  d === void 0 && (d = Yam.getConfig().verbose), d && console.log(...e);
+}, $ = Symbol("TickContext"), X = () => {
+  const e = m[$];
   if (e.isActive) {
     for (const n of e.tickFns)
       n(e.tick);
-    e.tick % 20 === 0 && ee("Tick", e.tick), e.tick += 1;
+    e.tick % 20 === 0 && G("Tick", e.tick), e.tick += 1;
   }
-}, ne = () => {
+}, q = () => {
   const e = {
     tick: 0,
     task: void 0,
     isActive: !1,
     tickFns: []
   }, n = () => {
-    e.isActive = !0, Yam.instance.setTickFn(te);
+    e.isActive = !0, Yam.instance.setTickFn(X);
   }, i = async () => {
     e.isActive = !1;
   };
   return {
-    [j]: e,
+    [$]: e,
     start: n,
     stop: i,
     getTick: () => e.tick,
@@ -259,16 +214,16 @@ const ee = (...e) => {
       e.tickFns.push(t);
     }
   };
-}, d = ne(), se = (e) => e, ie = (e) => e, oe = () => {
+}, m = q(), K = (e) => e, Q = (e) => e, Z = () => {
   const e = {
     nextId: 0
   }, n = /* @__PURE__ */ new Map(), i = (s) => {
     n.delete(s);
   }, t = (s, r, c) => {
-    const u = ie((c == null ? void 0 : c.nextId) ?? e.nextId++), Y = se(d.getTick() + Math.max(r, 1));
+    const u = Q((c == null ? void 0 : c.nextId) ?? e.nextId++), J = K(m.getTick() + Math.max(r, 1));
     return n.set(u, {
       baseTick: r,
-      tick: Y,
+      tick: J,
       fn: s,
       reset: (c == null ? void 0 : c.reset) || !1,
       id: u
@@ -287,52 +242,81 @@ const ee = (...e) => {
     run: a,
     remove: i,
     initialize: () => {
-      d.registerTickFn((s) => a(s));
+      m.registerTickFn((s) => a(s));
     }
   };
-}, h = oe(), F = (e, n, i) => {
+}, k = Z(), L = (e, n, i) => {
   const t = n / 50;
-  return h.add(X(e, "Unhandled timer"), t, i);
-}, w = (e, n) => F(e, n), ae = (e, n) => F(e, n, {
+  return k.add(U(e, "Unhandled timer"), t, i);
+}, w = (e, n) => L(e, n), ee = (e, n) => L(e, n, {
   reset: !0
-}), re = (e) => w(e, 0), b = (e) => h.remove(e), ce = () => {
-  globalThis.setTimeout = w, globalThis.setInterval = ae, globalThis.setImmediate = re, globalThis.clearTimeout = b, globalThis.clearInterval = b;
-}, S = Java.type("org.bukkit.event.HandlerList");
-let T = !1;
-const L = () => {
-  T || (d.start(), h.initialize(), ce(), m.initialize(), Yam.instance.setLoggerFn((e) => f(e)), Yam.getMeta() === "yamjs" ? m.register("Event Listeners", () => {
-    S.unregisterAll(y);
-  }) : m.register("Context Event Listeners", () => {
-    S.unregisterAll(J);
-  }), T = !0);
+}), te = (e) => w(e, 0), h = (e) => k.remove(e), ne = () => {
+  globalThis.setTimeout = w, globalThis.setInterval = ee, globalThis.setImmediate = te, globalThis.clearTimeout = h, globalThis.clearInterval = h;
+}, se = Symbol("lifecycle"), ie = () => {
+  const e = /* @__PURE__ */ new Map();
+  let n = 0;
+  const i = async (t) => {
+    const o = new Map({
+      ...e.get(t)
+    });
+    for (let a = 1; a <= 5; a++) {
+      const s = [...o.values()].filter((r) => r.priority === a);
+      for (const {
+        hook: r,
+        name: c
+      } of s) {
+        c && console.log(`Executing ${c}`);
+        try {
+          await (r == null ? void 0 : r());
+        } catch (u) {
+          console.error(u);
+        }
+      }
+    }
+    e.delete(t);
+  };
+  return Yam.instance.setOnCloseFn(async () => {
+    await i("onDisable");
+  }), {
+    [se]: {
+      executeHooks: i
+    },
+    reload: async () => {
+      await i("onDisable"), Yam.reload();
+    },
+    register: (t, o) => {
+      const a = n++, s = e.get(t) ?? /* @__PURE__ */ new Map();
+      return s.set(a, o), e.set(t, s), () => delete s[a];
+    }
+  };
+}, v = ie(), M = Java.type("org.bukkit.event.HandlerList");
+let b = !1;
+const oe = () => {
+  b || (m.start(), k.initialize(), ne(), Yam.instance.setLoggerFn((e) => f(e)), Yam.getMeta() === "yamjs" ? v.register("onDisable", {
+    name: "Event Listeners",
+    hook: () => {
+      M.unregisterAll(x);
+    },
+    priority: 5
+  }) : v.register("onDisable", {
+    name: "Context Event Listeners",
+    hook: () => {
+      M.unregisterAll(I);
+    },
+    priority: 5
+  }), b = !0);
 };
-Yam.getConfig().initialize && L();
-const le = Symbol("internal"), ue = {
-  initialize: L,
-  reload: m.reload,
-  logError: f,
-  catchAndLogUnhandledError: $,
-  cacheSourceMap: A,
-  getDebugInfo: N,
-  registerEvent: Q,
-  createEventListener: I,
-  manager: p,
-  plugin: y,
-  server: C,
-  /**
-   * This is used internally by YamJS to store internal data.
-   * This is not recommended for use by plugins.
-   *
-   * Use at your own risk.
-   *
-   * @internal
-   */
-  [le]: {
-    reloadHandler: m
-  }
-};
+Yam.getConfig().initialize && oe();
 export {
-  ue as default,
-  L as initialize,
-  le as internal
+  T as bukkitManager,
+  x as bukkitPlugin,
+  ae as bukkitServer,
+  ce as cacheSourceMap,
+  B as catchAndLogUnhandledError,
+  W as createEventListener,
+  re as getDebugInfo,
+  oe as initialize,
+  v as lifecycle,
+  f as logError,
+  le as registerEvent
 };

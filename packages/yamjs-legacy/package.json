@@ -1,7 +1,7 @@
 {
   "name": "@yam-js/legacy",
   "version": "0.0.1",
-  "main": "index.js",
+  "main": "dist/index",
   "license": "MIT",
   "scripts": {
     "build": "vite build"
@@ -13,7 +13,7 @@
     "type-fest": "^3.6.1",
     "typescript": "^5.0.2"
   },
-  "dependencies": {
+  "peerDependencies": {
     "@yam-js/core": "^0.0.1",
     "@yam-js/graal-type-introspection": "0.0.2"
   }

@@ -1280,13 +1280,6 @@
   resolved "https://registry.yarnpkg.com/@graal-types/java-16/-/java-16-1.0.0.tgz#2929d6a775251b837a81702a6eb673fd98425826"
   integrity sha512-Gs6Ke+3qh0nfEmD+RKjHBsQORccDmbqNawgkGB1VhESFRa3RpkWnEDs7Tgc9N40ntFdxf0zyBjRx7JY8BZ9yMA==
 
-"@graal-types/paper-1.18@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@graal-types/paper-1.18/-/paper-1.18-1.0.0.tgz#0fc199654a4a2e7865ff35d49cd3e6dc71d540b2"
-  integrity sha512-TwsjWT0wXvOLIsZzgdK7rSkfNjYW3HtM2o/11+WGiuwNTsxzQJenRgXA7hWUyuIUb4K7g/0mqbz7aDf8v/pJ0g==
-  dependencies:
-    "@graal-types/java-16" "^1.0.0"
-
 "@graal-types/paper-1.19@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@graal-types/paper-1.19/-/paper-1.19-1.0.1.tgz#56b8ca5acc8fc1306105dd601672cbf7cdd26b43"

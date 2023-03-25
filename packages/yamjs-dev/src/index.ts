@@ -32,3 +32,5 @@ command({
 YamJS.registerEvent(EntityDeathEvent, (event) => {
   console.log('Entity died', event.getEntity().getUniqueId().toString())
 })
+
+Java.type('org.bukkit.Bukkit').getOnlinePlayers()

@@ -1,11 +1,11 @@
 import { logError } from './errors'
 import { MainInstanceListener } from './registerEvent'
-import { reloadHandler } from './reload'
 import { tickerTasks } from './tasks'
 import { ticker } from './ticker'
 import { initializeTimers } from './timers'
 import { HandlerList } from 'org.bukkit.event'
 import { bukkitPlugin } from './bukkit'
+import { lifecycle } from './lifecycle'
 
 let isInitialized = false
 
@@ -15,20 +15,27 @@ export const initialize = () => {
   ticker.start()
   tickerTasks.initialize()
   initializeTimers()
-  reloadHandler.initialize()
 
   Yam.instance.setLoggerFn((error) => logError(error))
 
   // TODO: Validate
   if (Yam.getMeta() === 'yamjs') {
     // Driver instance should unregister all listeners
-    reloadHandler.register('Event Listeners', () => {
-      HandlerList.unregisterAll(bukkitPlugin)
+    lifecycle.register('onDisable', {
+      name: 'Event Listeners',
+      hook: () => {
+        HandlerList.unregisterAll(bukkitPlugin)
+      },
+      priority: 5,
     })
   } else {
     // Context instance should unregister only its own listeners
-    reloadHandler.register('Context Event Listeners', () => {
-      HandlerList.unregisterAll(MainInstanceListener)
+    lifecycle.register('onDisable', {
+      name: 'Context Event Listeners',
+      hook: () => {
+        HandlerList.unregisterAll(MainInstanceListener)
+      },
+      priority: 5,
     })
   }
 
