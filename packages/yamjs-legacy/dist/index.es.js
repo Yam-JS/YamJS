@@ -1,12 +1,12 @@
-import S from "@yam-js/core";
-const l = globalThis.Yam, U = l;
+import { bukkitManager as U, bukkitPlugin as R, bukkitServer as z, catchAndLogUnhandledError as C } from "@yam-js/core";
+const l = globalThis.Yam, D = l;
 if ("Yam" in globalThis)
   Object.assign(globalThis, {
     Core: l
   });
 else if ("Core" in globalThis)
   Object.assign(globalThis, {
-    Yam: U
+    Yam: D
   });
 else
   throw "Polyglot" in globalThis ? "YamJS was not detected (or is very outdated) in your environment!" : "Java" in globalThis ? "GraalJS was not detected in your environment!" : "Java was not detected in your environment!";
@@ -21,7 +21,7 @@ const f = {
     list: /* @__PURE__ */ new Set(),
     tick: 0
   }
-}, A = Java.type("java.nio.file.Files"), N = Java.type("java.lang.String"), M = Java.type("java.nio.file.Paths"), R = Java.type("java.util.regex.Pattern"), Y = Java.type("java.util.Scanner"), z = Java.type("java.net.URL"), D = Java.type("java.util.UUID"), O = {
+}, N = Java.type("java.nio.file.Files"), A = Java.type("java.lang.String"), M = Java.type("java.nio.file.Paths"), W = Java.type("java.util.regex.Pattern"), Y = Java.type("java.util.Scanner"), _ = Java.type("java.net.URL"), q = Java.type("java.util.UUID"), b = {
   /** Provides the result to a desync request within an auxilliary file. If this method is called while not within a desync-compatible context, it will fail. */
   async provide(e) {
     try {
@@ -47,7 +47,7 @@ const f = {
   /** Sends a desync request to another file. If said file has a valid desync provider, that provider will be triggered and a response will be sent back when ready. */
   async request(e, n = {}) {
     if (p(e).exists) {
-      const r = D.randomUUID().toString(), a = h.on(r);
+      const r = q.randomUUID().toString(), a = h.on(r);
       h.create("file", p(e).io.getAbsolutePath(), JSON.stringify({
         data: n,
         uuid: r
@@ -87,7 +87,7 @@ const f = {
     }
   }
 };
-function b(e, n) {
+function k(e, n) {
   const t = (r) => {
     try {
       return n(r, t);
@@ -101,10 +101,10 @@ function F(e) {
   switch (c.name) {
     case "bukkit": {
       c.content.plugin.register(e.namespace || c.content.plugin.getName(), e.name, e.aliases || [], e.permission || "", e.message || "", (n, t, r) => {
-        S.catchAndLogUnhandledError(() => {
+        C(() => {
           !e.permission || n.hasPermission(e.permission) ? e.execute && e.execute(n, ...r) : n.sendMessage(e.message || "");
         }, `An error occured while attempting to execute the "${t}" command!`);
-      }, (n, t, r) => S.catchAndLogUnhandledError(() => e.tabComplete && e.tabComplete(n, ...r) || [], `An error occured while attempting to tab-complete the "${t}" command!`) ?? []);
+      }, (n, t, r) => C(() => e.tabComplete && e.tabComplete(n, ...r) || [], `An error occured while attempting to tab-complete the "${t}" command!`) ?? []);
       break;
     }
     case "minestom": {
@@ -122,14 +122,14 @@ function F(e) {
     }
   }
 }
-const T = {
+const J = {
   /** Cancels a previously scheduled task. */
   cancel(e) {
     f.task.list.delete(e);
   },
   /** Schedules a task to run infinitely at a set interval. */
   interval(e, n = 0, ...t) {
-    const r = T.timeout((...a) => {
+    const r = J.timeout((...a) => {
       try {
         r.tick += Math.ceil(n < 1 ? 1 : n), e(...a);
       } catch (s) {
@@ -176,7 +176,7 @@ const T = {
     h.on(e, r);
   }),
   swap() {
-    $(l.swap);
+    T(l.swap);
   }
 };
 function L(e, ...n) {
@@ -184,7 +184,7 @@ function L(e, ...n) {
   if (f.data.has(t))
     return f.data.get(t);
   {
-    const r = p(P, "data", `${t}.json`).json() || {};
+    const r = p($, "data", `${t}.json`).json() || {};
     return f.data.set(t, r), r;
   }
 }
@@ -192,10 +192,10 @@ const c = (() => {
   try {
     return {
       content: {
-        manager: S.manager,
-        plugin: S.plugin,
+        manager: U,
+        plugin: R,
         Runnable: Java.type("java.lang.Runnable"),
-        server: S.server
+        server: z
       },
       name: "bukkit"
     };
@@ -223,7 +223,7 @@ const c = (() => {
     }
   }
 })();
-function W(e) {
+function j(e) {
   const n = {
     json(t) {
       if (t)
@@ -236,13 +236,13 @@ function W(e) {
     },
     // @ts-expect-error
     read(t) {
-      return t ? O.request(x, {
+      return t ? b.request(x, {
         link: e,
         operation: "fetch.read"
       }) : new Y(n.stream()).useDelimiter("\\A").next();
     },
     stream() {
-      return new z(e).openStream();
+      return new _(e).openStream();
     }
   };
   return n;
@@ -254,7 +254,7 @@ function p(e, ...n) {
       return r.type === "folder" ? [...t.listFiles()].map((a) => p(a.getPath())) : null;
     },
     directory() {
-      return r.type === "none" && b(t, (a, s) => {
+      return r.type === "none" && k(t, (a, s) => {
         const i = a.getParentFile();
         i && (i.exists() || s(i)), a.mkdir();
       }), r;
@@ -269,7 +269,7 @@ function p(e, ...n) {
       return p(t, ...a);
     },
     flush() {
-      return b(t, (a, s) => {
+      return k(t, (a, s) => {
         const i = a.getParentFile();
         i && i.isDirectory() && (i.listFiles()[0] || i.delete() && s(i));
       }), r;
@@ -294,16 +294,13 @@ function p(e, ...n) {
       return y.replace(t.getPath(), "(\\\\)", "/");
     },
     read(a) {
-      return a ? O.request(x, {
+      return a ? b.request(x, {
         operation: "file.read",
         path: r.path
-      }) : r.type === "file" ? (
-        // @ts-expect-error
-        new N(A.readAllBytes(t.toPath())).toString()
-      ) : null;
+      }) : r.type === "file" ? new A(N.readAllBytes(t.toPath())).toString() : null;
     },
     remove() {
-      return b(t, (a, s) => {
+      return k(t, (a, s) => {
         a.isDirectory() && [...a.listFiles()].forEach(s), a.exists() && a.delete();
       }), r.flush();
     },
@@ -312,16 +309,16 @@ function p(e, ...n) {
     },
     //@ts-expect-error
     write(a, s) {
-      return s ? O.request(x, {
+      return s ? b.request(x, {
         content: a,
         operation: "file.write",
         path: r.path
-      }).then(() => r) : (r.type === "file" && A.write(t.toPath(), new N(a).getBytes()), r);
+      }).then(() => r) : (r.type === "file" && N.write(t.toPath(), new A(a).getBytes()), r);
     }
   };
   return r;
 }
-function _(e, n) {
+function H(e, n) {
   if (f.load.has(n))
     return f.load.get(n);
   {
@@ -333,7 +330,7 @@ function _(e, n) {
       throw new ReferenceError(`The file "${t.path}" does not exist!`);
   }
 }
-function $(e) {
+function T(e) {
   l.push(e);
 }
 const y = {
@@ -341,14 +338,14 @@ const y = {
     return e.matches(n);
   },
   replace(e, n, t) {
-    return R.compile(n).matcher(e).replaceAll(t);
+    return W.compile(n).matcher(e).replaceAll(t);
   }
 };
-function q() {
-  $(l.reload || l.swap);
+function B() {
+  T(l.reload || l.swap);
 }
-const P = p(l.getRoot());
-function C(e, n, t) {
+const $ = p(l.getRoot());
+function P(e, n, t) {
   if (e && typeof e == "object") {
     if (t || (t = /* @__PURE__ */ new Set()), t.has(e))
       return n;
@@ -356,22 +353,22 @@ function C(e, n, t) {
       t.add(e);
       const r = typeof e[Symbol.iterator] == "function" ? [] : {};
       for (const a in e)
-        r[a] = C(e[a], n, new Set(t));
+        r[a] = P(e[a], n, new Set(t));
       return r;
     }
   } else
     return e;
 }
-function j(e) {
+function Z(e) {
   return new Promise((n, t) => {
     l.sync(() => e().then(n).catch(t));
   });
 }
 l.hook(() => {
   for (const [e] of f.data)
-    p(P, "data", `${e}.json`).entry().write(JSON.stringify(C(f.data.get(e))));
+    p($, "data", `${e}.json`).entry().write(JSON.stringify(P(f.data.get(e))));
 });
-const x = `${__dirname}/async.js`, E = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=", H = Promise.resolve();
+const x = `${__dirname}/async.js`, E = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=", G = Promise.resolve();
 Object.assign(globalThis, {
   atob(e) {
     var n = y.replace(String(e), "[=]+$", "");
@@ -390,42 +387,42 @@ Object.assign(globalThis, {
     return i;
   },
   queueMicrotask(e) {
-    H.then(e).catch((n) => {
-      T.timeout(() => {
+    G.then(e).catch((n) => {
+      J.timeout(() => {
         throw n;
       });
     });
   }
 });
-const B = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const K = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  chain: b,
+  chain: k,
   command: F,
   context: h,
   data: L,
-  desync: O,
+  desync: b,
   env: c,
-  fetch: W,
+  fetch: j,
   file: p,
-  load: _,
-  push: $,
+  load: H,
+  push: T,
   regex: y,
-  reload: q,
-  root: P,
+  reload: B,
+  root: $,
   session: f,
-  simplify: C,
-  sync: j,
-  task: T
-}, Symbol.toStringTag, { value: "Module" })), J = Java.type("java.lang.Class"), Z = Java.type("java.lang.Iterable"), G = Java.type("java.util.Iterator"), K = Java.type("java.util.Spliterator");
-function Q(e) {
+  simplify: P,
+  sync: Z,
+  task: J
+}, Symbol.toStringTag, { value: "Module" })), O = Java.type("java.lang.Class"), Q = Java.type("java.lang.Iterable"), V = Java.type("java.util.Iterator"), X = Java.type("java.util.Spliterator");
+function ee(e) {
   if (e instanceof Array)
     return [...e];
-  if (e instanceof Z) {
+  if (e instanceof Q) {
     const n = [];
     return e.forEach((t) => {
       n.push(t);
     }), n;
-  } else if (e instanceof G || e instanceof K) {
+  } else if (e instanceof V || e instanceof X) {
     const n = [];
     return e.forEachRemaining((t) => {
       n.push(t);
@@ -433,7 +430,7 @@ function Q(e) {
   } else
     return null;
 }
-const k = Symbol(), d = {
+const S = Symbol(), d = {
   /** Reformats complex error messages into layman-friendly ones. */
   error(e) {
     let n = "Error", t = `${e}`;
@@ -464,7 +461,7 @@ const k = Symbol(), d = {
   /** A pretty-printer for JavaScript objects. */
   output(e, n) {
     if (n === !0) {
-      if (e === k)
+      if (e === S)
         return "...";
       {
         const t = toString.call(e);
@@ -474,7 +471,7 @@ const k = Symbol(), d = {
           case "[object Function]":
             return t.split(" ")[1].slice(0, -1);
           case "[foreign HostObject]":
-            if (e instanceof J && typeof e.getCanonicalName == "function")
+            if (e instanceof O && typeof e.getCanonicalName == "function")
               return e.getCanonicalName();
             if (typeof e.toString == "function") {
               const a = e.toString();
@@ -482,7 +479,7 @@ const k = Symbol(), d = {
                 return a;
             }
             const r = typeof e.getClass == "function" ? e.getClass() : e.class;
-            return r instanceof J && typeof r.getCanonicalName == "function" ? r.getCanonicalName() : `${e}` || `${r}` || "Object";
+            return r instanceof O && typeof r.getCanonicalName == "function" ? r.getCanonicalName() : `${e}` || `${r}` || "Object";
           case "[foreign HostFunction]":
             return "Function";
           default:
@@ -505,15 +502,15 @@ const k = Symbol(), d = {
     } else
       switch (toString.call(e)) {
         case "[object Array]":
-          return `[ ${[...e].map((r) => d.output(e === r ? k : r, !0)).join(", ")} ]`;
+          return `[ ${[...e].map((r) => d.output(e === r ? S : r, !0)).join(", ")} ]`;
         case "[object Object]":
-          return `{ ${[...Object.getOwnPropertyNames(e).map((r) => `${r}: ${d.output(e === e[r] ? k : e[r], !0)}`), ...Object.getOwnPropertySymbols(e).map((r) => `${d.output(r, !0)}: ${d.output(e === e[r] ? k : e[r], !0)}`)].join(", ")} }`;
+          return `{ ${[...Object.getOwnPropertyNames(e).map((r) => `${r}: ${d.output(e === e[r] ? S : e[r], !0)}`), ...Object.getOwnPropertySymbols(e).map((r) => `${d.output(r, !0)}: ${d.output(e === e[r] ? S : e[r], !0)}`)].join(", ")} }`;
         case "[object Function]":
-          return e instanceof J && typeof e.getCanonicalName == "function" ? e.getCanonicalName() : typeof e.toString == "function" ? y.replace(e.toString(), "\\r", "") : `${e}` || "function () { [native code] }";
+          return e instanceof O && typeof e.getCanonicalName == "function" ? e.getCanonicalName() : typeof e.toString == "function" ? y.replace(e.toString(), "\\r", "") : `${e}` || "function () { [native code] }";
         case "[foreign HostFunction]":
           return "hostFunction () { [native code] }";
         default:
-          const t = Q(e);
+          const t = ee(e);
           return t ? d.output(t) : d.output(e, !0);
       }
   }
@@ -613,28 +610,28 @@ const I = {
   manager: c.content.manager,
   plugin: c.content.plugin,
   server: c.content.server
-}, V = Object.assign({}, B, I);
+}, te = Object.assign({}, K, I);
 Object.assign(globalThis, I, {
-  core: V
+  core: te
 });
 export {
-  b as chain,
+  k as chain,
   F as command,
   h as context,
   L as data,
-  V as default,
-  O as desync,
+  te as default,
+  b as desync,
   c as env,
-  W as fetch,
+  j as fetch,
   p as file,
-  _ as load,
-  $ as push,
+  H as load,
+  T as push,
   y as regex,
-  q as reload,
-  P as root,
+  B as reload,
+  $ as root,
   f as session,
-  C as simplify,
-  V as stdlib,
-  j as sync,
-  T as task
+  P as simplify,
+  te as stdlib,
+  Z as sync,
+  J as task
 };

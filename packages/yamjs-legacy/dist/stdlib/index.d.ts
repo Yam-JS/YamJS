@@ -1,4 +1,3 @@
-/// <reference types="@graal-types/paper-1.18/org_bukkit" />
 /// <reference types="@graal-types/paper-1.19/org_bukkit" />
 /// <reference types="@graal-types/java-16/java_lang" />
 type jiFile = any;
