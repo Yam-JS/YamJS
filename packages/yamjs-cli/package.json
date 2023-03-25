@@ -1,0 +1,17 @@
+{
+  "name": "yamjs-cli",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "tsx ./src/index"
+  },
+  "dependencies": {
+    "got": "^12.6.0",
+    "openai": "^3.2.1",
+    "tsx": "^3.12.6"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.2"
+  }
+}

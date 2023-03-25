@@ -3,6 +3,7 @@ import { command, file } from '@yam-js/legacy/src'
 import { EntityDeathEvent } from 'org.bukkit.event.entity'
 import { fetch } from './fetch'
 import { initializeWebServer } from './autoReload'
+import { server } from './webserver'
 
 initializeWebServer()
 
@@ -19,6 +20,8 @@ command({
     throw new Error('Oh no')
   },
 })
+
+console.log(server)
 
 // fetch('https://www.google.com/')
 //   .then((response) => {
