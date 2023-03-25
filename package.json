@@ -5,6 +5,14 @@
   "main": "index.js",
   "author": "Kyle <kyle.mercer.89@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "yamjs": "yarn",
+    "core": "yarn workspace @yam-js/core",
+    "dev": "yarn workspace @yam-js/dev",
+    "legacy": "yarn workspace @yam-js/legacy",
+    "plugin": "yarn workspace @yam-js/plugin",
+    "graaltype": "yarn --cwd ./packages/graal-type-introspection"
+  },
   "devDependencies": {
     "got": "^11.8.6",
     "tsx": "^3.12.5",

@@ -4,7 +4,8 @@
   "main": "dist/index",
   "license": "MIT",
   "scripts": {
-    "build": "vite build"
+    "build": "vite build",
+    "yamjs": "yarn --cwd ../../"
   },
   "devDependencies": {
     "@graal-types/adventure-text-minimessage": "^4.11.0",
