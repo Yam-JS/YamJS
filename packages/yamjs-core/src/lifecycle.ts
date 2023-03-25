@@ -1,3 +1,5 @@
+import { logVerbose } from './util'
+
 type Hook = {
   name?: string
   hook: HookCallback
@@ -15,6 +17,7 @@ export type HookCallback = () => void
 
 type HookId = string
 type HookUnref = () => void
+// TODO: 'onEnable' doesn't work
 type LifecycleTypes = 'onDisable' | 'onEnable'
 
 export const __INTERNAL_LIFECYCLE = Symbol('lifecycle')
@@ -25,13 +28,12 @@ const createLifecycleHandler = () => {
   let isReloading = false
 
   const executeHooks = async (type: LifecycleTypes) => {
-    const snapshot = new Map({ ...hooks.get(type) })
+    const group = hooks.get(type)
 
     for (let i = 1; i <= 5; i++) {
-      const priorityHooks = [...snapshot.values()].filter((hook) => hook.priority === i)
-
+      const priorityHooks = [...group.values()].filter((hook) => hook.priority === i)
       for (const { hook, name } of priorityHooks) {
-        name && console.log(`Executing ${name}`)
+        name && console.log(`${type === 'onEnable' ? 'Enabling' : 'Disabling'} ${name}`)
 
         try {
           await hook?.()
@@ -54,11 +56,14 @@ const createLifecycleHandler = () => {
     },
 
     reload: async () => {
+      logVerbose('Reloading YamJS')
       isReloading = true
 
       await executeHooks('onDisable')
+
       Yam.reload()
 
+      logVerbose('Finished reloading YamJS')
       isReloading = false
     },
 
@@ -66,7 +71,7 @@ const createLifecycleHandler = () => {
       const id = nextId++
 
       const callbacks = hooks.get(name) ?? new Map()
-      callbacks.set(id, hook)
+      callbacks.set(id, { priority: 3, ...hook })
       hooks.set(name, callbacks)
 
       return () => delete callbacks[id]

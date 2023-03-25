@@ -5,7 +5,7 @@ import { ticker } from './ticker'
 import { initializeTimers } from './timers'
 import { HandlerList } from 'org.bukkit.event'
 import { bukkitPlugin } from './bukkit'
-import { lifecycle } from './lifecycle'
+import { lifecycle, __INTERNAL_LIFECYCLE } from './lifecycle'
 
 let isInitialized = false
 
@@ -38,6 +38,9 @@ export const initialize = () => {
       priority: 5,
     })
   }
+
+  // TODO: 'onEnable' doesn't work
+  lifecycle[__INTERNAL_LIFECYCLE].executeHooks('onEnable')
 
   isInitialized = true
 }
