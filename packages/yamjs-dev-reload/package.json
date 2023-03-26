@@ -1,0 +1,19 @@
+{
+  "name": "@yam-js/dev-reload",
+  "version": "0.0.1",
+  "main": "./dist/yamjs",
+  "license": "MIT",
+  "scripts": {
+    "build": "vite build",
+    "yamjs": "yarn --cwd ../../"
+  },
+  "devDependencies": {
+    "chokidar": "^3.5.3",
+    "tsx": "^3.12.6",
+    "vite": "^4.2.1"
+  },
+  "bin": {
+    "yamjs-dev-webpack": "./bin/webpack.js",
+    "yamjs-dev-watcher": "./bin/watcher.js"
+  }
+}

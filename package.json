@@ -7,6 +7,7 @@
   "license": "MIT",
   "scripts": {
     "yamjs": "yarn",
+    "build": "yarn workspace @yam-js/build",
     "core": "yarn workspace @yam-js/core",
     "dev": "yarn workspace @yam-js/dev",
     "legacy": "yarn workspace @yam-js/legacy",
@@ -19,8 +20,10 @@
     "typescript": "^4.9.5"
   },
   "workspaces": [
+    "packages/build",
     "packages/yamjs-core",
     "packages/yamjs-dev",
+    "packages/yamjs-dev-reload",
     "packages/yamjs-legacy"
   ]
 }

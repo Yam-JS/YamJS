@@ -11,13 +11,15 @@
     "setup:plugman": "yarn tsnode ./scripts/setupPlugman",
     "start": "yarn setup:yam & concurrently -c \"auto\" \"yarn:start:*\"",
     "start:yam": "yarn tsnode ./scripts/startYam",
-    "start:js": "yarn tsnode ./scripts/start",
+    "start:js": "yarn yamjs-webpack",
     "start:server": "cd server & java -Xms2G -Xmx2G -jar -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 server.jar -nogui",
-    "yamjs": "yarn --cwd ../../"
+    "yamjs": "yarn --cwd ../../",
+    "test": "yarn yamjs-dev-watcher src"
   },
   "dependencies": {
     "@yam-js/core": "0.0.1",
     "@yam-js/legacy": "0.0.1",
+    "@yam-js/dev-reload": "0.0.1",
     "vlq": "^2.0.4"
   },
   "devDependencies": {

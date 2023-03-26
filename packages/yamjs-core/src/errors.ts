@@ -91,6 +91,17 @@ export const catchAndLogUnhandledError = <R>(fn: () => R, msg: string): R | unde
   }
 }
 
+export const asyncCatchAndLogUnhandledError = async <R>(
+  fn: () => Promise<R>,
+  msg: string
+): Promise<R> | undefined => {
+  try {
+    return await fn()
+  } catch (error) {
+    logError(error, msg)
+  }
+}
+
 export const createCatchAndLogUnhandledErrorHandler =
   <P extends any[], R>(fn: (...arg: P) => R, msg: string) =>
   (...args: P): R | undefined => {
