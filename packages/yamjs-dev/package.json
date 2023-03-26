@@ -9,12 +9,12 @@
     "setup:yam": "yarn tsnode ./scripts/setupYam",
     "setup:paper": "yarn tsnode ./scripts/setupPaper",
     "setup:plugman": "yarn tsnode ./scripts/setupPlugman",
-    "start": "yarn setup:yam & concurrently -c \"auto\" \"yarn:start:*\"",
+    "setup:sync": "yarn tsnode ./scripts/start",
+    "start": "yarn setup:yam & yarn setup:sync & concurrently -c \"auto\" \"yarn:start:*\"",
     "start:yam": "yarn tsnode ./scripts/startYam",
     "start:js": "yarn yamjs-webpack",
     "start:server": "cd server & java -Xms2G -Xmx2G -jar -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 server.jar -nogui",
-    "yamjs": "yarn --cwd ../../",
-    "test": "yarn yamjs-dev-watcher src"
+    "yamjs": "yarn --cwd ../../"
   },
   "dependencies": {
     "@yam-js/core": "0.0.1",

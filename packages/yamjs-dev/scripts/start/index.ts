@@ -1,1 +1,4 @@
-import './start'
+import { copyDepPlugins, copyDeps } from './sync'
+
+copyDeps()
+copyDepPlugins()
