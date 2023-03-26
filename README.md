@@ -19,8 +19,9 @@ YamJS is currently in alpha, so please note that there may be changes to the API
 
 - Improved Developer Experience
 
+  - Significantly improved Type Definition support.
   - Better Error Handling.
   - Source Map Support.
-  - Improved Type Definition support.
+  - Dev Autoreload support.
 
 - TBD
