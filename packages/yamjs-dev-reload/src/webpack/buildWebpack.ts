@@ -1,19 +1,21 @@
 import webpack from 'webpack'
-import got from 'got'
+import http from 'http'
 import path from 'path'
-import { paths } from '../paths'
 import { clearWebpackConsole } from './util'
 import { formatWebpackMessages } from './formatWebpackMessages'
+import { reload } from '../util/reload'
 
-const createConfig = require(path.join(paths.root, 'webpack.config.js'))
 const isInteractive = process.stdout.isTTY
 
-export async function startWebpack() {
+export async function startWebpack(root: string) {
+  const createConfig = require(path.join(root, 'webpack.config.js'))
   const config = createConfig({ dev: true })
 
   let compiler: webpack.Compiler
   try {
-    compiler = webpack(config)
+    compiler = webpack(config, (error, stats) => {
+      return
+    })
   } catch (err) {
     console.log(err)
 
@@ -46,35 +48,10 @@ export async function startWebpack() {
 
     console.log(messages.errors.length ? 'Failed to compile.' : 'Compiled successfully.')
 
-    // Ignore the first call
-    if (!context.hasInitialized) {
-      context.hasInitialized = true
-      return
-    }
-
-    if (!context.isReloading && messages.errors.length === 0) handleReload()
+    reload()
   })
 
   return compiler.watch({}, (stats) => {
     stats ?? console.log(stats)
   })
-}
-
-const context = {
-  hasInitialized: false,
-  isReloading: false,
-}
-
-async function handleReload() {
-  try {
-    context.isReloading = true
-    await got.get('http://localhost:4000/reload', { timeout: 1000, retry: 1 })
-    console.log('Reload successful')
-    context.isReloading = false
-
-    return
-  } catch (err) {
-    console.log('Failed to connect...')
-    return setTimeout(handleReload, 1000)
-  }
 }

@@ -2,12 +2,6 @@ import { lifecycle } from '@yam-js/core'
 
 const HttpServer = Java.type('com.sun.net.httpserver.HttpServer')
 const InetSocketAddress = Java.type('java.net.InetSocketAddress')
-const HttpHandler = Java.type('com.sun.net.httpserver.HttpHandler')
-const InputStream = Java.type('java.io.InputStream')
-const InputStreamReader = Java.type('java.io.InputStreamReader')
-const BufferedReader = Java.type('java.io.BufferedReader')
-const OutputStream = Java.type('java.io.OutputStream')
-const IOException = Java.type('java.io.IOException')
 
 class ApiHandler {
   constructor() {
@@ -18,11 +12,12 @@ class ApiHandler {
   handle(exchange) {
     const requestMethod = exchange.getRequestMethod()
     if (requestMethod === 'GET') {
-      const response = 'Hello, World!' // use a JavaScript string
+      const response = 'Done' // use a JavaScript string
       exchange.sendResponseHeaders(200, response.length)
       const os = exchange.getResponseBody()
       os.write(response.split('').map((c) => c.charCodeAt(0))) // convert string to byte array
       os.close()
+      lifecycle.reload()
     } else {
       exchange.sendResponseHeaders(405, -1) // 405 Method Not Allowed
     }
@@ -30,11 +25,18 @@ class ApiHandler {
 }
 
 export const server = HttpServer.create(new InetSocketAddress(8000), 0)
-server.createContext('/api', new ApiHandler())
+server.createContext('/reload', new ApiHandler())
 server.start()
 
 lifecycle.register('onDisable', {
-  hook: () => server.stop(0),
+  hook: () =>
+    new Promise<void>((resolve) => {
+      server.stop(0)
+
+      setTimeout(() => {
+        resolve()
+      }, 10)
+    }),
   name: 'custom api',
 })
 

@@ -1,3 +1,4 @@
+import { asyncCatchAndLogUnhandledError, catchAndLogUnhandledError } from './errors'
 import { logVerbose } from './util'
 
 type Hook = {
@@ -35,11 +36,10 @@ const createLifecycleHandler = () => {
       for (const { hook, name } of priorityHooks) {
         name && console.log(`${type === 'onEnable' ? 'Enabling' : 'Disabling'} ${name}`)
 
-        try {
-          await hook?.()
-        } catch (err) {
-          console.error(err)
-        }
+        await asyncCatchAndLogUnhandledError(
+          async () => await hook?.(),
+          `Error while executing ${type} hook`
+        )
       }
     }
 

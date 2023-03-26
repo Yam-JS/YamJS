@@ -1,13 +1,21 @@
 import { cacheSourceMap, registerEvent } from '@yam-js/core'
 import { command, file } from '@yam-js/legacy/src'
 import { EntityDeathEvent } from 'org.bukkit.event.entity'
-import { fetch } from './fetch'
-import { initializeWebServer } from './autoReload'
-import { server } from './webserver'
+import { initializeDevReload } from '@yam-js/dev-reload'
+// import { server } from './webserver'
+// import { initializeWebServer } from '@yam-js/dev-reload/src/yamjs'
 
-initializeWebServer()
+// import { fetch } from './fetch'
+// import { initializeWebServer } from './autoReload'
+// import { server } from './webserver'
+
+// initializeWebServer()
+
+initializeDevReload()
+// initializeWebServer()
 
 console.log('Hello World!')
+// initializeWebServer()
 
 const sourceMap = file('./plugins/yamjs/index.js.map')
 const contents = sourceMap.read()
@@ -21,7 +29,7 @@ command({
   },
 })
 
-console.log(server)
+// console.log(server)
 
 // fetch('https://www.google.com/')
 //   .then((response) => {
