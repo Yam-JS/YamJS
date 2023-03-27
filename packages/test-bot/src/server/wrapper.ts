@@ -1,15 +1,12 @@
 import { spawn } from 'child_process'
 import { proxy } from 'valtio'
-import { testCache } from '../cache/cache.js'
-import { isMain } from '../util/esm.js'
-import {
-  AppEvents,
-  createEventStateListener,
-  waitUntilEventPayload,
-} from '../util/events/events.js'
-import { promiseObjectRace } from '../util/misc.js'
-import { downloadPaper, downloadYamJs } from './download.js'
-import { createServerProperties } from './serverProperties.js'
+import { testCache } from '../cache/cache'
+import { appConfig } from '../config'
+import { AppEvents, createEventStateListener, waitUntilEventPayload } from '../util/events/events'
+import { promiseObjectRace } from '../util/misc'
+import { waitUntilState } from '../util/proxy'
+import { downloadPaper, downloadYamJs } from './download'
+import { createServerProperties } from './serverProperties'
 
 const ServerProcessClosed = 'ServerProcessClosed'
 
@@ -36,7 +33,10 @@ const setup = () => {
     // Server.properties
     testCache.setFile({
       name: 'server.properties',
-      getContents: () => createServerProperties(),
+      getContents: () =>
+        createServerProperties({
+          'query.port': appConfig.port,
+        }),
       folder: 'server',
     }),
 
@@ -55,9 +55,9 @@ const startServerProcess = () => {
     stdio: 'pipe',
     detached: false,
   })
-  process.stdin.setDefaultEncoding('utf-8')
-  process.stdout.setEncoding('utf-8')
-  process.stderr.setEncoding('utf-8')
+  process.stdin.setDefaultEncoding('utf8')
+  process.stdout.setEncoding('utf8')
+  process.stderr.setEncoding('utf8')
 
   let buffer = ''
 
@@ -72,10 +72,12 @@ const startServerProcess = () => {
   }
 
   process.stdout.on('data', onData)
-  process.stderr.on('data', onData)
-  process.on('close', () => {
-    AppEvents.emit('server/log', ServerProcessClosed)
+  process.stderr.on('data', (err) => {
+    console.log(err)
   })
+  // process.on('close', () => {
+  //   AppEvents.emit('server/log', ServerProcessClosed)
+  // })
 
   return process
 }
@@ -83,7 +85,7 @@ const startServerProcess = () => {
 const createServer = () => {
   const internal = {
     logs: createEventStateListener('server/log'),
-    process: undefined as undefined | ReturnType<typeof startServerProcess>,
+    mcServer: undefined as undefined | ReturnType<typeof startServerProcess>,
     ...baseOptions,
   }
 
@@ -92,9 +94,11 @@ const createServer = () => {
   })
 
   const start = async (outputLogs: boolean = false) => {
+    if (state.isReady) return
+
     await setup()
 
-    internal.process = startServerProcess()
+    internal.mcServer = startServerProcess()
 
     if (outputLogs) {
       AppEvents.on('server/log', (msg) => {
@@ -116,27 +120,39 @@ const createServer = () => {
   }
 
   const write = (msg: string) => {
-    process?.stdin.write(msg)
-
-    return waitUntilEventPayload('server/log', (payload) => payload.includes(msg))
-  }
-
-  const stop = () => {
-    if (!internal.process) {
+    if (!internal.mcServer) {
       return
     }
 
-    write('stop\n')
+    internal.mcServer?.stdin.write(msg + '\r')
+    internal.mcServer?.stdin.write(`say CommandExecuted: '${msg}'\r`)
+
+    return waitUntilEventPayload(
+      'server/log',
+      (payload) => payload.match(/CommandExecuted: '(.*)'/)?.[1] === msg
+    )
+  }
+
+  const stop = () => {
+    if (!internal.mcServer) {
+      return
+    }
+
+    write('stop')
     const timeoutHandle = setTimeout(() => {
       console.warn('Server shutdown took too long. Killing process.')
-      internal.process?.kill()
+      internal.mcServer?.kill()
+      state.isReady = false
+      internal.mcServer = undefined
     }, 10000)
 
-    internal.process.on('close', () => {
-      internal.process = undefined
+    internal.mcServer.on('close', () => {
+      internal.mcServer = undefined
       state.isReady = false
       clearTimeout(timeoutHandle)
     })
+
+    return waitUntilState(state, (state) => !state.isReady)
   }
 
   return {
@@ -150,8 +166,20 @@ const createServer = () => {
 export type Server = ReturnType<typeof createServer>
 export const server = createServer()
 
-// if ran directly
-// if (require.main === module) {
-if (isMain(import.meta.url)) {
+if (require.main === module) {
   server.start(true)
+
+  new Promise<void>(async (resolve) => {
+    await waitUntilState(server.state, (state) => state.isReady)
+    console.log('Server is ready.')
+
+    await server.write('help')
+    console.log('Help done.')
+
+    await server.stop()
+    console.log('Server stopped.')
+    resolve()
+
+    process.exit(0)
+  })
 }

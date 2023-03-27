@@ -1,22 +1,23 @@
 import mineflayer, { Bot, BotOptions } from 'mineflayer'
-
-import { appConfig } from '../config'
 import { makeActivateItem, makeDigAtBlock, makePlaceAtBlock } from './actions'
 import { AppEvents, waitUntilEventPayload } from '../util/events/events'
 import { proxy } from 'valtio'
+import { appConfig } from '../config'
+import { waitUntilState } from '../util/proxy'
+import { Server } from '../server/wrapper'
 
 const defaultOptions: BotOptions = {
   host: 'localhost',
-  port: 25566,
-  skipValidation: false,
-  auth: 'microsoft',
+  port: appConfig.port,
+  skipValidation: true,
+  auth: 'offline',
   username: appConfig.user,
-  password: appConfig.password,
 }
 
 export type TestBot = ReturnType<typeof createTestBot>
 
-export const createTestBot = (id: string) => {
+export const createTestBot = (options: { server: Server; id: string }) => {
+  const { server, id } = options
   const internal = {
     bot: undefined as undefined | Bot,
     mcData: undefined as undefined | any,
@@ -26,6 +27,8 @@ export const createTestBot = (id: string) => {
   })
 
   const start = () => {
+    if (server.state.isReady && state.isReady) return
+
     const bot = mineflayer.createBot(defaultOptions)
     internal.bot = bot
 
@@ -51,7 +54,13 @@ export const createTestBot = (id: string) => {
       AppEvents.emit('bot/not-ready', id)
     })
 
-    bot.on('error', (err) => console.log(err))
+    bot.on('error', (err) => {
+      if (err.message.includes('ECONNREFUSED')) {
+        return
+      }
+
+      console.log(err)
+    })
 
     return waitUntilEventPayload('bot/ready', (payload) => payload === id)
   }
@@ -79,6 +88,3 @@ export const createTestBot = (id: string) => {
     placeAtBlock: makeFn(makePlaceAtBlock),
   }
 }
-
-let bot = createTestBot('main')
-bot.activateItem()

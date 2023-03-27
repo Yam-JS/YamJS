@@ -1,13 +1,21 @@
 import React, { useState, useEffect, Fragment, FC, useRef } from 'react'
 import { render, Text, Newline, Static, Box, Spacer, measureElement } from 'ink'
-import { testEngine } from './factory/testEngine.js'
-import type { TestItem } from './factory/types.js'
+import { testEngine } from './factory/testEngine'
+import type { TestItem } from './factory/types'
 import { useSnapshot } from 'valtio/react'
+import { AppEvents } from './util/events/events'
 
 const App = () => {
   const [counter, setCounter] = useState(0)
   const server = useSnapshot(testEngine.context.server.state)
   const bot = useSnapshot(testEngine.context.bot.state)
+  const [lastServerLog, setLastServerLog] = useState('')
+
+  useEffect(() => {
+    return AppEvents.on('server/log', (payload) => {
+      setLastServerLog(payload)
+    })
+  }, [])
 
   // TODO: Change over to Valtio
   useEffect(() => {
@@ -22,8 +30,9 @@ const App = () => {
 
   return (
     <Box flexDirection="column" flexGrow={1}>
-      <Text color={'white'}>Server {server.isReady.toString()}</Text>
-      <Text color={'white'}>Bot {bot.isReady.toString()}</Text>
+      <Text color={'white'}>Server {!server.isReady ? <Spinner /> : 'Ready'}</Text>
+      <Text color={'white'}>{lastServerLog}</Text>
+      <Text color={'white'}>Bot {!bot.isReady ? <Spinner /> : 'Ready'}</Text>
       <Static
         items={testEngine.state.suite.filter(
           (item) =>
@@ -137,4 +146,7 @@ const Spinner = () => {
   return <Text>{spinnerMap[counter]}</Text>
 }
 
-export const startRender = () => render(<App />, {})
+export const startRender = () => {
+  process.stdout.write(process.platform === 'win32' ? '\x1B[2J\x1B[0f' : '\x1B[2J\x1B[3J\x1B[H')
+  return render(<App />)
+}

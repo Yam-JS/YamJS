@@ -1,7 +1,10 @@
 import { wait } from '../util/misc'
 import { TestEngineContext, TestSetup } from './types'
 
-export async function setupTest(setup: Omit<TestSetup, 'testFn'>, testEngine: TestEngineContext) {
+export async function setupTest(
+  setup: Omit<TestSetup, 'testFn'> | undefined,
+  testEngine: TestEngineContext
+) {
   const { bot, server } = testEngine
   const rawBot = bot.getRawBot()
 
@@ -9,7 +12,7 @@ export async function setupTest(setup: Omit<TestSetup, 'testFn'>, testEngine: Te
 
   rawBot.chat('/clearinventory')
 
-  if (setup.items) {
+  if (setup?.items) {
     for (const item of setup.items) {
       const { material } = item
 
@@ -21,7 +24,7 @@ export async function setupTest(setup: Omit<TestSetup, 'testFn'>, testEngine: Te
 
   await wait(250)
 
-  if (setup.hand) {
+  if (setup?.hand) {
     const item = rawBot.inventory.findInventoryItem(setup.hand, null, false)
 
     if (!item) throw new Error('Missing item')

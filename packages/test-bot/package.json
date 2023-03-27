@@ -2,17 +2,18 @@
   "name": "@yam-js/test-bot",
   "version": "0.0.1",
   "license": "MIT",
-  "type": "module",
   "scripts": {
-    "test:testEngine": "tsx ./src/factory/testEngine.ts",
+    "build": "vite build",
+    "test:testEngine": "tsx ./src/factory/testEngine",
     "test:server": "tsx ./src/server/wrapper"
   },
   "dependencies": {
     "dotenv": "^16.0.3",
+    "expect": "^29.5.0",
     "got": "^12.6.0",
-    "ink": "^4.1.0",
+    "ink": "^3.2.0",
     "mineflayer": "^4.8.1",
-    "react": "^18.2.0",
+    "react": "17.0.2",
     "tsx": "^3.12.6",
     "valtio": "^1.10.3"
   },

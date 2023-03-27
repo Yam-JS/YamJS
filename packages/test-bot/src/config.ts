@@ -32,7 +32,6 @@ const createConfig = <T>(options: T): T & BaseConfig => {
 }
 
 export const appConfig = createConfig({
-  user: parse(process.env.BOT_USERNAME, '', 'string'),
-  password: parse(process.env.BOT_PASSWORD, '', 'string'),
-  name: parse(process.env.BOT_NAME, '', 'string'),
+  user: parse(process.env.BOT_USERNAME, 'testbot', 'string'),
+  port: parse(process.env.BOT_PORT, 25565, 'number'),
 })

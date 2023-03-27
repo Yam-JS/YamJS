@@ -3,7 +3,7 @@
     "forceConsistentCasingInFileNames": true,
     "lib": ["ESNext"],
     "module": "ESNext",
-    "moduleResolution": "node16",
+    "moduleResolution": "node",
     "skipLibCheck": true,
     "target": "ESNext",
     "outDir": "dist",

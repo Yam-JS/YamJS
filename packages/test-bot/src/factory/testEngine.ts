@@ -5,41 +5,28 @@ import { TestEngineContext, TestEngineState } from './types'
 import { createTestBot } from '../bot/bot'
 import { server } from '../server/wrapper'
 import { proxy } from 'valtio'
-import { isMain } from '../util/esm'
 
 const createTestEngine = () => {
   const state: TestEngineState = proxy({
     suite: [],
     current: undefined,
   })
-  const context = proxy({
-    bot: createTestBot('main'),
+  const context: TestEngineContext = {
+    bot: createTestBot({ id: 'main', server }),
     server,
-  })
+  }
 
   return {
     state,
     context,
 
-    chat: (msg: string) => {
-      if (state.current) {
-        const test = state.current.tests?.filter((t) => t.state === 'running')[0]
-        if (!test) return
-
-        test.msgs = test.msgs || []
-        test.msgs.push(msg)
-        // context.current.msgs = context.current.msgs || []
-        // context.current.msgs.push(msg)
-      }
-    },
-
     start: async () => {
       startRender()
 
-      await server.start()
-      await context.bot.start()
-
       for (const group of state.suite) {
+        await server.start()
+        await context.bot.start()
+
         state.current = group
         group.state = 'running'
         group.callback(context)
@@ -55,7 +42,7 @@ const createTestEngine = () => {
 
           test.state = 'running'
           try {
-            test.callback(context.bot)
+            await test.callback(context.bot)
 
             test.state = 'success'
           } catch (err: any) {
@@ -73,14 +60,21 @@ const createTestEngine = () => {
           group.state = 'failed'
         }
       }
+
+      await wait(1000)
+
+      console.log('Tests finished.')
+      await server.stop()
+
+      process.exit(0)
     },
   }
 }
 
 export const testEngine = createTestEngine()
 
-// if ran directly
-if (isMain(import.meta.url)) {
-  console.log('testEngine.ts: isMain(import.meta.url) === true')
+if (require.main === module) {
+  const tests = require('../__tests/index')
+
   testEngine.start()
 }
