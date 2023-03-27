@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["ESNext"],
+    "module": "ESNext",
+    "moduleResolution": "node16",
+    "skipLibCheck": true,
+    "target": "ESNext",
+    "outDir": "dist",
+    "jsx": "react",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "declaration": true,
+    "declarationMap": true,
+    "strict": true
+  },
+  "include": ["src/**/*"]
+}
