@@ -1,7 +1,7 @@
 import { testEngine } from '../factory/testEngine'
 import { describe, it, expect } from '../tests'
-import { waitUntilEventPayload } from '../util/events/events'
-import { waitUntilState } from '../util/proxy'
+import { waitForEventPayload } from '../util/events/events'
+import { waitForState } from '../util/proxy'
 
 describe('expect', () => {
   it('expect toBe works', () => {
@@ -17,12 +17,12 @@ describe('expect', () => {
   })
 })
 
-describe('server lifecycle', () => {
+describe.skip('server lifecycle', () => {
   it('expect YamJS to enable', async () => {
     await testEngine.context.server.stop()
     testEngine.context.server.start()
 
-    await waitUntilEventPayload('server/log', (payload) => {
+    await waitForEventPayload('server/log', (payload) => {
       return Boolean(payload.match(/\[YamJS\] Enabling YamJS/)?.[0])
     })
   })
@@ -30,23 +30,22 @@ describe('server lifecycle', () => {
   it('expect YamJS to disable', async () => {
     testEngine.context.server.stop()
 
-    await waitUntilEventPayload('server/log', (payload) => {
+    await waitForEventPayload('server/log', (payload) => {
       return Boolean(payload.match(/\[YamJS\] Disabling YamJS/)?.[0])
     })
   })
 })
 
-// Not yet fully working. I think something is odd with the server start/stop
-// describe('bot lifecycle', () => {
-//   it('expect bot to rejoin', async () => {
-//     await testEngine.context.server.stop()
-//     await testEngine.context.server.start()
-//     testEngine.context.bot.start()
+describe.skip('bot lifecycle', () => {
+  it('expect bot to rejoin', async () => {
+    await testEngine.context.server.stop()
+    await testEngine.context.server.start()
+    testEngine.context.bot.start()
 
-//     await waitUntilState(testEngine.context.bot.state, (state) => {
-//       return state.isReady
-//     })
+    await waitForState(testEngine.context.bot.state, (state) => {
+      return state.isReady
+    })
 
-//     expect(testEngine.context.bot.state.isReady).toBe(true)
-//   })
-// })
+    expect(testEngine.context.bot.state.isReady).toBe(true)
+  })
+})

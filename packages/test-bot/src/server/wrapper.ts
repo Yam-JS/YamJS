@@ -2,9 +2,9 @@ import { spawn } from 'child_process'
 import { proxy } from 'valtio'
 import { testCache } from '../cache/cache'
 import { appConfig } from '../config'
-import { AppEvents, createEventStateListener, waitUntilEventPayload } from '../util/events/events'
+import { AppEvents, createEventStateListener, waitForEventPayload } from '../util/events/events'
 import { promiseObjectRace } from '../util/misc'
-import { waitUntilState } from '../util/proxy'
+import { waitForState } from '../util/proxy'
 import { downloadPaper, downloadYamJs } from './download'
 import { createServerProperties } from './serverProperties'
 
@@ -91,14 +91,24 @@ const createServer = () => {
 
   const state = proxy({
     isReady: false,
+    isProcessRunning: false,
   })
 
   const start = async (outputLogs: boolean = false) => {
-    if (state.isReady) return
+    if (state.isProcessRunning) {
+      // Need to wait for server to finish processing to figure out what to do.
+      const { isReady } = await promiseObjectRace({
+        isStopped: waitForState(state, (state) => !state.isProcessRunning),
+        isReady: waitForState(state, (state) => state.isReady),
+      })
+
+      if (isReady) return
+    }
 
     await setup()
 
     internal.mcServer = startServerProcess()
+    state.isProcessRunning = true
 
     if (outputLogs) {
       AppEvents.on('server/log', (msg) => {
@@ -107,11 +117,12 @@ const createServer = () => {
     }
 
     const { closed } = await promiseObjectRace({
-      done: waitUntilEventPayload('server/log', (payload) => internal.doneRegex.test(payload)),
-      closed: waitUntilEventPayload('server/log', (payload) => payload === ServerProcessClosed),
+      done: waitForEventPayload('server/log', (payload) => internal.doneRegex.test(payload)),
+      closed: waitForEventPayload('server/log', (payload) => payload === ServerProcessClosed),
     })
 
     if (closed) {
+      state.isProcessRunning = false
       throw new Error('Server process closed unexpectedly.')
     }
 
@@ -127,7 +138,7 @@ const createServer = () => {
     internal.mcServer?.stdin.write(msg + '\r')
     internal.mcServer?.stdin.write(`say CommandExecuted: '${msg}'\r`)
 
-    return waitUntilEventPayload(
+    return waitForEventPayload(
       'server/log',
       (payload) => payload.match(/CommandExecuted: '(.*)'/)?.[1] === msg
     )
@@ -138,21 +149,21 @@ const createServer = () => {
       return
     }
 
+    state.isReady = false
     write('stop')
     const timeoutHandle = setTimeout(() => {
       console.warn('Server shutdown took too long. Killing process.')
       internal.mcServer?.kill()
-      state.isReady = false
       internal.mcServer = undefined
+      state.isProcessRunning = false
     }, 10000)
 
     internal.mcServer.on('close', () => {
-      internal.mcServer = undefined
-      state.isReady = false
+      state.isProcessRunning = false
       clearTimeout(timeoutHandle)
     })
 
-    return waitUntilState(state, (state) => !state.isReady)
+    return waitForState(state, (state) => !state.isProcessRunning)
   }
 
   return {
@@ -170,7 +181,7 @@ if (require.main === module) {
   server.start(true)
 
   new Promise<void>(async (resolve) => {
-    await waitUntilState(server.state, (state) => state.isReady)
+    await waitForState(server.state, (state) => state.isReady)
     console.log('Server is ready.')
 
     await server.write('help')

@@ -24,25 +24,28 @@ const createTestEngine = () => {
       startRender()
 
       for (const group of state.suite) {
+        if (group.state === 'skipped') continue
         await server.start()
         await context.bot.start()
 
         state.current = group
         group.state = 'running'
-        group.callback(context)
+        await group.callback(context)
 
-        setupTest(state.current.setup, context)
+        await setupTest(state.current.setup, context)
         let passed = true
 
         if (!group.tests) continue
 
         for (const test of group.tests) {
+          if (test.state === 'skipped') continue
+
           group.msgs = []
           await wait(250)
 
           test.state = 'running'
           try {
-            await test.callback(context.bot)
+            await test.callback(context)
 
             test.state = 'success'
           } catch (err: any) {

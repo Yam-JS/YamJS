@@ -1,9 +1,9 @@
 import mineflayer, { Bot, BotOptions } from 'mineflayer'
 import { makeActivateItem, makeDigAtBlock, makePlaceAtBlock } from './actions'
-import { AppEvents, waitUntilEventPayload } from '../util/events/events'
+import { AppEvents, waitForEventPayload } from '../util/events/events'
 import { proxy } from 'valtio'
 import { appConfig } from '../config'
-import { waitUntilState } from '../util/proxy'
+import { waitForState } from '../util/proxy'
 import { Server } from '../server/wrapper'
 
 const defaultOptions: BotOptions = {
@@ -62,7 +62,7 @@ export const createTestBot = (options: { server: Server; id: string }) => {
       console.log(err)
     })
 
-    return waitUntilEventPayload('bot/ready', (payload) => payload === id)
+    return waitForEventPayload('bot/ready', (payload) => payload === id)
   }
 
   const makeFn = <Fn extends (bot: Bot) => any, ReturnFn extends ReturnType<Fn>>(

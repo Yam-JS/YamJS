@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment, FC, useRef } from 'react'
 import { render, Text, Newline, Static, Box, Spacer, measureElement } from 'ink'
 import { testEngine } from './factory/testEngine'
-import type { TestItem } from './factory/types'
+import type { AppTestItem } from './factory/types'
 import { useSnapshot } from 'valtio/react'
 import { AppEvents } from './util/events/events'
 
@@ -61,6 +61,7 @@ const colorMap = {
   failed: 'red',
   pending: 'yellow',
   running: 'yellow',
+  skipped: 'yellow',
 }
 
 const charMap = {
@@ -68,6 +69,7 @@ const charMap = {
   failed: '✗',
   pending: '⏳',
   running: '➔',
+  skipped: '✗',
 }
 
 const TestResult = () => {
@@ -90,7 +92,7 @@ const TestResult = () => {
   )
 }
 
-const TestItem: FC<{ test: TestItem }> = ({ test }) => {
+const TestItem: FC<{ test: AppTestItem }> = ({ test }) => {
   return (
     <>
       &nbsp;

@@ -5,6 +5,17 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Debug test-bot",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["--loader", "tsx"],
+      "args": ["${workspaceFolder}/${relativeFile}"],
+      "cwd": "${workspaceRoot}",
+      "skipFiles": ["<node_internals>/**", "node_modules/**"],
+      "console": "integratedTerminal"
+    },
+    {
       "name": "Java Attach",
       "type": "java",
       "request": "attach",

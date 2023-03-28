@@ -49,7 +49,7 @@ export const createEventStateListener = <K extends Events['type']>(name: K) => {
   }
 }
 
-export const waitUntilEventPayload = <K extends Events['type']>(
+export const waitForEventPayload = <K extends Events['type']>(
   name: K,
   predicate: (payload: EventMap[K]) => boolean,
   timeout: number = 30000
