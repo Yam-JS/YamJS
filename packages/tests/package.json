@@ -1,0 +1,40 @@
+{
+  "name": "@yam-js/tests",
+  "private": true,
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "webpack --env production",
+    "test": "yarn yamjs testbot cli --path ../tests/tests --js ../tests/dist/index.js",
+    "ci:test": "yarn build && yarn test",
+    "yamjs": "yarn --cwd ../../"
+  },
+  "dependencies": {
+    "@yam-js/core": "0.0.1",
+    "@yam-js/legacy": "0.0.1",
+    "@yam-js/dev-reload": "0.0.1",
+    "@yam-js/test-bot": "0.0.1",
+    "vlq": "^2.0.4"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.14.3",
+    "@babel/core": "^7.14.3",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@babel/preset-env": "^7.14.2",
+    "@babel/preset-typescript": "^7.13.0",
+    "@graal-types/java-16": "^1.0.0",
+    "@graal-types/paper-1.19": "^1.0.1",
+    "@types/node": "^18.15.2",
+    "babel-loader": "^8.2.2",
+    "babel-plugin-add-module-exports": "^1.0.4",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-graal-imports": "^0.0.3",
+    "chokidar": "^3.5.3",
+    "concurrently": "^7.6.0",
+    "tsx": "^3.12.5",
+    "typescript": "^4.9.5",
+    "webpack": "^5.76.1",
+    "webpack-cli": "^4.7.0"
+  }
+}
