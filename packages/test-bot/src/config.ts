@@ -1,10 +1,6 @@
 import { config as envConfig } from 'dotenv'
-
-interface BaseConfig {
-  environment: 'prod' | 'dev'
-  isDev: boolean
-  isProd: boolean
-}
+import path from 'path'
+import { proxy } from 'valtio'
 
 const parse = <T>(value: string | undefined, fallback: T, type: 'number' | 'string') => {
   if (value === undefined) {
@@ -23,21 +19,16 @@ const createConfig = () => {
 
   const isCi = process.env.CI === 'true'
 
-  const options = {
+  const options = proxy({
     isCi,
     user: parse(process.env.BOT_USERNAME, 'testbot', 'string'),
     port: parse(process.env.BOT_PORT, 25565, 'number'),
     timeout: parse(process.env.TEST_TIMEOUT, isCi ? 60_000 : 30_000, 'number'),
-  }
+    testPath: parse(process.env.TEST_PATH, path.resolve(__dirname, '__tests'), 'string'),
+    jsFile: parse<string | undefined>(process.env.TEST_JS, undefined, 'string'),
+  })
 
-  const environment = 'dev'
-
-  return {
-    ...options,
-    environment,
-    isDev: environment === 'dev',
-    isProd: false,
-  }
+  return options
 }
 
 export const appConfig = createConfig()

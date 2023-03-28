@@ -36,6 +36,7 @@ const createConfig = (env) => ({
   resolve: {
     alias: {
       '@yam-js/core': path.resolve(__dirname, '..', './yamjs-core/src'),
+      '@yam-js/legacy': path.resolve(__dirname, '..', './yamjs-legacy/src'),
       '@yam-js/dev-reload': path.resolve(__dirname, '..', './yamjs-dev-reload/src/yamjs.ts'),
     },
     extensions: ['.json', '.js', '.ts', '.jsx', '.tsx'],
@@ -45,6 +46,9 @@ const createConfig = (env) => ({
       NODE_ENV: getEnv(env),
     }),
   ],
+  optimization: {
+    minimize: false,
+  },
 })
 
 module.exports = createConfig

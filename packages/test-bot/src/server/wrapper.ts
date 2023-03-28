@@ -1,10 +1,12 @@
 import { spawn } from 'child_process'
+import { readFileSync } from 'fs'
 import { proxy } from 'valtio'
 import { testCache } from '../cache/cache'
 import { appConfig } from '../config'
 import { AppEvents, createEventStateListener, waitForEventPayload } from '../util/events/events'
 import { promiseObjectRace } from '../util/misc'
 import { waitForState } from '../util/proxy'
+import { createBukkitYml } from './bukkitYml'
 import { downloadPaper, downloadYamJs } from './download'
 import { createServerProperties } from './serverProperties'
 
@@ -40,12 +42,31 @@ const setup = () => {
       folder: 'server',
     }),
 
+    // Bukkit.yml
+    testCache.setFile({
+      name: 'bukkit.yml',
+      getContents: () => createBukkitYml(),
+      folder: 'server',
+    }),
+
     // Plugin
     testCache.setFileToCacheIfMissing({
       name: 'yamjs.jar',
       getContents: () => downloadYamJs(),
       folder: 'server/plugins',
     }),
+
+    // index.js
+    appConfig.jsFile
+      ? testCache.setFile({
+          name: 'index.js',
+          getContents: () => {
+            if (!appConfig.jsFile) throw new Error('This should not happen. jsFile is not defined')
+            return readFileSync(appConfig.jsFile, 'utf8')
+          },
+          folder: 'server/plugins/YamJS',
+        })
+      : undefined,
   ])
 }
 

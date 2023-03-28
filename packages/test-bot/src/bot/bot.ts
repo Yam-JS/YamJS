@@ -5,36 +5,54 @@ import { proxy } from 'valtio'
 import { appConfig } from '../config'
 import { waitForState } from '../util/proxy'
 import { Server } from '../server/wrapper'
+import { promiseObjectRace } from '../util/misc'
 
 const defaultOptions: BotOptions = {
   host: 'localhost',
   port: appConfig.port,
-  skipValidation: true,
-  auth: 'offline',
   username: appConfig.user,
 }
 
 export type TestBot = ReturnType<typeof createTestBot>
 
-export const createTestBot = (options: { server: Server; id: string }) => {
+export const createTestBot = (options: { server: Server; id: string; username?: string }) => {
   const { server, id } = options
   const internal = {
     bot: undefined as undefined | Bot,
     mcData: undefined as undefined | any,
   }
   const state = proxy({
+    isRunning: false,
     isReady: false,
   })
 
-  const start = () => {
-    if (server.state.isReady && state.isReady) return
+  const start = async () => {
+    if (state.isReady) return
+    if (!server.state.isReady) {
+      return
+    }
 
-    const bot = mineflayer.createBot(defaultOptions)
+    if (state.isRunning) {
+      const { ready } = await promiseObjectRace({
+        notRunning: waitForState(state, (state) => !state.isRunning),
+        ready: waitForState(state, (state) => state.isReady),
+      })
+
+      if (ready) {
+        return
+      }
+    }
+
+    const bot = mineflayer.createBot({
+      ...defaultOptions,
+      username: options.username ?? defaultOptions.username,
+    })
+    state.isRunning = true
     internal.bot = bot
 
     bot.on('spawn', async () => {
       state.isReady = true
-      internal.mcData = (await import('minecraft-data')).default(bot.version)
+      internal.mcData = require('minecraft-data')(bot.version)
 
       AppEvents.emit('bot/ready', id)
     })
@@ -50,7 +68,9 @@ export const createTestBot = (options: { server: Server; id: string }) => {
 
     // Log errors and kick reasons:
     bot.on('kicked', (reason, loggedIn) => {
+      // console.log('kicked', reason, loggedIn)
       state.isReady = false
+      state.isRunning = false
       AppEvents.emit('bot/not-ready', id)
     })
 
@@ -62,7 +82,25 @@ export const createTestBot = (options: { server: Server; id: string }) => {
       console.log(err)
     })
 
-    return waitForEventPayload('bot/ready', (payload) => payload === id)
+    return waitForEventPayload('server/log', (payload) =>
+      payload.includes(`${internal.bot?.username} joined the game`)
+    )
+  }
+
+  const stop = async () => {
+    if (!internal.bot) return
+
+    state.isReady = false
+    internal.bot.quit()
+
+    await waitForEventPayload('server/log', (payload) =>
+      payload.includes(`${internal.bot?.username} left the game`)
+    )
+
+    state.isRunning = false
+    internal.bot = undefined
+
+    return
   }
 
   const makeFn = <Fn extends (bot: Bot) => any, ReturnFn extends ReturnType<Fn>>(
@@ -77,12 +115,14 @@ export const createTestBot = (options: { server: Server; id: string }) => {
 
   return {
     start,
+    stop,
     state,
     getRawBot: () => {
       if (!internal.bot) throw new Error('Bot not ready.')
 
       return internal.bot
     },
+    // TODO: Fix this
     activateItem: makeFn(makeActivateItem),
     digAtBlock: makeFn(makeDigAtBlock),
     placeAtBlock: makeFn(makePlaceAtBlock),

@@ -5,6 +5,18 @@ import { TestEngineContext, TestEngineState } from './types'
 import { createTestBot } from '../bot/bot'
 import { server } from '../server/wrapper'
 import { proxy } from 'valtio'
+import { appConfig } from '../config'
+import fs from 'fs'
+import path from 'path'
+
+// scan for tests in test path
+const getTests = () => {
+  fs.readdirSync(appConfig.testPath).forEach((file) => {
+    if (file.endsWith('.ts')) {
+      require(path.resolve(appConfig.testPath, file))
+    }
+  })
+}
 
 const createTestEngine = () => {
   const state: TestEngineState = proxy({
@@ -22,6 +34,7 @@ const createTestEngine = () => {
 
     start: async () => {
       startRender()
+      getTests()
 
       for (const group of state.suite) {
         if (group.state === 'skipped') continue
@@ -77,7 +90,5 @@ const createTestEngine = () => {
 export const testEngine = createTestEngine()
 
 if (require.main === module) {
-  const tests = require('../__tests/index')
-
   testEngine.start()
 }
