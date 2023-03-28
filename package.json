@@ -12,6 +12,7 @@
     "dev": "yarn workspace @yam-js/dev",
     "legacy": "yarn workspace @yam-js/legacy",
     "plugin": "yarn workspace @yam-js/plugin",
+    "testbot": "yarn workspace @yam-js/test-bot",
     "graaltype": "yarn --cwd ./packages/graal-type-introspection"
   },
   "devDependencies": {

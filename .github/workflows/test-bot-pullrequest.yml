@@ -1,0 +1,27 @@
+name: TestBot-PullRequest
+
+on:
+  pull_request:
+
+jobs:
+  checkout:
+    runs-on: []
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Yarn
+        run: npm i --global yarn@1
+
+      - name: Install
+        run: yarn
+
+      - name: Test
+        run: yarn testbot test
