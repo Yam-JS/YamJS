@@ -3,6 +3,8 @@ import { waitForEventPayload } from '@yam-js/test-bot/src/util/events/events'
 
 describe('JS', ({ server, bot }) => {
   it('reads hello world', async () => {
+    await server.write('jsreload')
+
     await waitForEventPayload('server/log', (payload) => {
       return payload.includes('Hello world!')
     })

@@ -1,10 +1,10 @@
-name: Tests-PullRequest
+name: Integration Testing
 
 on:
   pull_request:
 
 jobs:
-  checkout:
+  tests:
     runs-on: ubuntu-latest
 
     strategy:

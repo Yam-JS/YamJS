@@ -17,7 +17,7 @@ describe('expect', () => {
   })
 })
 
-describe.skip('server lifecycle', () => {
+describe('server lifecycle', () => {
   it('expect YamJS to enable', async () => {
     await testEngine.context.server.stop()
     testEngine.context.server.start()
@@ -36,7 +36,7 @@ describe.skip('server lifecycle', () => {
   })
 })
 
-describe.skip('bot lifecycle', () => {
+describe('bot lifecycle', () => {
   it('expect bot to rejoin', async () => {
     await testEngine.context.server.stop()
     await testEngine.context.server.start()
