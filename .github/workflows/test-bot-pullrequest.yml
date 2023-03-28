@@ -5,7 +5,7 @@ on:
 
 jobs:
   checkout:
-    runs-on: []
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
