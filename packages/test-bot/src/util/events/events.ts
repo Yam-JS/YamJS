@@ -1,3 +1,4 @@
+import { appConfig } from '../../config'
 import { EventMap, EventNames, Events } from './types'
 
 const createEventSystem = () => {
@@ -52,7 +53,7 @@ export const createEventStateListener = <K extends Events['type']>(name: K) => {
 export const waitForEventPayload = <K extends Events['type']>(
   name: K,
   predicate: (payload: EventMap[K]) => boolean,
-  timeout: number = 30000
+  timeout: number = appConfig.timeout
 ) => {
   let timeoutId: NodeJS.Timeout | null = null
 
