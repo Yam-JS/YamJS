@@ -18,8 +18,17 @@ const parse = <T>(value: string | undefined, fallback: T, type: 'number' | 'stri
   return value as unknown as T
 }
 
-const createConfig = <T>(options: T): T & BaseConfig => {
+const createConfig = () => {
   envConfig()
+
+  const isCi = process.env.CI === 'true'
+
+  const options = {
+    isCi,
+    user: parse(process.env.BOT_USERNAME, 'testbot', 'string'),
+    port: parse(process.env.BOT_PORT, 25565, 'number'),
+    timeout: parse(process.env.TEST_TIMEOUT, isCi ? 60_000 : 30_000, 'number'),
+  }
 
   const environment = 'dev'
 
@@ -31,8 +40,4 @@ const createConfig = <T>(options: T): T & BaseConfig => {
   }
 }
 
-export const appConfig = createConfig({
-  user: parse(process.env.BOT_USERNAME, 'testbot', 'string'),
-  port: parse(process.env.BOT_PORT, 25565, 'number'),
-  timeout: parse(process.env.TEST_TIMEOUT, 30_000, 'number'),
-})
+export const appConfig = createConfig()
