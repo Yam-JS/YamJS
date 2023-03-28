@@ -82,7 +82,9 @@ const createTestEngine = () => {
       console.log('Tests finished.')
       await server.stop()
 
-      process.exit(0)
+      const failed = state.suite.filter((s) => s.state === 'failed')
+
+      process.exit(failed.length > 0 ? 1 : 0)
     },
   }
 }
