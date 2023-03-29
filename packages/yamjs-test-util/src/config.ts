@@ -21,12 +21,12 @@ const createConfig = () => {
   const isCi = process.env.CI === 'true'
 
   const options = proxy({
-    isCi,
-    user: parse(process.env.BOT_USERNAME, 'testbot', 'string'),
-    port: parse(process.env.BOT_PORT, 25565, 'number'),
+    user: parse(process.env.TEST_BOT_USERNAME, 'testbot', 'string'),
+    port: parse(process.env.TEST_PORT, 25565, 'number'),
     timeout: parse(process.env.TEST_TIMEOUT, isCi ? 60_000 : 30_000, 'number'),
     testPath: parse(process.env.TEST_PATH, path.resolve(__dirname, '__tests'), 'string'),
-    jsFile: parse<string | undefined>(process.env.TEST_JS, undefined, 'string'),
+    js: parse<string | undefined>(process.env.TEST_JS, undefined, 'string'),
+    yamJsJar: parse<string | undefined>(process.env.TEST_YAMJS_JAR, undefined, 'string'),
   })
 
   return options
@@ -37,7 +37,7 @@ export const appConfig = createConfig()
 export const readTestConfigs = () => {
   const targetPath = require.resolve(path.resolve('.yamjs-test-config.js'))
 
-  if (!existsSync(targetPath)) return
+  if (!existsSync(targetPath)) throw new Error('No .yamjs-test-config.js found')
 
   const contents = require(targetPath)
 
@@ -53,4 +53,6 @@ export const readTestConfigs = () => {
     // @ts-expect-error
     appConfig[key] = value
   }
+
+  console.log('Read test configs', appConfig)
 }

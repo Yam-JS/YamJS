@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack --env production",
     "test": "ts-mocha -p ./tsconfig.json tests/**/*.test.ts --timeout 60000",
-    "ci:test": "yarn build && yarn test",
+    "ci:test": "yarn build && yarn yamjs plugin build && yarn test",
     "yamjs": "yarn --cwd ../../"
   },
   "dependencies": {

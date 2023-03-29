@@ -28,6 +28,7 @@
     "packages/yamjs-dev",
     "packages/yamjs-dev-reload",
     "packages/yamjs-legacy",
+    "packages/yamjs-plugin",
     "packages/yamjs-test-util"
   ]
 }

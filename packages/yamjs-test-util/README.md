@@ -19,9 +19,25 @@ Test utilities are configurable. To config, create a new `.yamjs-test-config.js`
 ```javascript
 module.exports = {
   /**
-   * Points to your JavaScript file
+   * Configure port
+   *
+   * @optional
    */
-  jsFile: './dist/index.js',
+  port: 25565
+
+  /**
+   * Point to YamJS Jar
+   *
+   * @optional
+   */
+  yamJsJar: './dist/yamjs.jar',
+
+  /**
+   * Points to your JavaScript file
+   *
+   * @required
+   */
+  js: './dist/index.js',
 }
 ```
 

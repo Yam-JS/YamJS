@@ -37,8 +37,8 @@ export const createBotInstance = (options: {
 
     if (state.isRunning) {
       const { ready } = await promiseObjectRace({
-        notRunning: waitForState(state, (state) => !state.isRunning),
-        ready: waitForState(state, (state) => state.isReady),
+        notRunning: waitForState(state, (state) => !state.isRunning, 0),
+        ready: waitForState(state, (state) => state.isReady, 0),
       })
 
       if (ready) {
