@@ -64,8 +64,8 @@ const createServer = () => {
     if (state.isProcessRunning) {
       // Need to wait for server to finish processing to figure out what to do.
       const { isReady } = await promiseObjectRace({
-        isStopped: waitForState(state, (state) => !state.isProcessRunning),
-        isReady: waitForState(state, (state) => state.isReady),
+        isStopped: waitForState(state, (state) => !state.isProcessRunning, 0),
+        isReady: waitForState(state, (state) => state.isReady, 0),
       })
 
       if (isReady) return
@@ -114,8 +114,8 @@ const createServer = () => {
     if (!internal.mcServer) return
     if (state.isProcessRunning && !state.isReady) {
       const { isStopped } = await promiseObjectRace({
-        isStopped: waitForState(state, (state) => !state.isProcessRunning),
-        isReady: waitForState(state, (state) => state.isReady),
+        isStopped: waitForState(state, (state) => !state.isProcessRunning, 0),
+        isReady: waitForState(state, (state) => state.isReady, 0),
       })
 
       if (isStopped) return
