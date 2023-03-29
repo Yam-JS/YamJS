@@ -24,7 +24,7 @@
   "workspaces": [
     "packages/build",
     "packages/e2e",
-    "packages/test-bot",
+    "packages/test-util",
     "packages/yamjs-core",
     "packages/yamjs-dev",
     "packages/yamjs-dev-reload",
