@@ -1,6 +1,6 @@
 import { subscribe } from 'valtio/vanilla'
 import { appConfig } from '../config'
-import { promiseObjectRace, promiseTimeout } from './misc'
+import { promiseTimeout } from './misc'
 
 export const waitForState = async <T extends object>(
   state: T,

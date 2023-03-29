@@ -1,5 +1,4 @@
-import { server } from '@yam-js/test-bot/src/index'
-import { waitForEventPayload } from '@yam-js/test-bot/src/util/events/events'
+import { server, waitForEventPayload } from '@yam-js/test-bot'
 
 describe('test', () => {
   beforeEach(async () => {

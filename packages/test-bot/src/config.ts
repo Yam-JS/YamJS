@@ -1,6 +1,6 @@
 import { config as envConfig } from 'dotenv'
-import { existsSync } from 'fs'
-import path from 'path'
+import { existsSync } from 'node:fs'
+import path from 'node:path'
 import { proxy } from 'valtio/vanilla'
 
 const parse = <T>(value: string | undefined, fallback: T, type: 'number' | 'string') => {

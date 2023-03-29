@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs'
+import { readFileSync } from 'node:fs'
 import { testCache } from '../cache/cache'
 import { appConfig } from '../config'
 import { createBukkitYml } from './setup/bukkitYml'

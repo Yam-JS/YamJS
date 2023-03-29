@@ -1,12 +1,18 @@
 {
-  "name": "@yam-js/test-bot",
+  "name": "@yam-js/test-util",
   "version": "0.0.1",
   "license": "MIT",
+  "main": "dist/index",
   "scripts": {
-    "cli": "tsx ./src/index",
-    "test:testEngine": "tsx ./src/factory/testEngine",
+    "build": "vite build",
     "test:server": "tsx ./src/server/wrapper",
-    "test": "tsx ./src/factory/testEngine"
+    "postinstall": "yarn build"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js"
+    }
   },
   "dependencies": {
     "dotenv": "^16.0.3",

@@ -1,4 +1,4 @@
-import { spawn } from 'child_process'
+import { spawn } from 'node:child_process'
 import { proxy } from 'valtio/vanilla'
 import { createBotInstance } from '../bot/bot'
 import { testCache } from '../cache/cache'
