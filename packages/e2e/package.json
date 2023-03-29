@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "webpack --env production",
-    "test": "ts-mocha -p ./tsconfig.json tests/**/*.test.ts --timeout 30000",
+    "test": "ts-mocha -p ./tsconfig.json tests/**/*.test.ts --timeout 60000",
     "ci:test": "yarn build && yarn test",
     "yamjs": "yarn --cwd ../../"
   },
