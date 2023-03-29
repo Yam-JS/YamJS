@@ -1,13 +1,12 @@
 {
   "compilerOptions": {
     "forceConsistentCasingInFileNames": true,
-    "lib": ["ESNext"],
-    "module": "ESNext",
+    "lib": ["ESNext", "DOM"],
+    "module": "CommonJS",
     "moduleResolution": "node",
     "skipLibCheck": true,
     "target": "ESNext",
     "outDir": "dist",
-    "jsx": "react",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,

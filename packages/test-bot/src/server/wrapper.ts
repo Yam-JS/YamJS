@@ -1,6 +1,7 @@
 import { spawn } from 'child_process'
 import { readFileSync } from 'fs'
 import { proxy } from 'valtio'
+import { createBotInstance } from '../bot/bot'
 import { testCache } from '../cache/cache'
 import { appConfig } from '../config'
 import { AppEvents, createEventStateListener, waitForEventPayload } from '../util/events/events'
@@ -105,8 +106,10 @@ const startServerProcess = () => {
 
 const createServer = () => {
   const internal = {
+    nextBotId: 0,
     logs: createEventStateListener('server/log'),
     mcServer: undefined as undefined | ReturnType<typeof startServerProcess>,
+    bots: new Set<ReturnType<typeof createBotInstance>>(),
     ...baseOptions,
   }
 
@@ -171,6 +174,15 @@ const createServer = () => {
     }
 
     state.isReady = false
+
+    for (const bot of internal.bots) {
+      try {
+        bot.stop()
+      } catch (err) {
+        // Ignore
+      }
+    }
+
     write('stop')
     const timeoutHandle = setTimeout(() => {
       console.warn('Server shutdown took too long. Killing process.')
@@ -181,13 +193,40 @@ const createServer = () => {
 
     internal.mcServer.on('close', () => {
       state.isProcessRunning = false
+      internal.mcServer?.kill()
       clearTimeout(timeoutHandle)
     })
 
     return waitForState(state, (state) => !state.isProcessRunning)
   }
 
+  const createBot = (
+    name: string,
+    options: {
+      disableAutoJoin?: boolean
+    } = {}
+  ) => {
+    const { disableAutoJoin = false } = options
+    const bot = createBotInstance({
+      id: internal.nextBotId++,
+      username: name,
+      server: state,
+      onQuit: () => {
+        internal.bots.delete(bot)
+      },
+    })
+
+    if (!disableAutoJoin) {
+      bot.start()
+    }
+
+    internal.bots.add(bot)
+
+    return bot
+  }
+
   return {
+    createBot,
     write,
     start,
     stop,

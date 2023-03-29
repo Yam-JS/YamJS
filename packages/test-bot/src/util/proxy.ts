@@ -1,37 +1,28 @@
 import { subscribe } from 'valtio'
 import { appConfig } from '../config'
-import { promiseObjectRace } from './misc'
+import { promiseObjectRace, promiseTimeout } from './misc'
 
 export const waitForState = async <T extends object>(
   state: T,
   predicate: (state: T) => boolean,
   timeout: number = appConfig.timeout
 ) => {
-  let timeoutId: NodeJS.Timeout | null = null
+  const promise = new Promise<boolean>((resolve) => {
+    // check if predicate is already true
+    if (predicate(state)) {
+      resolve(true)
+    }
 
-  const { failure } = await promiseObjectRace({
-    success: new Promise<boolean>((resolve) => {
-      const unsubscribe = subscribe(state, () => {
-        if (predicate(state)) {
-          unsubscribe()
-          resolve(true)
-        }
-      })
-    }),
-    failure: new Promise<boolean>((resolve) => {
-      timeoutId = setTimeout(() => {
+    // subscribe to state changes
+    const unsubscribe = subscribe(state, () => {
+      if (predicate(state)) {
+        unsubscribe()
         resolve(true)
-      }, timeout)
-    }),
+      }
+    })
   })
 
-  if (timeoutId) {
-    clearTimeout(timeoutId)
-  }
-
-  if (failure) {
-    throw new Error('Timeout waiting for state')
-  }
+  timeout > 0 ? await promiseTimeout(promise) : await promise
 
   return state
 }

@@ -8,13 +8,17 @@
     "build": "webpack --env production",
     "test": "yarn yamjs testbot cli --path ../tests/tests --js ../tests/dist/index.js",
     "ci:test": "yarn build && yarn test",
+    "mocha": "ts-mocha -p ./tsconfig.json src/**/*.spec.ts --timeout 120000",
     "yamjs": "yarn --cwd ../../"
   },
   "dependencies": {
     "@yam-js/core": "0.0.1",
-    "@yam-js/legacy": "0.0.1",
     "@yam-js/dev-reload": "0.0.1",
+    "@yam-js/legacy": "0.0.1",
     "@yam-js/test-bot": "0.0.1",
+    "mocha": "^10.2.0",
+    "ts-mocha": "^10.0.0",
+    "ts-node": "^10.9.1",
     "vlq": "^2.0.4"
   },
   "devDependencies": {
@@ -25,7 +29,9 @@
     "@babel/preset-typescript": "^7.13.0",
     "@graal-types/java-16": "^1.0.0",
     "@graal-types/paper-1.19": "^1.0.1",
-    "@types/node": "^18.15.2",
+    "@types/expect": "^24.3.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^18.15.11",
     "babel-loader": "^8.2.2",
     "babel-plugin-add-module-exports": "^1.0.4",
     "babel-plugin-transform-class-properties": "^6.24.1",

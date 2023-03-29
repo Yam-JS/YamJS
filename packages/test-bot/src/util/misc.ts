@@ -1,3 +1,5 @@
+import { appConfig } from '../config'
+
 const DEFAULT_WAIT = 25
 
 export const wait = (duration = DEFAULT_WAIT) =>
@@ -28,4 +30,26 @@ export const promiseObjectRace = <T extends Record<string, Promise<any>>>(
       return { [key]: value }
     }
   ) as any
+}
+
+export const promiseTimeout = <T>(
+  promise: Promise<T>,
+  timeout: number = appConfig.timeout
+): Promise<T> => {
+  return new Promise((resolve, reject) => {
+    const timeoutId = setTimeout(() => {
+      reject(new Error('Promise timed out'))
+    }, timeout)
+
+    promise.then(
+      (value) => {
+        clearTimeout(timeoutId)
+        resolve(value)
+      },
+      (error) => {
+        clearTimeout(timeoutId)
+        reject(error)
+      }
+    )
+  })
 }
