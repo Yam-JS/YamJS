@@ -1,7 +1,7 @@
 import mineflayer, { Bot, BotOptions } from 'mineflayer'
 import { makeActivateItem, makeDigAtBlock, makePlaceAtBlock } from './actions'
 import { AppEvents, waitForEventPayload } from '../util/events/events'
-import { proxy } from 'valtio'
+import { proxy } from 'valtio/vanilla'
 import { appConfig } from '../config'
 import { waitForState } from '../util/proxy'
 import { Server } from '../server/wrapper'

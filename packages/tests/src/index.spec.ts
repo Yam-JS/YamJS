@@ -1,4 +1,4 @@
-import { server } from '@yam-js/test-bot/src/server/wrapper'
+import { server } from '@yam-js/test-bot/src/index'
 import { waitForEventPayload } from '@yam-js/test-bot/src/util/events/events'
 
 describe('test', () => {

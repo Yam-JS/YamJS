@@ -1,4 +1,4 @@
-import { subscribe } from 'valtio'
+import { subscribe } from 'valtio/vanilla'
 import { appConfig } from '../config'
 import { promiseObjectRace, promiseTimeout } from './misc'
 

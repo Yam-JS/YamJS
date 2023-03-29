@@ -1,74 +1,16 @@
 import { spawn } from 'child_process'
-import { readFileSync } from 'fs'
-import { proxy } from 'valtio'
+import { proxy } from 'valtio/vanilla'
 import { createBotInstance } from '../bot/bot'
 import { testCache } from '../cache/cache'
-import { appConfig } from '../config'
 import { AppEvents, createEventStateListener, waitForEventPayload } from '../util/events/events'
 import { promiseObjectRace } from '../util/misc'
 import { waitForState } from '../util/proxy'
-import { createBukkitYml } from './bukkitYml'
-import { downloadPaper, downloadYamJs } from './download'
-import { createServerProperties } from './serverProperties'
+import { setupServer } from './setup'
 
 const ServerProcessClosed = 'ServerProcessClosed'
 
 const baseOptions = {
   doneRegex: /\[.+\]: Done/,
-}
-
-const setup = () => {
-  return Promise.allSettled([
-    // Server
-    testCache.setFileToCacheIfMissing({
-      name: 'server.jar',
-      getContents: () => downloadPaper(),
-      folder: 'server',
-    }),
-
-    // Eula
-    testCache.setFileToCacheIfMissing({
-      name: 'eula.txt',
-      getContents: () => 'eula=true',
-      folder: 'server',
-    }),
-
-    // Server.properties
-    testCache.setFile({
-      name: 'server.properties',
-      getContents: () =>
-        createServerProperties({
-          'query.port': appConfig.port,
-        }),
-      folder: 'server',
-    }),
-
-    // Bukkit.yml
-    testCache.setFile({
-      name: 'bukkit.yml',
-      getContents: () => createBukkitYml(),
-      folder: 'server',
-    }),
-
-    // Plugin
-    testCache.setFileToCacheIfMissing({
-      name: 'yamjs.jar',
-      getContents: () => downloadYamJs(),
-      folder: 'server/plugins',
-    }),
-
-    // index.js
-    appConfig.jsFile
-      ? testCache.setFile({
-          name: 'index.js',
-          getContents: () => {
-            if (!appConfig.jsFile) throw new Error('This should not happen. jsFile is not defined')
-            return readFileSync(appConfig.jsFile, 'utf8')
-          },
-          folder: 'server/plugins/YamJS',
-        })
-      : undefined,
-  ])
 }
 
 const startServerProcess = () => {
@@ -129,7 +71,7 @@ const createServer = () => {
       if (isReady) return
     }
 
-    await setup()
+    await setupServer()
 
     internal.mcServer = startServerProcess()
     state.isProcessRunning = true

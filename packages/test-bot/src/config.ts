@@ -1,6 +1,6 @@
 import { config as envConfig } from 'dotenv'
 import path from 'path'
-import { proxy } from 'valtio'
+import { proxy } from 'valtio/vanilla'
 
 const parse = <T>(value: string | undefined, fallback: T, type: 'number' | 'string') => {
   if (value === undefined) {

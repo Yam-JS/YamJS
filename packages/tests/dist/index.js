@@ -1624,7 +1624,7 @@ var test = fn => {
   setTimeout(fn, 1000);
 };
 test(() => {
-  console.log('Test1 Hello world!');
+  console.log('Test1 Hello world! AA');
 });
 registerEvent(PlayerJoinEvent, event => {
   console.log("Test2 Player ".concat(event.getPlayer().getName(), " joined the game!"));
