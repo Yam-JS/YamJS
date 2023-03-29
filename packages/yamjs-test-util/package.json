@@ -23,6 +23,8 @@
     "yaml": "^2.2.1"
   },
   "devDependencies": {
-    "@types/node": "^18.15.11"
+    "@yam-js/build": "^0.0.1",
+    "@types/node": "^18.15.11",
+    "vite": "^4.2.1"
   }
 }
