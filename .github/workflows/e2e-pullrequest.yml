@@ -29,4 +29,4 @@ jobs:
         run: yarn
 
       - name: Test
-        run: yarn e2e test
+        run: yarn e2e ci:test

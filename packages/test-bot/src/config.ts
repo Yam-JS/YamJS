@@ -1,4 +1,5 @@
 import { config as envConfig } from 'dotenv'
+import { existsSync } from 'fs'
 import path from 'path'
 import { proxy } from 'valtio/vanilla'
 
@@ -32,3 +33,24 @@ const createConfig = () => {
 }
 
 export const appConfig = createConfig()
+
+export const readTestConfigs = () => {
+  const targetPath = require.resolve(path.resolve('.yamjs-test-config.js'))
+
+  if (!existsSync(targetPath)) return
+
+  const contents = require(targetPath)
+
+  const keys = Object.keys(contents)
+
+  for (const key of keys) {
+    let value = contents[key]
+
+    if (typeof value === 'function') {
+      value = value()
+    }
+
+    // @ts-expect-error
+    appConfig[key] = value
+  }
+}

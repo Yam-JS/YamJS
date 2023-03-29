@@ -1,4 +1,4 @@
-import { readTestConfigs } from './config/config'
+import { readTestConfigs } from './config'
 import { server } from './server/wrapper'
 
 readTestConfigs()
