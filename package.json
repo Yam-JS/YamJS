@@ -24,10 +24,10 @@
   "workspaces": [
     "packages/build",
     "packages/e2e",
-    "packages/test-util",
     "packages/yamjs-core",
     "packages/yamjs-dev",
     "packages/yamjs-dev-reload",
-    "packages/yamjs-legacy"
+    "packages/yamjs-legacy",
+    "packages/yamjs-test-util"
   ]
 }
