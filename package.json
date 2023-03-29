@@ -12,7 +12,7 @@
     "dev": "yarn workspace @yam-js/dev",
     "legacy": "yarn workspace @yam-js/legacy",
     "plugin": "yarn workspace @yam-js/plugin",
-    "testbot": "yarn workspace @yam-js/test-bot",
+    "testutil": "yarn workspace @yam-js/test-util",
     "e2e": "yarn workspace @yam-js/e2e",
     "graaltype": "yarn --cwd ./packages/graal-type-introspection"
   },
