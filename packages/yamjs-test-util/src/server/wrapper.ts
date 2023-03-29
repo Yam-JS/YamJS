@@ -110,9 +110,15 @@ const createServer = () => {
     )
   }
 
-  const stop = () => {
-    if (!internal.mcServer) {
-      return
+  const stop = async () => {
+    if (!internal.mcServer) return
+    if (state.isProcessRunning && !state.isReady) {
+      const { isStopped } = await promiseObjectRace({
+        isStopped: waitForState(state, (state) => !state.isProcessRunning),
+        isReady: waitForState(state, (state) => state.isReady),
+      })
+
+      if (isStopped) return
     }
 
     state.isReady = false
