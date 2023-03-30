@@ -1,10 +1,17 @@
 {
   "name": "@yam-js/core",
   "version": "0.0.1",
-  "main": "./dist/index",
   "license": "MIT",
+  "main": "./dist/index",
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js"
+    }
+  },
   "scripts": {
     "build": "vite build",
+    "postinstall": "yarn build",
     "yamjs": "yarn --cwd ../../"
   },
   "devDependencies": {
