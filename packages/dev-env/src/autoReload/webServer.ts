@@ -1,4 +1,4 @@
-import { load } from '@yam-js/legacy/src'
+import { load } from '@yam-js/legacy'
 
 export class WebServer {
   static app: undefined | { listen: Function; stop: Function; get: Function } = undefined

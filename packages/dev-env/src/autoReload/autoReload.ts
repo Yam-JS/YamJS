@@ -12,7 +12,7 @@ export const initializeWebServer = () => {
     lifecycle.reload()
   })
 
-  lifecycle.register('onDisable', {
+  lifecycle.on('disable', {
     name: 'WebServer',
     hook: () => {
       WebServer.stop()

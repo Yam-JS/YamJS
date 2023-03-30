@@ -2,6 +2,12 @@
   "name": "@yam-js/dev-reload",
   "version": "0.0.3",
   "main": "./dist/yamjs",
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js"
+    }
+  },
   "license": "MIT",
   "scripts": {
     "build": "vite build",
