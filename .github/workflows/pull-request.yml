@@ -33,8 +33,8 @@ jobs:
       - name: Archive graal type introspection
         uses: actions/upload-artifact@v3
         with:
-          name: graal-type-instrospection
-          path: ./node_modules/@yam-js/graal-type-instrospection/index.d.ts
+          name: graal-type-introspection
+          path: ./node_modules/@yam-js/graal-type-introspection/index.d.ts
           retention-days: 3
           if-no-files-found: error
 
