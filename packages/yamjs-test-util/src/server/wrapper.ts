@@ -69,6 +69,11 @@ const createServer = () => {
       })
 
       if (isReady) return
+
+      if (internal.mcServer) {
+        internal.mcServer.kill()
+        internal.mcServer = undefined
+      }
     }
 
     await setupServer()
@@ -142,6 +147,7 @@ const createServer = () => {
     internal.mcServer.on('close', () => {
       state.isProcessRunning = false
       internal.mcServer?.kill()
+      internal.mcServer = undefined
       clearTimeout(timeoutHandle)
     })
 

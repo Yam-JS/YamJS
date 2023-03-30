@@ -53,6 +53,4 @@ export const readTestConfigs = () => {
     // @ts-expect-error
     appConfig[key] = value
   }
-
-  console.log('Read test configs', appConfig)
 }
