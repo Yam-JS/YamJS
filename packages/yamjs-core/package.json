@@ -19,8 +19,7 @@
     "@graal-types/java-16": "^1.0.0",
     "@graal-types/paper-1.19": "^1.0.1",
     "@yam-js/build": "^0.0.1",
-    "type-fest": "^3.6.1",
-    "vite": "^4.2.0"
+    "type-fest": "^3.6.1"
   },
   "dependencies": {
     "@yam-js/graal-type-introspection": "0.0.2",
