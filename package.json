@@ -1,7 +1,7 @@
 {
   "name": "yamjs",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "index.js",
   "author": "Kyle <kyle.mercer.89@gmail.com>",
   "license": "MIT",
@@ -16,9 +16,12 @@
     "plugin": "yarn workspace @yam-js/plugin",
     "testutil": "yarn workspace @yam-js/test-util",
     "typecheck:all": "yarn core typecheck && yarn dev typecheck && yarn e2e typecheck && yarn graaltype typecheck && yarn legacy typecheck && yarn testutil typecheck",
-    "build:libs": "yarn core build && yarn legacy build && yarn testutil build"
+    "build:libs": "yarn core build && yarn legacy build && yarn testutil build",
+    "version": "changeset version",
+    "version:dev": "changeset version --snapshot dev"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.26.1",
     "got": "^11.8.6",
     "tsx": "^3.12.5",
     "typescript": "^4.9.5"
@@ -27,6 +30,7 @@
     "packages/build",
     "packages/dev-env",
     "packages/e2e",
+    "packages/graal-type-introspection",
     "packages/yamjs-core",
     "packages/yamjs-dev-reload",
     "packages/yamjs-legacy",

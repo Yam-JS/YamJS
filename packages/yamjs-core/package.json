@@ -23,7 +23,7 @@
     "type-fest": "^3.6.1"
   },
   "dependencies": {
-    "@yam-js/graal-type-introspection": "0.0.2",
+    "@yam-js/graal-type-introspection": "0.0.1",
     "vlq": "^2.0.4"
   }
 }

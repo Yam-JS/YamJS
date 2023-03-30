@@ -1,6 +1,6 @@
 {
   "name": "@yam-js/graal-type-introspection",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "main": "index.d.ts",
   "license": "MIT",
   "scripts": {
