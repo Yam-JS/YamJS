@@ -125,7 +125,7 @@ const createServer = () => {
 
     for (const bot of internal.bots) {
       try {
-        bot.stop()
+        await bot.stop()
       } catch (err) {
         // Ignore
       }

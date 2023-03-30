@@ -69,7 +69,7 @@ export const waitForEventPayload = <K extends Events['type']>(
     })
   })
 
-  const timeoutPromise = new Promise<never>((_, reject) => {
+  const timeoutPromise = new Promise<void>((_, reject) => {
     timeoutId = setTimeout(() => {
       timeoutId = null
       reject(new Error(`Timeout waiting for event payload: ${name}`))
