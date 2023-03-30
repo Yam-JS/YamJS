@@ -21,7 +21,8 @@
     "version": "changeset version",
     "version:dev": "changeset version --snapshot dev",
     "release": "changeset publish",
-    "release:dev": "changeset publish --tag dev"
+    "release:dev": "changeset publish --tag dev",
+    "clean": "node ./scripts/clean.js"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.1",
