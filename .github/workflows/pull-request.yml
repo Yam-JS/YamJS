@@ -30,6 +30,13 @@ jobs:
           yarn
           yarn build:libs
 
+      - name: Archive graal type introspection
+        uses: actions/upload-artifact@v3
+        with:
+          name: graal-type-instrospection
+          path: node_modules/@yamjs/graal-type-instrospection/index.d.ts
+          retention-days: 3
+
       - name: Typecheck
         run: yarn typecheck:all
 
