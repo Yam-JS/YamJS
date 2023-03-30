@@ -6,4 +6,5 @@ export declare const yamJsViteConfig: (options: {
   external?: string[]
   entryPoints?: string[]
   isBin?: boolean
+  skipDeclaration?: boolean
 }) => ReturnType<typeof defineConfig>

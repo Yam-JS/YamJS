@@ -12,6 +12,8 @@
     "dev": "yarn workspace @yam-js/dev",
     "legacy": "yarn workspace @yam-js/legacy",
     "plugin": "yarn workspace @yam-js/plugin",
+    "testutil": "yarn workspace @yam-js/test-util",
+    "e2e": "yarn workspace @yam-js/e2e",
     "graaltype": "yarn --cwd ./packages/graal-type-introspection"
   },
   "devDependencies": {
@@ -21,9 +23,12 @@
   },
   "workspaces": [
     "packages/build",
+    "packages/e2e",
     "packages/yamjs-core",
     "packages/yamjs-dev",
     "packages/yamjs-dev-reload",
-    "packages/yamjs-legacy"
+    "packages/yamjs-legacy",
+    "packages/yamjs-plugin",
+    "packages/yamjs-test-util"
   ]
 }

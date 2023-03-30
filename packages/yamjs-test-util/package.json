@@ -1,0 +1,30 @@
+{
+  "name": "@yam-js/test-util",
+  "version": "0.0.1",
+  "license": "MIT",
+  "main": "dist/index",
+  "scripts": {
+    "build": "vite build",
+    "test:server": "tsx ./src/server/wrapper",
+    "postinstall": "yarn build"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js"
+    }
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "got": "^12.6.0",
+    "mineflayer": "^4.8.1",
+    "tsx": "^3.12.6",
+    "valtio": "^1.10.3",
+    "yaml": "^2.2.1"
+  },
+  "devDependencies": {
+    "@yam-js/build": "^0.0.1",
+    "@types/node": "^18.15.11",
+    "vite": "^4.2.1"
+  }
+}
