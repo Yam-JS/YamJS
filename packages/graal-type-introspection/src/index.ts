@@ -81,9 +81,9 @@ async function processGraalTypeFiles(root: string) {
   return combinedResults.join('\n')
 }
 
-const root = path.join(__dirname, '..', '..', '..')
+const root = path.resolve('..', '..')
 
 processGraalTypeFiles(root).then((result) => {
-  const outputPath = path.join(__dirname, '..', 'index.d.ts')
+  const outputPath = path.resolve('index.d.ts')
   fs.writeFileSync(outputPath, result)
 })
