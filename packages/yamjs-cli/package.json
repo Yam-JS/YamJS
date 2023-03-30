@@ -1,5 +1,6 @@
 {
-  "name": "yamjs-cli",
+  "name": "@yam-js/cli",
+  "private": true,
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",

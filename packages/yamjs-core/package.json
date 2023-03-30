@@ -1,6 +1,6 @@
 {
   "name": "@yam-js/core",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "license": "MIT",
   "main": "./dist/index",
   "exports": {
@@ -13,17 +13,18 @@
     "build": "vite build",
     "prepare": "yarn build",
     "typecheck": "tsc --noEmit",
+    "prepublish": "yarn build",
     "yamjs": "yarn --cwd ../../"
   },
   "devDependencies": {
     "@graal-types/adventure-text-minimessage": "^4.11.0",
     "@graal-types/java-16": "^1.0.0",
     "@graal-types/paper-1.19": "^1.0.1",
-    "@yam-js/build": "^0.0.1",
+    "@yam-js/build": "^0.0.3",
     "type-fest": "^3.6.1"
   },
   "dependencies": {
-    "@yam-js/graal-type-introspection": "0.0.1",
+    "@yam-js/graal-type-introspection": "^0.0.3",
     "vlq": "^2.0.4"
   }
 }
