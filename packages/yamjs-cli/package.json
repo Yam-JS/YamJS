@@ -4,7 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "tsx ./src/index"
+    "start": "tsx ./src/index",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "got": "^12.6.0",

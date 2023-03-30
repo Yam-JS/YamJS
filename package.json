@@ -10,11 +10,12 @@
     "build": "yarn workspace @yam-js/build",
     "core": "yarn workspace @yam-js/core",
     "dev": "yarn workspace @yam-js/dev-env",
+    "e2e": "yarn workspace @yam-js/e2e",
+    "graaltype": "yarn --cwd ./packages/graal-type-introspection",
     "legacy": "yarn workspace @yam-js/legacy",
     "plugin": "yarn workspace @yam-js/plugin",
     "testutil": "yarn workspace @yam-js/test-util",
-    "e2e": "yarn workspace @yam-js/e2e",
-    "graaltype": "yarn --cwd ./packages/graal-type-introspection"
+    "typecheck:all": "yarn core typecheck && yarn dev typecheck && yarn e2e typecheck && yarn graaltype typecheck && yarn legacy typecheck && yarn testutil typecheck"
   },
   "devDependencies": {
     "got": "^11.8.6",

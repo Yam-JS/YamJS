@@ -7,6 +7,7 @@
     "build": "webpack --env production",
     "test": "ts-mocha -p ./tsconfig.json tests/**/*.test.ts --timeout 60000 --exit",
     "ci:test": "yarn build && yarn yamjs plugin build && yarn test",
+    "typecheck": "tsc --noEmit",
     "yamjs": "yarn --cwd ../../"
   },
   "dependencies": {

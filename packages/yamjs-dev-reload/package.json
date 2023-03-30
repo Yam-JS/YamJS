@@ -5,6 +5,8 @@
   "license": "MIT",
   "scripts": {
     "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "postinstall": "yarn build",
     "yamjs": "yarn --cwd ../../"
   },
   "devDependencies": {

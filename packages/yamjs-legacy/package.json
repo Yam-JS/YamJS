@@ -12,6 +12,7 @@
   "scripts": {
     "build": "vite build",
     "postinstall": "yarn build",
+    "typecheck": "tsc --noEmit",
     "yamjs": "yarn --cwd ../../"
   },
   "devDependencies": {

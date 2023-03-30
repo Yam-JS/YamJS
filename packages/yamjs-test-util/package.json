@@ -12,6 +12,7 @@
   "scripts": {
     "build": "vite build",
     "test:server": "tsx ./src/server/wrapper",
+    "typecheck": "tsc --noEmit",
     "postinstall": "yarn build"
   },
   "dependencies": {

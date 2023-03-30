@@ -19,7 +19,7 @@ export type HookCallback = () => void
 type HookId = string
 type HookUnref = () => void
 // TODO: 'onEnable' doesn't work
-type LifecycleTypes = 'onDisable' | 'onEnable'
+type LifecycleTypes = 'disable' | 'enable'
 
 export const __INTERNAL_LIFECYCLE = Symbol('lifecycle')
 
@@ -34,7 +34,7 @@ const createLifecycleHandler = () => {
     for (let i = 1; i <= 5; i++) {
       const priorityHooks = [...group.values()].filter((hook) => hook.priority === i)
       for (const { hook, name } of priorityHooks) {
-        name && console.log(`${type === 'onEnable' ? 'Enabling' : 'Disabling'} ${name}`)
+        name && console.log(`${type === 'enable' ? 'Enabling' : 'Disabling'} ${name}`)
 
         await asyncCatchAndLogUnhandledError(
           async () => await hook?.(),
@@ -47,7 +47,7 @@ const createLifecycleHandler = () => {
   }
 
   Yam.instance.setOnCloseFn(async () => {
-    await executeHooks('onDisable')
+    await executeHooks('disable')
   })
 
   return {
@@ -59,7 +59,7 @@ const createLifecycleHandler = () => {
       logVerbose('Reloading YamJS')
       isReloading = true
 
-      await executeHooks('onDisable')
+      await executeHooks('disable')
 
       Yam.reload()
 
@@ -67,7 +67,7 @@ const createLifecycleHandler = () => {
       isReloading = false
     },
 
-    register: (name: LifecycleTypes, hook: Hook): HookUnref => {
+    on: (name: LifecycleTypes, hook: Hook): HookUnref => {
       const id = nextId++
 
       const callbacks = hooks.get(name) ?? new Map()

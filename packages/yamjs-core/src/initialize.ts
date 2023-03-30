@@ -21,7 +21,7 @@ export const initialize = () => {
   // TODO: Validate
   if (Yam.getMeta() === 'yamjs') {
     // Driver instance should unregister all listeners
-    lifecycle.register('onDisable', {
+    lifecycle.on('disable', {
       name: 'Event Listeners',
       hook: () => {
         HandlerList.unregisterAll(bukkitPlugin)
@@ -30,7 +30,7 @@ export const initialize = () => {
     })
   } else {
     // Context instance should unregister only its own listeners
-    lifecycle.register('onDisable', {
+    lifecycle.on('disable', {
       name: 'Context Event Listeners',
       hook: () => {
         HandlerList.unregisterAll(MainInstanceListener)
@@ -40,7 +40,7 @@ export const initialize = () => {
   }
 
   // TODO: 'onEnable' doesn't work
-  lifecycle[__INTERNAL_LIFECYCLE].executeHooks('onEnable')
+  lifecycle[__INTERNAL_LIFECYCLE].executeHooks('enable')
 
   isInitialized = true
 }

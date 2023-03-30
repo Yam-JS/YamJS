@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "postinstall": "ts-node ./src/index.ts",
+    "typecheck": "tsc --noEmit",
     "yamjs": "yarn --cwd ../../"
   },
   "dependencies": {
