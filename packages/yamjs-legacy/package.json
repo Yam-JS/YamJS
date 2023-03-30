@@ -11,7 +11,7 @@
   },
   "scripts": {
     "build": "vite build",
-    "postinstall": "yarn build",
+    "prepare": "yarn build",
     "typecheck": "tsc --noEmit",
     "yamjs": "yarn --cwd ../../"
   },

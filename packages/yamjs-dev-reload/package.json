@@ -6,14 +6,13 @@
   "scripts": {
     "build": "vite build",
     "typecheck": "tsc --noEmit",
-    "postinstall": "yarn build",
+    "prepare": "yarn build",
     "yamjs": "yarn --cwd ../../"
   },
   "devDependencies": {
     "@yam-js/build": "^0.0.1",
     "chokidar": "^3.5.3",
-    "tsx": "^3.12.6",
-    "vite": "^4.2.1"
+    "tsx": "^3.12.6"
   },
   "peerDependencies": {
     "@yam-js/core": "^0.0.1"

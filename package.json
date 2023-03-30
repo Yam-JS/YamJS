@@ -15,7 +15,8 @@
     "legacy": "yarn workspace @yam-js/legacy",
     "plugin": "yarn workspace @yam-js/plugin",
     "testutil": "yarn workspace @yam-js/test-util",
-    "typecheck:all": "yarn core typecheck && yarn dev typecheck && yarn e2e typecheck && yarn graaltype typecheck && yarn legacy typecheck && yarn testutil typecheck"
+    "typecheck:all": "yarn core typecheck && yarn dev typecheck && yarn e2e typecheck && yarn graaltype typecheck && yarn legacy typecheck && yarn testutil typecheck",
+    "build:libs": "yarn core build && yarn legacy build && yarn testutil build"
   },
   "devDependencies": {
     "got": "^11.8.6",
@@ -31,5 +32,6 @@
     "packages/yamjs-legacy",
     "packages/yamjs-plugin",
     "packages/yamjs-test-util"
-  ]
+  ],
+  "packageManager": "yarn@1.22.5"
 }
