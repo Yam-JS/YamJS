@@ -10,5 +10,5 @@
   "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
     "onlyUpdatePeerDependentsWhenOutOfRange": true
   },
-  "ignore": ["@yam-js/cli", "@yam-js/dev-env", "@yam-js/e2e", "@yam-js/plugin"]
+  "ignore": ["@yam-js/cli", "@yam-js/dev-env", "@yam-js/e2e"]
 }
