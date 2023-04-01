@@ -1,5 +1,11 @@
 # @yam-js/legacy
 
+## 0.1.1
+
+### Patch Changes
+
+- cf744dd: fixes missing dist
+
 ## 0.1.0
 
 ### Minor Changes
