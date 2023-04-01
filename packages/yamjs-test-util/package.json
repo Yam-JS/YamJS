@@ -1,6 +1,6 @@
 {
   "name": "@yam-js/test-util",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "MIT",
   "main": "./dist/index",
   "exports": {
@@ -25,7 +25,7 @@
     "yaml": "^2.2.1"
   },
   "devDependencies": {
-    "@yam-js/build": "^0.1.1",
+    "@yam-js/build": "^0.1.2",
     "@types/node": "^18.15.11"
   }
 }
