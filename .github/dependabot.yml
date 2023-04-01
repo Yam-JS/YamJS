@@ -38,6 +38,14 @@ updates:
     schedule:
       interval: 'weekly'
   - package-ecosystem: 'gradle'
-    directory: '/packages/yamjs-plugin'
+    directory: '/packages/yamjs-plugin/common'
+    schedule:
+      interval: 'weekly'
+  - package-ecosystem: 'gradle'
+    directory: '/packages/yamjs-plugin/minestom'
+    schedule:
+      interval: 'weekly'
+  - package-ecosystem: 'gradle'
+    directory: '/packages/yamjs-plugin/paper'
     schedule:
       interval: 'weekly'
