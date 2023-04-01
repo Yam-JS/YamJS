@@ -1,10 +1,10 @@
 ---
-'@yam-js/build': minor
-'@yam-js/graal-type-introspection': minor
-'@yam-js/core': minor
-'@yam-js/dev-reload': minor
-'@yam-js/legacy': minor
-'@yam-js/test-util': minor
+'@yam-js/build': patch
+'@yam-js/graal-type-introspection': patch
+'@yam-js/core': patch
+'@yam-js/dev-reload': patch
+'@yam-js/legacy': patch
+'@yam-js/test-util': patch
 ---
 
 fixes missing dist
