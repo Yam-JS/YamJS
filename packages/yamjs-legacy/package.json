@@ -1,6 +1,6 @@
 {
   "name": "@yam-js/legacy",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "license": "MIT",
   "main": "./dist/index",
   "exports": {
@@ -20,12 +20,12 @@
     "@graal-types/adventure-text-minimessage": "^4.11.0",
     "@graal-types/java-16": "^1.0.0",
     "@graal-types/paper-1.19": "^1.0.1",
-    "@yam-js/build": "^0.0.3",
+    "@yam-js/build": "^0.1.0",
     "type-fest": "^3.6.1",
     "typescript": "^5.0.2"
   },
   "peerDependencies": {
-    "@yam-js/core": "^0.0.3",
-    "@yam-js/graal-type-introspection": "^0.0.3"
+    "@yam-js/core": "^0.1.0",
+    "@yam-js/graal-type-introspection": "^0.1.0"
   }
 }

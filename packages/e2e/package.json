@@ -11,10 +11,10 @@
     "yamjs": "yarn --cwd ../../"
   },
   "dependencies": {
-    "@yam-js/core": "^0.0.3",
-    "@yam-js/dev-reload": "^0.0.3",
-    "@yam-js/legacy": "^0.0.3",
-    "@yam-js/test-util": "^0.0.3"
+    "@yam-js/core": "^0.1.0",
+    "@yam-js/dev-reload": "^1.0.0",
+    "@yam-js/legacy": "^1.0.0",
+    "@yam-js/test-util": "^0.1.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.3",
