@@ -31,7 +31,7 @@ export const initializeDevReload = () => {
   server.createContext('/reload', new ApiHandler())
   server.start()
 
-  lifecycle.register('onDisable', {
+  lifecycle.on('disable', {
     hook: () =>
       new Promise<void>((resolve) => {
         server.stop(0)

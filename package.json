@@ -1,7 +1,7 @@
 {
-  "name": "yamjs",
+  "name": "yam-js",
   "private": true,
-  "version": "0.0.1",
+  "version": "1.0.0",
   "main": "index.js",
   "author": "Kyle <kyle.mercer.89@gmail.com>",
   "license": "MIT",
@@ -10,25 +10,29 @@
     "build": "yarn workspace @yam-js/build",
     "core": "yarn workspace @yam-js/core",
     "dev": "yarn workspace @yam-js/dev-env",
+    "devreload": "yarn workspace @yam-js/dev-reload",
+    "e2e": "yarn workspace @yam-js/e2e",
+    "graaltype": "yarn --cwd ./packages/graal-type-introspection",
     "legacy": "yarn workspace @yam-js/legacy",
     "plugin": "yarn workspace @yam-js/plugin",
     "testutil": "yarn workspace @yam-js/test-util",
-    "e2e": "yarn workspace @yam-js/e2e",
-    "graaltype": "yarn --cwd ./packages/graal-type-introspection"
+    "typecheck:all": "yarn core typecheck && yarn dev typecheck && yarn e2e typecheck && yarn graaltype typecheck && yarn legacy typecheck && yarn testutil typecheck",
+    "build:libs": "yarn core build && yarn legacy build && yarn devreload build && yarn testutil build",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "version:dev": "changeset version --snapshot dev",
+    "release": "changeset publish",
+    "release:dev": "changeset publish --tag dev",
+    "clean": "node ./scripts/clean.js"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.26.1",
     "got": "^11.8.6",
     "tsx": "^3.12.5",
     "typescript": "^4.9.5"
   },
   "workspaces": [
-    "packages/build",
-    "packages/dev-env",
-    "packages/e2e",
-    "packages/yamjs-core",
-    "packages/yamjs-dev-reload",
-    "packages/yamjs-legacy",
-    "packages/yamjs-plugin",
-    "packages/yamjs-test-util"
-  ]
+    "packages/*"
+  ],
+  "packageManager": "yarn@1.22.5"
 }

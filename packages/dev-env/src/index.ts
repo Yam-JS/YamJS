@@ -1,5 +1,5 @@
 import { cacheSourceMap, registerEvent } from '@yam-js/core'
-import { command, file } from '@yam-js/legacy/src'
+import { command, file } from '@yam-js/legacy'
 import { EntityDeathEvent } from 'org.bukkit.event.entity'
 import { initializeDevReload } from '@yam-js/dev-reload'
 // import { server } from './webserver'

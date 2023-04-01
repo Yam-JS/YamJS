@@ -1,6 +1,6 @@
 {
   "name": "@yam-js/build",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
@@ -9,7 +9,7 @@
     "@babel/preset-typescript": "^7.21.0",
     "babel-plugin-transform-graal-imports": "^0.0.3",
     "typescript": "^5.0.2",
-    "vite": "^4.2.0",
+    "vite": "^4.2.1",
     "vite-plugin-babel": "^1.1.3",
     "vite-plugin-banner": "^0.7.0",
     "vite-plugin-dts": "^2.1.0"

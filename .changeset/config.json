@@ -1,0 +1,11 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@2.3.0/schema.json",
+  "changelog": ["@changesets/cli/changelog", { "repo": "Yam-JS/YamJS" }],
+  "commit": false,
+  "fixed": [],
+  "linked": [],
+  "access": "public",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "ignore": ["@yam-js/cli", "@yam-js/dev-env", "@yam-js/e2e", "@yam-js/plugin"]
+}

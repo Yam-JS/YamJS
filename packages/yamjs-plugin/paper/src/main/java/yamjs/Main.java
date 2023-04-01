@@ -55,6 +55,12 @@ public class Main extends JavaPlugin {
       // Load the YAML configuration from the reader
       YamlConfiguration config = YamlConfiguration.loadConfiguration(reader);
 
+      try {
+         reader.close();
+      } catch (Throwable error) {
+         // none
+      }
+
       return config.getString("name");
    }
 

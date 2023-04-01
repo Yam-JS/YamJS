@@ -28,7 +28,7 @@ export const server = HttpServer.create(new InetSocketAddress(8000), 0)
 server.createContext('/reload', new ApiHandler())
 server.start()
 
-lifecycle.register('onDisable', {
+lifecycle.on('disable', {
   hook: () =>
     new Promise<void>((resolve) => {
       server.stop(0)

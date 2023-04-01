@@ -209,7 +209,7 @@ export function command(options: {
     case 'bukkit': {
       // @ts-expect-error
       env.content.plugin.register(
-        options.namespace || env.content.plugin.getName(),
+        options.namespace || env.content.plugin?.getName(),
         options.name,
         options.aliases || [],
         options.permission || '',

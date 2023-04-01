@@ -1,20 +1,28 @@
 {
   "name": "@yam-js/dev-reload",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "main": "./dist/yamjs",
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js"
+    }
+  },
   "license": "MIT",
   "scripts": {
     "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "prepare": "yarn build",
+    "prepublish": "yarn build",
     "yamjs": "yarn --cwd ../../"
   },
   "devDependencies": {
-    "@yam-js/build": "^0.0.1",
+    "@yam-js/build": "^0.0.3",
     "chokidar": "^3.5.3",
-    "tsx": "^3.12.6",
-    "vite": "^4.2.1"
+    "tsx": "^3.12.6"
   },
   "peerDependencies": {
-    "@yam-js/core": "^0.0.1"
+    "@yam-js/core": "^0.0.3"
   },
   "bin": {
     "yamjs-dev-webpack": "./bin/webpack.js",

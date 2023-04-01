@@ -1,19 +1,20 @@
 {
   "name": "@yam-js/e2e",
   "private": true,
-  "version": "0.0.1",
+  "version": "1.0.0",
   "license": "MIT",
   "scripts": {
     "build": "webpack --env production",
     "test": "ts-mocha -p ./tsconfig.json tests/**/*.test.ts --timeout 60000 --exit",
     "ci:test": "yarn build && yarn yamjs plugin build && yarn test",
+    "typecheck": "tsc --noEmit",
     "yamjs": "yarn --cwd ../../"
   },
   "dependencies": {
-    "@yam-js/core": "0.0.1",
-    "@yam-js/dev-reload": "0.0.1",
-    "@yam-js/legacy": "0.0.1",
-    "@yam-js/test-util": "0.0.1"
+    "@yam-js/core": "^0.0.3",
+    "@yam-js/dev-reload": "^0.0.3",
+    "@yam-js/legacy": "^0.0.3",
+    "@yam-js/test-util": "^0.0.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.3",

@@ -1,10 +1,11 @@
 {
   "name": "@yam-js/graal-type-introspection",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "index.d.ts",
   "license": "MIT",
   "scripts": {
     "postinstall": "ts-node ./src/index.ts",
+    "typecheck": "tsc --noEmit",
     "yamjs": "yarn --cwd ../../"
   },
   "dependencies": {

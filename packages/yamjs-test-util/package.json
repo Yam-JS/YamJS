@@ -1,6 +1,6 @@
 {
   "name": "@yam-js/test-util",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "license": "MIT",
   "main": "./dist/index",
   "exports": {
@@ -11,8 +11,10 @@
   },
   "scripts": {
     "build": "vite build",
+    "postinstall": "yarn build",
+    "prepublish": "yarn build",
     "test:server": "tsx ./src/server/wrapper",
-    "postinstall": "yarn build"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "dotenv": "^16.0.3",
@@ -23,8 +25,7 @@
     "yaml": "^2.2.1"
   },
   "devDependencies": {
-    "@yam-js/build": "^0.0.1",
-    "@types/node": "^18.15.11",
-    "vite": "^4.2.1"
+    "@yam-js/build": "^0.0.3",
+    "@types/node": "^18.15.11"
   }
 }

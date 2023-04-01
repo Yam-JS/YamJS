@@ -1,7 +1,7 @@
 {
   "name": "@yam-js/dev-env",
   "private": true,
-  "version": "0.0.1",
+  "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
@@ -14,12 +14,13 @@
     "start:yam": "yarn tsnode ./scripts/startYam",
     "start:js": "yarn yamjs-webpack",
     "start:server": "cd server & java -Xms2G -Xmx2G -jar -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 server.jar -nogui",
+    "typecheck": "tsc --noEmit",
     "yamjs": "yarn --cwd ../../"
   },
   "dependencies": {
-    "@yam-js/core": "0.0.1",
-    "@yam-js/legacy": "0.0.1",
-    "@yam-js/dev-reload": "0.0.1",
+    "@yam-js/core": "^0.0.3",
+    "@yam-js/legacy": "^0.0.3",
+    "@yam-js/dev-reload": "^0.0.3",
     "vlq": "^2.0.4"
   },
   "devDependencies": {

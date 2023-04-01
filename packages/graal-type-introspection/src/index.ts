@@ -42,7 +42,7 @@ export function generateTypedefs(fileContent: string) {
 async function findGraalTypeFiles(root: string) {
   const pattern = '@graal-types/**/*.d.ts'
   const files = await fg(pattern, {
-    cwd: root,
+    cwd: path.normalize(root),
   })
   return files
 }
@@ -55,7 +55,7 @@ async function processGraalTypeFiles(root: string) {
   const typeMap = new Set<string>()
 
   for (const file of files) {
-    const fileContent = fs.readFileSync(path.join(root, file), 'utf8')
+    const fileContent = fs.readFileSync(path.join(root, path.normalize(file)), 'utf8')
     const typedefs = generateTypedefs(fileContent)
 
     typedefs.imports.forEach((importStatement) => {
@@ -81,9 +81,31 @@ async function processGraalTypeFiles(root: string) {
   return combinedResults.join('\n')
 }
 
-const root = path.join(__dirname, '..', '..', '..')
+function findNodeModules(startPath: string): string | undefined {
+  const nodeModules = 'node_modules'
+  let currentPath = startPath
+  let count = 0
+
+  while (path.dirname(currentPath) !== currentPath && count < 10) {
+    const potentialPath = path.join(currentPath, nodeModules)
+    if (fs.existsSync(potentialPath) && fs.lstatSync(potentialPath).isDirectory()) {
+      return potentialPath
+    }
+    currentPath = path.dirname(currentPath)
+    count++
+  }
+
+  return
+}
+
+const root = findNodeModules(path.join(__dirname, '..', '..'))
+
+if (!root) {
+  console.error('Failed to locate node_modules directory')
+  process.exit(1)
+}
 
 processGraalTypeFiles(root).then((result) => {
-  const outputPath = path.join(__dirname, '..', 'index.d.ts')
+  const outputPath = path.resolve(path.normalize('index.d.ts'))
   fs.writeFileSync(outputPath, result)
 })
