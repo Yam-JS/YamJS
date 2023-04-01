@@ -32,7 +32,7 @@
     "@graal-types/java-16": "^1.0.0",
     "@graal-types/paper-1.19": "^1.0.1",
     "@types/node": "^18.15.2",
-    "babel-loader": "^8.2.2",
+    "babel-loader": "^9.1.2",
     "babel-plugin-add-module-exports": "^1.0.4",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-graal-imports": "^0.0.3",
