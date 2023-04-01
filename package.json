@@ -18,9 +18,7 @@
     "testutil": "yarn workspace @yam-js/test-util",
     "typecheck:all": "yarn core typecheck && yarn dev typecheck && yarn e2e typecheck && yarn graaltype typecheck && yarn legacy typecheck && yarn testutil typecheck",
     "build:libs": "yarn core build && yarn legacy build && yarn devreload build && yarn testutil build",
-    "changeset": "changeset",
-    "version": "changeset version",
-    "version:dev": "changeset version --snapshot dev",
+    "bump": "changeset",
     "release": "changeset publish",
     "release:dev": "changeset publish --tag dev",
     "clean": "node ./scripts/clean.js"
