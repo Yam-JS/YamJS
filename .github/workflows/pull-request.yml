@@ -8,12 +8,12 @@ permissions:
   pull-requests: write
 
 jobs:
-  changesets:
-    runs-on: ubuntu-latest
-    if: ${{ github.actor == 'dependabot[bot]' }}
-    steps:
-      - name: Dependabot Changesets
-        uses: feelepxyz/dependabot-changesets@v1
+  # changesets:
+  #   runs-on: ubuntu-latest
+  #   if: ${{ github.actor == 'dependabot[bot]' }}
+  #   steps:
+  #     - name: Dependabot Changesets
+  #       uses: feelepxyz/dependabot-changesets@v1
 
   checks:
     runs-on: ubuntu-latest
