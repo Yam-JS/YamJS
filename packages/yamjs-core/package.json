@@ -17,6 +17,7 @@
     "yamjs": "yarn --cwd ../../"
   },
   "devDependencies": {
+    "@changesets/changelog-github": "^0.4.8",
     "@graal-types/adventure-text-minimessage": "^4.11.0",
     "@graal-types/java-16": "^1.0.0",
     "@graal-types/paper-1.19": "^1.0.1",
