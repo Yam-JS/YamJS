@@ -1,6 +1,6 @@
 {
   "name": "@yam-js/legacy",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "MIT",
   "main": "./dist/index",
   "exports": {
@@ -20,7 +20,7 @@
     "@graal-types/adventure-text-minimessage": "^4.11.0",
     "@graal-types/java-16": "^1.0.0",
     "@graal-types/paper-1.19": "^1.0.1",
-    "@yam-js/build": "^0.1.1",
+    "@yam-js/build": "^0.1.2",
     "type-fest": "^3.7.2",
     "typescript": "^5.0.3"
   },

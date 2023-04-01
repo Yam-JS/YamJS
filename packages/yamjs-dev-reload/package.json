@@ -1,6 +1,6 @@
 {
   "name": "@yam-js/dev-reload",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "./dist/yamjs",
   "exports": {
     ".": {
@@ -17,7 +17,7 @@
     "yamjs": "yarn --cwd ../../"
   },
   "devDependencies": {
-    "@yam-js/build": "^0.1.1",
+    "@yam-js/build": "^0.1.2",
     "chokidar": "^3.5.3",
     "tsx": "^3.12.6"
   },
