@@ -1,4 +1,5 @@
 import { server, waitForEventPayload } from '@yam-js/test-util'
+import assert from 'assert'
 
 describe('test', () => {
   beforeEach(async () => {
@@ -43,5 +44,18 @@ describe('test', () => {
     await waitForEventPayload('server/log', (payload) => {
       return payload.includes(`Test1 Hello world!`)
     })
+  })
+})
+
+describe('regression testing', () => {
+  beforeEach(async () => {
+    await server.start()
+  })
+
+  it('does not error with "zip file closed" on exit', async () => {
+    await server.stop()
+
+    const logs = server.getLogs()
+    assert(logs.find((log) => log.includes('zip file closed')) === undefined)
   })
 })

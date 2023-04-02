@@ -55,6 +55,7 @@ public class YamJS {
    public static void close() {
       YamJS.driver.close();
       new ArrayList<>(YamJS.instances).forEach(value -> value.destroy());
+      Instance.engine.close();
    }
 
    /** Initializes the YamJS Environment. */

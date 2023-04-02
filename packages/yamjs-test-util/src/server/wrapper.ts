@@ -1,10 +1,9 @@
-import { spawn } from 'node:child_process'
 import { proxy } from 'valtio/vanilla'
 import { createBotInstance } from '../bot/bot'
-import { testCache } from '../cache/cache'
 import { AppEvents, createEventStateListener, waitForEventPayload } from '../util/events/events'
 import { promiseObjectRace } from '../util/misc'
 import { waitForState } from '../util/proxy'
+import { startServerProcess } from './process'
 import { setupServer } from './setup'
 
 const ServerProcessClosed = 'ServerProcessClosed'
@@ -13,39 +12,7 @@ const baseOptions = {
   doneRegex: /\[.+\]: Done/,
 }
 
-const startServerProcess = () => {
-  const process = spawn('java', ['-jar', 'server.jar', 'nogui'], {
-    cwd: testCache.directoryMap.server.path,
-    stdio: 'pipe',
-    detached: false,
-  })
-  process.stdin.setDefaultEncoding('utf8')
-  process.stdout.setEncoding('utf8')
-  process.stderr.setEncoding('utf8')
-
-  let buffer = ''
-
-  const onData = (data: string) => {
-    buffer += data
-    const lines = buffer.split('\n')
-    const len = lines.length - 1
-    for (let i = 0; i < len; ++i) {
-      AppEvents.emit('server/log', lines[i])
-    }
-    buffer = lines[lines.length - 1]
-  }
-
-  process.stdout.on('data', onData)
-  process.stderr.on('data', (err) => {
-    console.log(err)
-  })
-  // process.on('close', () => {
-  //   AppEvents.emit('server/log', ServerProcessClosed)
-  // })
-
-  return process
-}
-
+// TODO: Break out the methods
 const createServer = () => {
   const internal = {
     nextBotId: 0,
@@ -78,10 +45,12 @@ const createServer = () => {
 
     await setupServer()
 
+    internal.logs.reset()
     internal.mcServer = startServerProcess()
     state.isProcessRunning = true
 
     if (outputLogs) {
+      // TODO: Exit on server close
       AppEvents.on('server/log', (msg) => {
         console.log(msg)
       })
@@ -184,6 +153,7 @@ const createServer = () => {
     write,
     start,
     stop,
+    getLogs: () => internal.logs.get(),
     state,
   }
 }
