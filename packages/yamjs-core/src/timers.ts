@@ -25,7 +25,7 @@ const setImmediate = (callback: () => void) => setTimeout(callback, 0)
 
 const clearTimeout = (id: number) => tickerTasks.remove(id)
 
-export const initializeTimers = () => {
+const initializeTimers = () => {
   // @ts-expect-error
   globalThis.setTimeout = setTimeout
   // @ts-expect-error
@@ -37,3 +37,6 @@ export const initializeTimers = () => {
   // @ts-ignore
   globalThis.clearInterval = clearTimeout
 }
+
+// Needs to be initialized early
+initializeTimers()

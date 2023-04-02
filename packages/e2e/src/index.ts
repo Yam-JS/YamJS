@@ -1,6 +1,9 @@
 import { lifecycle, registerEvent } from '@yam-js/core'
 import { command } from '@yam-js/legacy'
 import { PlayerJoinEvent, PlayerQuitEvent } from 'org.bukkit.event.player'
+// import { initializeSourceMap } from './sourceMap'
+
+// initializeSourceMap()
 
 const test = (fn: () => void) => {
   setTimeout(fn, 1000)
@@ -23,5 +26,33 @@ command({
   execute() {
     console.log('Test4 Reloading...')
     lifecycle.reload()
+  },
+})
+
+command({
+  name: 'setTimeout',
+  execute() {
+    setTimeout(() => {
+      console.log('setTimeout worked')
+    }, 250)
+  },
+})
+
+command({
+  name: 'setInterval',
+  execute() {
+    let count = 0
+    setInterval(() => {
+      console.log('setInterval worked' + count++)
+    }, 250)
+  },
+})
+
+command({
+  name: 'setImmediate',
+  execute() {
+    setImmediate(() => {
+      console.log('setImmediate worked')
+    })
   },
 })

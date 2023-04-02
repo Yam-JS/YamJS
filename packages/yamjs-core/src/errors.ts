@@ -111,3 +111,5 @@ export const createCatchAndLogUnhandledErrorHandler =
       logError(error, msg)
     }
   }
+
+Yam.instance.setLoggerFn((error) => logError(error))

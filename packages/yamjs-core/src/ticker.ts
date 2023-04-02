@@ -1,4 +1,5 @@
 import { BukkitTask } from 'org.bukkit.scheduler'
+import { lifecycle } from './lifecycle'
 import { logVerbose } from './util'
 
 interface TickContext {
@@ -44,6 +45,13 @@ const createTicker = () => {
 
     return
   }
+
+  lifecycle.on('enable', {
+    name: 'Ticker',
+    callback: () => {
+      start()
+    },
+  })
 
   return {
     [Context]: ctx,

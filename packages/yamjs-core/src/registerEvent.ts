@@ -1,6 +1,7 @@
-import { EventPriority, Listener } from 'org.bukkit.event'
+import { EventPriority, HandlerList, Listener } from 'org.bukkit.event'
 import { bukkitManager, bukkitPlugin } from './bukkit'
 import { catchAndLogUnhandledError } from './errors'
+import { lifecycle } from './lifecycle'
 
 /** A valid event priority. */
 type StringEventPriority = 'HIGH' | 'HIGHEST' | 'LOW' | 'LOWEST' | 'MONITOR' | 'NORMAL'
@@ -53,4 +54,24 @@ export const registerEvent: RegisterEventType = (
     },
     bukkitPlugin
   )
+}
+
+if (Yam.getMeta() === 'yamjs') {
+  // Driver instance should unregister all listeners
+  lifecycle.on('disable', {
+    name: 'Event Listeners',
+    callback: () => {
+      HandlerList.unregisterAll(bukkitPlugin)
+    },
+    priority: 5,
+  })
+} else {
+  // Context instance should unregister only its own listeners
+  lifecycle.on('disable', {
+    name: 'Context Event Listeners',
+    callback: () => {
+      HandlerList.unregisterAll(MainInstanceListener)
+    },
+    priority: 5,
+  })
 }

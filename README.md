@@ -35,7 +35,7 @@ YamJS is currently in alpha, so please note that there may be changes to the API
 - Improved stability
 
   - Ticker was re-written from the ground up.
-  - Easier to add onDisable hooks.
+  - Improved lifecycle management.
 
 - Improved Developer Experience
 
@@ -43,5 +43,10 @@ YamJS is currently in alpha, so please note that there may be changes to the API
   - Better Error Handling.
   - Source Map Support.
   - Dev Autoreload support.
+
+- Greater confidence
+
+  - Significantly improved test coverage.
+  - Improved CI/CD pipeline.
 
 - TBD

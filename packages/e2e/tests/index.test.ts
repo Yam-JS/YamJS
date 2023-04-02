@@ -3,7 +3,9 @@ import assert from 'assert'
 
 describe('test', () => {
   beforeEach(async () => {
-    await server.start(true)
+    await server.start({
+      outputLogs: true,
+    })
   })
 
   after(async () => {
@@ -43,6 +45,38 @@ describe('test', () => {
 
     await waitForEventPayload('server/log', (payload) => {
       return payload.includes(`Test1 Hello world!`)
+    })
+  })
+})
+
+describe('timers', () => {
+  beforeEach(async () => {
+    await server.start()
+  })
+
+  it('setTimeout functions', async () => {
+    server.write('setTimeout')
+
+    await waitForEventPayload('server/log', (payload) => {
+      return payload.includes(`setTimeout worked`)
+    })
+  })
+
+  it('setInterval functions', async () => {
+    server.write('setInterval')
+
+    for (let i = 0; i <= 3; i++) {
+      await waitForEventPayload('server/log', (payload) =>
+        payload.includes(`setInterval worked${i}`)
+      )
+    }
+  })
+
+  it('setImmediate functions', async () => {
+    server.write('setImmediate')
+
+    await waitForEventPayload('server/log', (payload) => {
+      return payload.includes(`setImmediate worked`)
     })
   })
 })
