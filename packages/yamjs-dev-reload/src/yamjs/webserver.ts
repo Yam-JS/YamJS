@@ -32,7 +32,7 @@ export const initializeDevReload = () => {
   server.start()
 
   lifecycle.on('disable', {
-    hook: () =>
+    callback: () =>
       new Promise<void>((resolve) => {
         server.stop(0)
 

@@ -29,7 +29,7 @@ server.createContext('/reload', new ApiHandler())
 server.start()
 
 lifecycle.on('disable', {
-  hook: () =>
+  callback: () =>
     new Promise<void>((resolve) => {
       server.stop(0)
 

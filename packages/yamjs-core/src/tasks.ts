@@ -1,4 +1,5 @@
 import { Opaque } from 'type-fest'
+import { lifecycle } from './lifecycle'
 import { ticker } from './ticker'
 
 type TickerTask = () => void
@@ -79,13 +80,17 @@ const createTickerTasks = () => {
     }
   }
 
+  lifecycle.on('enable', {
+    name: 'Tasks',
+    callback: () => {
+      ticker.registerTickFn((tick) => run(tick))
+    },
+  })
+
   return {
     add,
     run,
     remove,
-    initialize: () => {
-      ticker.registerTickFn((tick) => run(tick))
-    },
   }
 }
 

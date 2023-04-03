@@ -14,7 +14,7 @@ export const initializeWebServer = () => {
 
   lifecycle.on('disable', {
     name: 'WebServer',
-    hook: () => {
+    callback: () => {
       WebServer.stop()
     },
   })

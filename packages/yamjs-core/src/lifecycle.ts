@@ -1,9 +1,9 @@
 import { asyncCatchAndLogUnhandledError } from './errors'
 import { logVerbose } from './util'
 
-type Hook = {
+type LifecycleConfig = {
   name?: string
-  hook: HookCallback
+  callback: LifecycleCallback
 
   /**
    * Allows to control the order of execution.
@@ -14,62 +14,82 @@ type Hook = {
    */
   priority?: 1 | 2 | 3 | 4 | 5
 }
-export type HookCallback = () => void
+type LifecycleCallback = () => void
 
-type HookId = string
-type HookUnref = () => void
-// TODO: 'onEnable' doesn't work
+type CallbackId = string
+type LifecycleCallbackUnref = () => void
 type LifecycleTypes = 'disable' | 'enable'
 
 export const __INTERNAL_LIFECYCLE = Symbol('lifecycle')
 
 const createLifecycleHandler = () => {
-  const hooks = new Map<LifecycleTypes, Map<HookId, Hook>>()
+  const instances = new Map<LifecycleTypes, Map<CallbackId, LifecycleConfig>>()
   let nextId = 0
+  let isEnabled = false
 
-  const executeHooks = async (type: LifecycleTypes) => {
-    const group = hooks.get(type)
+  const executeCallbacks = async (type: LifecycleTypes) => {
+    const group = instances.get(type)
 
     for (let i = 1; i <= 5; i++) {
-      const priorityHooks = [...group.values()].filter((hook) => hook.priority === i)
-      for (const { hook, name } of priorityHooks) {
+      const priorityItems = [...group.values()].filter((item) => item.priority === i)
+      for (const { callback, name } of priorityItems) {
         name && console.log(`${type === 'enable' ? 'Enabling' : 'Disabling'} ${name}`)
 
         await asyncCatchAndLogUnhandledError(
-          async () => await hook?.(),
-          `Error while executing ${type} hook`
+          async () => await callback?.(),
+          `Error while executing ${type} callback`
         )
       }
     }
 
-    hooks.delete(type)
+    instances.delete(type)
   }
 
   Yam.instance.setOnCloseFn(async () => {
-    await executeHooks('disable')
+    await executeCallbacks('disable')
   })
 
   return {
-    [__INTERNAL_LIFECYCLE]: {
-      executeHooks,
+    /**
+     * Normally when importing from YamJS, the JS portion is automatically initialized.
+     * If you disable "initialize" is disabled, you can manually initialize it by running
+     * this function.
+     */
+    enable: async () => {
+      if (isEnabled) return
+
+      isEnabled = true
+      await executeCallbacks('enable')
     },
 
+    /**
+     * Primary method of reloading YamJS. This will reload the entire JS portion of YamJS.
+     */
     reload: async () => {
       logVerbose('Reloading YamJS')
 
-      await executeHooks('disable')
+      await executeCallbacks('disable')
 
       Yam.reload()
 
       logVerbose('Finished reloading YamJS')
     },
 
-    on: (name: LifecycleTypes, hook: Hook): HookUnref => {
+    /**
+     * Allows to register a callback that will be executed when YamJS is enabled or disabled.
+     */
+    on: (name: LifecycleTypes, config: LifecycleConfig): LifecycleCallbackUnref => {
+      if (name === 'enable' && isEnabled) {
+        config.callback()
+
+        return () => undefined
+      }
+
       const id = nextId++
 
-      const callbacks = hooks.get(name) ?? new Map()
-      callbacks.set(id, { priority: 3, ...hook })
-      hooks.set(name, callbacks)
+      const callbacks = instances.get(name) ?? new Map()
+      callbacks.set(id, { priority: 3, ...config })
+      instances.set(name, callbacks)
 
       return () => delete callbacks[id]
     },

@@ -6,6 +6,20 @@ import { createBukkitYml } from './setup/bukkitYml'
 import { downloadPaper, downloadYamJs } from './setup/download'
 import { createServerProperties } from './setup/serverProperties'
 
+const addMap = () => {
+  if (!appConfig.js) return
+  const targetPath = `${appConfig.js}.map`
+  if (!existsSync(targetPath)) return
+
+  return testCache.setFile({
+    name: 'index.js.map',
+    getContents: () => {
+      return readFileSync(targetPath, 'utf8')
+    },
+    folder: 'server/plugins/YamJS',
+  })
+}
+
 export const setupServer = (config: ServerConfig) => {
   return Promise.allSettled([
     // Server
@@ -71,5 +85,8 @@ export const setupServer = (config: ServerConfig) => {
           folder: 'server/plugins/YamJS',
         })
       : undefined,
+
+    // index.js.map
+    addMap(),
   ])
 }
