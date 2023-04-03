@@ -1,7 +1,11 @@
+import groovy.json.JsonSlurper
+
 plugins {
    id 'java'
    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
+
+def pkgJson = new JsonSlurper().parseText(file('../package.json').text)
 
 dependencies {
    // common lib deps: https://github.com/Carleslc/Simple-YAML
@@ -16,7 +20,7 @@ dependencies {
 jar {
    archiveBaseName.set('yamjs')
    archiveClassifier.set('common')
-   archiveVersion.set(project.property('yamjsVersion'))
+   archiveVersion.set(pkgJson.version)
 }
 
 shadowJar {
