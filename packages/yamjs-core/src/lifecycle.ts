@@ -1,4 +1,4 @@
-import { asyncCatchAndLogUnhandledError, catchAndLogUnhandledError } from './errors'
+import { asyncCatchAndLogUnhandledError } from './errors'
 import { logVerbose } from './util'
 
 type Hook = {
@@ -26,7 +26,6 @@ export const __INTERNAL_LIFECYCLE = Symbol('lifecycle')
 const createLifecycleHandler = () => {
   const hooks = new Map<LifecycleTypes, Map<HookId, Hook>>()
   let nextId = 0
-  let isReloading = false
 
   const executeHooks = async (type: LifecycleTypes) => {
     const group = hooks.get(type)
@@ -57,14 +56,12 @@ const createLifecycleHandler = () => {
 
     reload: async () => {
       logVerbose('Reloading YamJS')
-      isReloading = true
 
       await executeHooks('disable')
 
       Yam.reload()
 
       logVerbose('Finished reloading YamJS')
-      isReloading = false
     },
 
     on: (name: LifecycleTypes, hook: Hook): HookUnref => {

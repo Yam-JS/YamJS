@@ -46,6 +46,7 @@ export async function setupYam() {
 
 // check is this file is being run directly
 if (require.main === module) {
+  // eslint-disable-next-line
   new Promise(async (resolve) => {
     await setupYam()
 

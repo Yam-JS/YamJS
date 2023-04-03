@@ -6,6 +6,10 @@
   "license": "MIT",
   "scripts": {
     "tsnode": "tsx --tsconfig tsconfig-node.json ",
+    "lint": "yarn lint:src & yarn lint:scripts",
+    "lint:src": "eslint ./src --max-warnings=0",
+    "lint:scripts": "eslint ./scripts --max-warnings=0",
+    "prettier": "prettier --check ./src/**/*.{ts,tsx} ./scripts/**/*.{ts,tsx}",
     "setup:yam": "yarn tsnode ./scripts/setupYam",
     "setup:paper": "yarn tsnode ./scripts/setupPaper",
     "setup:plugman": "yarn tsnode ./scripts/setupPlugman",

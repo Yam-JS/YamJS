@@ -24,13 +24,13 @@ export const reload = (): void => {
     context.isReloading = true
 
     const req = http.request(options, (res) => {
-      res.on('data', (data) => {
+      res.on('data', () => {
         context.isReloading = false
 
         console.log('Reload successful')
       })
     })
-    req.on('error', (err) => {
+    req.on('error', () => {
       console.log('Failed to connect...')
       return setTimeout(reload, 1000)
     })

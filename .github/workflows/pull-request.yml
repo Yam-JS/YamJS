@@ -38,19 +38,18 @@ jobs:
 
       - name: Install/Build
         run: |
+          chmod -R +x ./
           yarn
           yarn build:libs
 
-      - name: Archive graal type introspection
-        uses: actions/upload-artifact@v3
-        with:
-          name: graal-type-introspection
-          path: packages/graal-type-introspection/index.d.ts
-          retention-days: 3
-          if-no-files-found: error
+      - name: Prettier
+        run: yarn prettier
+
+      - name: Eslint
+        run: yarn lint
 
       - name: Typecheck
-        run: yarn typecheck:all
+        run: yarn typecheck
 
   e2e:
     runs-on: ubuntu-latest
@@ -76,10 +75,10 @@ jobs:
 
       - name: Install/Build
         run: |
+          chmod -R +x ./
           yarn
           yarn build:libs
 
       - name: Test
         run: |
-          chmod +x ./packages/yamjs-plugin/gradlew
           yarn e2e ci:test

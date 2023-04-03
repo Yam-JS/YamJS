@@ -1,5 +1,4 @@
 import webpack from 'webpack'
-import http from 'http'
 import path from 'path'
 import { clearWebpackConsole } from './util'
 import { formatWebpackMessages } from './formatWebpackMessages'
@@ -8,12 +7,13 @@ import { reload } from '../util/reload'
 const isInteractive = process.stdout.isTTY
 
 export async function startWebpack(root: string) {
+  // eslint-disable-next-line
   const createConfig = require(path.join(root, 'webpack.config.js'))
   const config = createConfig({ dev: true })
 
   let compiler: webpack.Compiler
   try {
-    compiler = webpack(config, (error, stats) => {
+    compiler = webpack(config, () => {
       return
     })
   } catch (err) {

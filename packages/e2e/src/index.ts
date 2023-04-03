@@ -20,7 +20,7 @@ registerEvent(PlayerQuitEvent, (event) => {
 
 command({
   name: 'jsreload',
-  execute(sender, ...args) {
+  execute() {
     console.log('Test4 Reloading...')
     lifecycle.reload()
   },

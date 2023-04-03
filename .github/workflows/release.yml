@@ -21,7 +21,9 @@ jobs:
           node-version: 16.x
 
       - name: Install Dependencies
-        run: yarn
+        run: |
+          yarn
+          chmod -R +x ./
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets

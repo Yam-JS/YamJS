@@ -185,6 +185,7 @@ if (require.main === module) {
     outputLogs: true,
   })
 
+  // eslint-disable-next-line
   new Promise<void>(async (resolve) => {
     await waitForState(server.state, (state) => state.isReady)
     console.log('Server is ready.')
