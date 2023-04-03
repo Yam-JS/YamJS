@@ -55,23 +55,14 @@ export const createBotInstance = (options: {
 
     bot.on('spawn', async () => {
       state.isReady = true
+      // eslint-disable-next-line
       internal.mcData = require('minecraft-data')(bot.version)
 
       AppEvents.emit('bot/ready', `${id}`)
     })
 
-    bot.on('chat', (username, message, type, rawMessage, matches) => {
-      //
-    })
-
-    bot.on('message', (jsonString) => {
-      // console.log('event:message', jsonString.json)
-      // console.log(getChatMessage(jsonString))
-    })
-
     // Log errors and kick reasons:
-    bot.on('kicked', (reason, loggedIn) => {
-      // console.log('kicked', reason, loggedIn)
+    bot.on('kicked', () => {
       state.isReady = false
       state.isRunning = false
       AppEvents.emit('bot/not-ready', `${id}`)
@@ -111,7 +102,7 @@ export const createBotInstance = (options: {
     fn: Fn
   ): ReturnFn => {
     if (!internal.bot) {
-      return (() => {}) as ReturnFn
+      return (() => undefined) as ReturnFn
     }
 
     return fn(internal.bot!)

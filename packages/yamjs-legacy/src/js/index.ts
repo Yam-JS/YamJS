@@ -179,6 +179,7 @@ command({
   permission: 'grakkit.command.js',
   message: `\xa7cYou do not have the required permission to run this command!`,
   execute(context, ...args) {
+    // eslint-disable-next-line
     const self = globalThis.hasOwnProperty('self')
     // @ts-ignore - Investigate. Why is this a thing?
     self || (globalThis.self = context)
@@ -270,6 +271,7 @@ command({
             if (!bracket) {
               if (char === '.' || property) {
                 body = input.slice(0, index + 1)
+                // eslint-disable-next-line
                 if (scope === globalThis && property === 'self' && !scope.hasOwnProperty('self')) {
                   scope = context
                 } else {

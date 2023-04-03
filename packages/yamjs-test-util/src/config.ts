@@ -39,6 +39,7 @@ export const readTestConfigs = () => {
 
   if (!existsSync(targetPath)) throw new Error('No .yamjs-test-config.js found')
 
+  // eslint-disable-next-line
   const contents = require(targetPath)
 
   const keys = Object.keys(contents)

@@ -3,10 +3,7 @@ import { load } from '@yam-js/legacy'
 export class WebServer {
   static app: undefined | { listen: Function; stop: Function; get: Function } = undefined
 
-  static start = (
-    jarFile: string = 'java-express-0.0.10.jar',
-    className: string = 'express.Express'
-  ) => {
+  static start = (jarFile = 'java-express-0.0.10.jar', className = 'express.Express') => {
     if (WebServer.app) return
 
     const Express = load<any>(`./plugins/yamjs/${jarFile}`, className)
@@ -17,7 +14,7 @@ export class WebServer {
 
     const app = new Express()
 
-    app.use((req: any, res: any, next: any) => {
+    app.use((req: any, res: any) => {
       res.setHeader('Access-Control-Allow-Origin', '*')
     })
 

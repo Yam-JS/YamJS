@@ -5,6 +5,10 @@
   "license": "MIT",
   "scripts": {
     "build": "webpack --env production",
+    "lint": "yarn lint:src && yarn lint:test",
+    "lint:test": "eslint ./tests --max-warnings 0",
+    "lint:src": "eslint ./src --max-warnings 0",
+    "prettier": "prettier --check ./src/**/*.{ts,tsx} ./tests/**/*.{ts,tsx}",
     "test": "ts-mocha -p ./tsconfig.json tests/**/*.test.ts --timeout 60000 --exit",
     "ci:test": "yarn build && yarn yamjs plugin build && yarn test",
     "typecheck": "tsc --noEmit",

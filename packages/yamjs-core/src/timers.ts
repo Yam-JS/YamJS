@@ -4,7 +4,7 @@ import { tickerTasks } from './tasks'
 const baseTimer = (
   callback: () => void,
   delay: number,
-  options?: Parameters<typeof tickerTasks['add']>[2]
+  options?: Parameters<(typeof tickerTasks)['add']>[2]
 ) => {
   const modifier = delay / 50
 

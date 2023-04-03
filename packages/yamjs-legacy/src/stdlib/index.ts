@@ -3,6 +3,7 @@ import { bukkitManager, bukkitPlugin, bukkitServer, catchAndLogUnhandledError } 
 type jiFile = any
 type jiInputStream = any
 type ogpContext = any
+// eslint-disable-next-line
 type juLinkedList<T> = any
 type Yam = any
 
@@ -168,6 +169,7 @@ export const desync = {
           )
         })
       case 'minestom':
+        // eslint-disable-next-line
         return new Promise<X>(async (resolve, reject) => {
           try {
             resolve(await script())
@@ -186,6 +188,7 @@ export function chain<
   C extends ReturnType<B>
 >(input: A, handler: B): C {
   const loop = (input: A): C => {
+    // eslint-disable-next-line
     try {
       return handler(input, loop)
     } catch (error) {
@@ -412,6 +415,7 @@ export function fetch(link: string) {
       if (async) {
         return response.read(true).then((content) => JSON.parse(content))
       } else {
+        // eslint-disable-next-line
         try {
           return JSON.parse(response.read())
         } catch (error) {
@@ -606,11 +610,13 @@ const promise = Promise.resolve()
 
 Object.assign(globalThis, {
   atob(data: string) {
+    // eslint-disable-next-line
     var str = regex.replace(String(data), '[=]+$', '')
     if (str.length % 4 === 1) {
       throw new Error("'atob' failed: The string to be decoded is not correctly encoded.")
     }
     for (
+      // eslint-disable-next-line
       var bc = 0, bs, buffer, idx = 0, output = '';
       (buffer = str.charAt(idx++));
       ~buffer && ((bs = bc % 4 ? bs * 64 + buffer : buffer), bc++ % 4)
@@ -622,8 +628,10 @@ Object.assign(globalThis, {
     return output
   },
   btoa(data: string) {
+    // eslint-disable-next-line
     var str = String(data)
     for (
+      // eslint-disable-next-line
       var block, charCode, idx = 0, map = charset, output = '';
       str.charAt(idx | 0) || ((map = '='), idx % 1);
       output += map.charAt(63 & (block >> (8 - (idx % 1) * 8)))

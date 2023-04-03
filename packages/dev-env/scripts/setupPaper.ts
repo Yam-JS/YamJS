@@ -42,6 +42,7 @@ async function main() {
   acceptEula()
 }
 
+// eslint-disable-next-line
 new Promise(async (resolve) => {
   console.log("By running this script, you agree to Minecraft's EULA! CTRL-C to cancel.")
 

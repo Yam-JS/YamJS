@@ -62,7 +62,10 @@ function formatMessage(message: any) {
 
   message = lines.join('\n')
   // Smoosh syntax errors (commonly found in CSS)
-  message = message.replace(/SyntaxError\s+\((\d+):(\d+)\)\s*(.+?)\n/g, `${friendlySyntaxErrorLabel} $3 ($1:$2)\n`)
+  message = message.replace(
+    /SyntaxError\s+\((\d+):(\d+)\)\s*(.+?)\n/g,
+    `${friendlySyntaxErrorLabel} $3 ($1:$2)\n`
+  )
   // Clean up export errors
   message = message.replace(
     /^.*export '(.+?)' was not found in '(.+?)'.*$/gm,
@@ -89,7 +92,9 @@ function formatMessage(message: any) {
   if (lines[1] && lines[1].indexOf('Module not found: ') === 0) {
     lines = [
       lines[0],
-      lines[1].replace('Error: ', '').replace('Module not found: Cannot find file:', 'Cannot find file:'),
+      lines[1]
+        .replace('Error: ', '')
+        .replace('Module not found: Cannot find file:', 'Cannot find file:'),
     ]
   }
 
@@ -103,7 +108,9 @@ function formatMessage(message: any) {
   lines = message.split('\n')
 
   // Remove duplicated newlines
-  lines = lines.filter((line, index, arr) => index === 0 || line.trim() !== '' || line.trim() !== arr[index - 1].trim())
+  lines = lines.filter(
+    (line, index, arr) => index === 0 || line.trim() !== '' || line.trim() !== arr[index - 1].trim()
+  )
 
   // Reassemble the message
   message = lines.join('\n')

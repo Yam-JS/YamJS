@@ -10,13 +10,13 @@ const scan = (javaObject: any) => {
     acc[key] = value?.toString?.()
 
     return acc
-  }, {} as any)
+  }, {})
 
   return result
 }
 
 export const getDebugInfo = () => {
-  const Long = Java.type('java.lang.Long') as any
+  const Long = Java.type('java.lang.Long')
   const Bukkit = Java.type('org.bukkit.Bukkit')
   const serverRoot = bukkitPlugin.getDataFolder().getParentFile().getParentFile()
   const plugins = Bukkit.getPluginManager()

@@ -3,6 +3,10 @@
   "version": "0.1.2",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "lint": "eslint ./index* --max-warnings=0",
+    "prettier": "prettier --check ./index*"
+  },
   "devDependencies": {
     "@babel/core": "^7.21.4",
     "@babel/preset-env": "^7.21.4",

@@ -51,7 +51,7 @@ const formatError = (error: any) => {
 }
 
 export const logError = (error: unknown, msg?: string) => {
-  let jsError: any
+  let jsError
 
   try {
     // @ts-expect-error

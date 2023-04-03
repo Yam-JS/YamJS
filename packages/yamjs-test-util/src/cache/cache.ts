@@ -5,7 +5,7 @@ import { DirectoryLevel, createCacheDirectoryMap } from './directory'
 const createCacheDirectory = (map: DirectoryLevel) => {
   const keys = Object.keys(map)
 
-  for (let key of keys) {
+  for (const key of keys) {
     const item = map[key as keyof typeof map]
 
     // Handle paths/files

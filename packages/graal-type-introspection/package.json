@@ -4,7 +4,9 @@
   "main": "index.d.ts",
   "license": "MIT",
   "scripts": {
+    "lint": "eslint ./src --max-warnings 0",
     "postinstall": "ts-node ./src/index.ts",
+    "prettier": "prettier --check ./src/**/*.{ts,tsx}",
     "typecheck": "tsc --noEmit",
     "yamjs": "yarn --cwd ../../"
   },
