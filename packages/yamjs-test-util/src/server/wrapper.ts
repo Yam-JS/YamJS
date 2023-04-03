@@ -1,5 +1,6 @@
 import { proxy } from 'valtio/vanilla'
 import { createBotInstance } from '../bot/bot'
+import { appConfig } from '../config'
 import { AppEvents, createEventStateListener, waitForEventPayload } from '../util/events/events'
 import { promiseObjectRace } from '../util/misc'
 import { waitForState } from '../util/proxy'
@@ -12,6 +13,14 @@ const baseOptions = {
   doneRegex: /\[.+\]: Done/,
 }
 
+const getDefaultConfig = (): ServerConfig => {
+  return {
+    outputLogs: false,
+    yamJsJar: appConfig.yamJsJar,
+    js: appConfig.js,
+  }
+}
+
 // TODO: Break out the methods
 const createServer = () => {
   const internal = {
@@ -19,6 +28,7 @@ const createServer = () => {
     logs: createEventStateListener('server/log'),
     mcServer: undefined as undefined | ReturnType<typeof startServerProcess>,
     bots: new Set<ReturnType<typeof createBotInstance>>(),
+    config: getDefaultConfig(),
     ...baseOptions,
   }
 
@@ -27,7 +37,10 @@ const createServer = () => {
     isProcessRunning: false,
   })
 
-  const start = async (outputLogs: boolean = false) => {
+  // TODO: If config is different, we may need to restart the server
+  // However, I feel this is getting a bit too complex.
+  const start = async (baseConfig: ServerConfig = {}) => {
+    // Determine if we need to start the server
     if (state.isProcessRunning) {
       // Need to wait for server to finish processing to figure out what to do.
       const { isReady } = await promiseObjectRace({
@@ -43,13 +56,19 @@ const createServer = () => {
       }
     }
 
-    await setupServer()
+    const config = {
+      ...getDefaultConfig(),
+      ...baseConfig,
+    }
 
+    await setupServer(config)
+
+    internal.config = config
     internal.logs.reset()
     internal.mcServer = startServerProcess()
     state.isProcessRunning = true
 
-    if (outputLogs) {
+    if (config.outputLogs) {
       // TODO: Exit on server close
       AppEvents.on('server/log', (msg) => {
         console.log(msg)
@@ -162,7 +181,9 @@ export type Server = ReturnType<typeof createServer>
 export const server = createServer()
 
 if (require.main === module) {
-  server.start(true)
+  server.start({
+    outputLogs: true,
+  })
 
   new Promise<void>(async (resolve) => {
     await waitForState(server.state, (state) => state.isReady)

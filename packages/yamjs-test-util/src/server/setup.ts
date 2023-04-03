@@ -6,7 +6,7 @@ import { createBukkitYml } from './setup/bukkitYml'
 import { downloadPaper, downloadYamJs } from './setup/download'
 import { createServerProperties } from './setup/serverProperties'
 
-export const setupServer = () => {
+export const setupServer = (config: ServerConfig) => {
   return Promise.allSettled([
     // Server
     testCache.setFileToCacheIfMissing({
@@ -40,15 +40,14 @@ export const setupServer = () => {
     }),
 
     // Plugin
-    appConfig.yamJsJar
+    config.yamJsJar
       ? // TODO: May be worth compressing down to a single function
         testCache.setFile({
           name: 'yamjs.jar',
           getContents: () => {
-            if (!appConfig.yamJsJar)
-              throw new Error('This should not happen. YamJSJar is not defined')
+            if (!config.yamJsJar) throw new Error('This should not happen. YamJSJar is not defined')
 
-            const targetPath = path.resolve(appConfig.yamJsJar)
+            const targetPath = path.resolve(config.yamJsJar)
             if (!existsSync(targetPath)) throw new Error('No yamjs.jar found')
 
             return readFileSync(targetPath)
@@ -62,12 +61,12 @@ export const setupServer = () => {
         }),
 
     // index.js
-    appConfig.js
+    config.js
       ? testCache.setFile({
           name: 'index.js',
           getContents: () => {
-            if (!appConfig.js) throw new Error('This should not happen. js is not defined')
-            return readFileSync(appConfig.js, 'utf8')
+            if (!config.js) throw new Error('This should not happen. js is not defined')
+            return readFileSync(config.js, 'utf8')
           },
           folder: 'server/plugins/YamJS',
         })

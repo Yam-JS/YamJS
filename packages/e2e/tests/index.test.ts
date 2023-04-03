@@ -47,11 +47,53 @@ describe('test', () => {
   })
 })
 
-describe('regression testing', () => {
-  beforeEach(async () => {
-    await server.start()
+describe('build is correct', () => {
+  const packageJson = require('../../yamjs-plugin/package.json')
+
+  describe('YamJS-paper.jar', () => {
+    beforeEach(async () => {
+      await server.start({
+        outputLogs: true,
+      })
+    })
+
+    after(async () => {
+      await server.stop()
+    })
+
+    it('pluginName returns YamJS', () => {
+      assert(
+        server
+          .getLogs()
+          .find((log) => log.includes(`[YamJS] Enabling YamJS v${packageJson.version}`)) !==
+          undefined
+      )
+    })
   })
 
+  describe('YamJS-paper-legacy.jar', () => {
+    beforeEach(async () => {
+      await server.start({
+        yamJsJar: '../yamjs-plugin/paper/build/libs/yamjs-paper-legacy.jar',
+      })
+    })
+
+    after(async () => {
+      await server.stop()
+    })
+
+    it('pluginName returns grakkit', async () => {
+      assert(
+        server
+          .getLogs()
+          .find((log) => log.includes(`[grakkit] Enabling grakkit v${packageJson.version}`)) !==
+          undefined
+      )
+    })
+  })
+})
+
+describe('regression testing', () => {
   it('does not error with "zip file closed" on exit', async () => {
     await server.stop()
 
