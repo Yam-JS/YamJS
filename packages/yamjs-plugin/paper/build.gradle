@@ -1,7 +1,12 @@
+import groovy.json.JsonSlurper
+
 plugins {
    id 'java'
    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
+
+def pkgJson = new JsonSlurper().parseText(file('../package.json').text)
+def props = [yamjsVersion: pkgJson.version]
 
 dependencies {
    // common lib deps
@@ -21,7 +26,7 @@ dependencies {
 jar {
    archiveBaseName.set('yamjs')
    archiveClassifier.set('paper')
-   archiveVersion.set(project.property('yamjsVersion'))
+   archiveVersion.set(pkgJson.version)
 }
 
 shadowJar {
@@ -34,7 +39,7 @@ shadowJar {
 processResources {
    // populate version
    filesMatching('**/plugin.yml') {
-      expand project.properties + [yamjsPluginName: 'YamJS']
+      expand props + [yamjsPluginName: 'YamJS']
    }
 }
 
@@ -50,7 +55,7 @@ task processResourcesLegacy(type: Copy, dependsOn: processResources) {
    from 'src/main/resources'
    into "$buildDir/resources/legacy/main"
    filesMatching('**/plugin.yml') {
-      expand project.properties + [yamjsPluginName: 'grakkit']
+      expand props + [yamjsPluginName: 'grakkit']
    }
 }
 
@@ -61,7 +66,7 @@ task buildLegacy(type: com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJa
    mergeServiceFiles()
    archiveBaseName.set('yamjs-legacy')
    archiveClassifier.set('paper-legacy')
-   archiveVersion.set(project.property('yamjsVersion'))
+   archiveVersion.set(pkgJson.version)
    archiveFileName.set('yamjs-paper-legacy.jar')
 
    from("$buildDir/resources/legacy/main") {

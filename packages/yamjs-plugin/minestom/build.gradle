@@ -1,7 +1,12 @@
+import groovy.json.JsonSlurper
+
 plugins {
    id 'java'
    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
+
+def pkgJson = new JsonSlurper().parseText(file('../package.json').text)
+def props = [yamjsVersion: pkgJson.version]
 
 dependencies {
    // common lib deps
@@ -19,8 +24,8 @@ dependencies {
 
 jar {
    archiveBaseName.set('yamjs')
-   archiveClassifier.set('paper')
-   archiveVersion.set(project.property('yamjsVersion'))
+   archiveClassifier.set('minestom')
+   archiveVersion.set(pkgJson.version)
 }
 
 shadowJar {
@@ -30,7 +35,7 @@ shadowJar {
 processResources {
    // populate version
    filesMatching('**/extension.json') {
-      expand project.properties
+      expand props
    }
 }
 
