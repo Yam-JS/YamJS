@@ -12,7 +12,7 @@ dependencies {
    // common lib deps
    implementation project(':common')
    implementation 'com.eclipsesource.minimal-json:minimal-json:0.9.5'
-   implementation 'me.carleslc.Simple-YAML:Simple-Yaml:1.8.3'
+   implementation 'me.carleslc.Simple-YAML:Simple-Yaml:1.8.4'
 
    // graal deps
    implementation "org.graalvm.js:js:${graalVersion}"
