@@ -9,7 +9,7 @@ def pkgJson = new JsonSlurper().parseText(file('../package.json').text)
 
 dependencies {
    // common lib deps: https://github.com/Carleslc/Simple-YAML
-   implementation 'me.carleslc.Simple-YAML:Simple-Yaml:1.8.3'
+   implementation 'me.carleslc.Simple-YAML:Simple-Yaml:1.8.4'
 
    // Add graal dependencies
    implementation "org.graalvm.js:js:${graalVersion}"
