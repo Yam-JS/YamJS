@@ -2,7 +2,7 @@
 sidebar_position: 3
 ---
 
-# Write a "Hello World" Plugin
+# How to Write a "Hello World" Plugin
 
 This guide will help you create a simple "Hello World" plugin using YamJS. We'll start with a basic console log and then show you examples of how to implement commands and events.
 
@@ -19,7 +19,6 @@ const String = Java.type('java.lang.String')
 1. Navigate to your plugin directory and find the `YamJS` folder.
 2. Locate the `index.js` file inside the `YamJS` folder.
 3. Open the `index.js` file in your preferred code editor and start modifying it.
-4. Save your changes and reload the server.
 
 ### Example 1: Basic Console Log
 
