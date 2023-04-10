@@ -1,6 +1,6 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@2.3.0/schema.json",
-  "changelog": ["@changesets/changelog-github", { "repo": "Yam-JS/YamJS" }],
+  "changelog": ["@changesets/cli/changelog", { "repo": "Yam-JS/YamJS" }],
   "commit": false,
   "fixed": [],
   "linked": [],
