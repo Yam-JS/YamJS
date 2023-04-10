@@ -22,9 +22,9 @@
     "yamjs": "yarn --cwd ../../"
   },
   "dependencies": {
-    "@yam-js/core": "^0.1.2",
+    "@yam-js/core": "^0.1.3",
     "@yam-js/legacy": "^0.1.2",
-    "@yam-js/dev-reload": "^0.1.2",
+    "@yam-js/dev-reload": "^0.1.3",
     "vlq": "^2.0.4"
   },
   "devDependencies": {
