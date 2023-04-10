@@ -1,5 +1,13 @@
 # @yam-js/core
 
+## 0.1.3
+
+### Patch Changes
+
+- [`6c497e6`](https://github.com/Yam-JS/YamJS/commit/6c497e6644ec11414379d6f744b1c8550632b9da) Thanks [@MercerK](https://github.com/MercerK)! - removes dev dependency
+
+- [#52](https://github.com/Yam-JS/YamJS/pull/52) [`7c30de7`](https://github.com/Yam-JS/YamJS/commit/7c30de77098fb564fb2a0676ccd336a5bd8fdef4) Thanks [@MercerK](https://github.com/MercerK)! - updates lifecycle
+
 ## 0.1.2
 
 ### Patch Changes
