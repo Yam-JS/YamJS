@@ -1,0 +1,8 @@
+{
+  "label": "Legacy API",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "YamJS is built off of a legacy implementation and will provide a legacy API until a replacement is available."
+  }
+}
