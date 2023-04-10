@@ -1,5 +1,15 @@
 # @yam-js/test-util
 
+## 0.1.3
+
+### Patch Changes
+
+- [#73](https://github.com/Yam-JS/YamJS/pull/73) [`b91f281`](https://github.com/Yam-JS/YamJS/commit/b91f281ea6d0a74b25f7b764065675e92c3658ae) Thanks [@MercerK](https://github.com/MercerK)! - adds getLogs method to server and cleanups code
+
+- [#73](https://github.com/Yam-JS/YamJS/pull/73) [`b91f281`](https://github.com/Yam-JS/YamJS/commit/b91f281ea6d0a74b25f7b764065675e92c3658ae) Thanks [@MercerK](https://github.com/MercerK)! - adds config option to server; this should make it easier to change props in a test run
+
+- [#73](https://github.com/Yam-JS/YamJS/pull/73) [`b91f281`](https://github.com/Yam-JS/YamJS/commit/b91f281ea6d0a74b25f7b764065675e92c3658ae) Thanks [@MercerK](https://github.com/MercerK)! - adds check for index.js.map
+
 ## 0.1.2
 
 ### Patch Changes
