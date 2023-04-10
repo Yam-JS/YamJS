@@ -13,7 +13,7 @@
     "lint": "yarn runAll lint all",
     "prettier": "yarn runAll prettier all",
     "typecheck": "yarn runAll typecheck all",
-    "release": "changeset publish",
+    "release": "yarn build:libs & changeset publish",
     "release:dev": "changeset publish --tag dev",
     "==== Nav": "",
     "yamjs": "yarn",

@@ -14,7 +14,6 @@
     "lint": "eslint ./src --max-warnings=0",
     "postinstall": "yarn build",
     "prettier": "prettier --check ./src/**/*.{ts,tsx}",
-    "prepublish": "yarn build",
     "test:server": "tsx ./src/server/wrapper",
     "typecheck": "tsc --noEmit"
   },
