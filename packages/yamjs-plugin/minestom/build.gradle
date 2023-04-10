@@ -2,7 +2,7 @@ import groovy.json.JsonSlurper
 
 plugins {
    id 'java'
-   id 'com.github.johnrengelman.shadow' version '7.1.2'
+   id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 def pkgJson = new JsonSlurper().parseText(file('../package.json').text)
