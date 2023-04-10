@@ -1,11 +1,5 @@
 # @yam-js/build
 
-## 0.1.3
-
-### Patch Changes
-
-- [#67](https://github.com/Yam-JS/YamJS/pull/67) [`13edcf7`](https://github.com/Yam-JS/YamJS/commit/13edcf7317cb6c1964e927e17807e0f4e8cbfc53) Thanks [@MercerK](https://github.com/MercerK)! - chore(deps-dev): bump vite-plugin-dts from 2.1.0 to 2.2.0 in /packages/build
-
 ## 0.1.2
 
 ### Patch Changes
