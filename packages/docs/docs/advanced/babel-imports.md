@@ -1,3 +1,7 @@
+---
+sidebar_position: 3
+---
+
 # Using Babel Plugin Transform Graal Imports
 
 This guide will show you how to use the `babel-plugin-transform-graal-imports` to simplify GraalVM imports in your YamJS project. This plugin allows you to use more intuitive import statements, like `import { Map } from 'java.util'`, instead of `const Map = Java.type('java.util.Map')`.
@@ -50,3 +54,5 @@ npm install --save-dev babel-plugin-transform-graal-imports
 2. Make sure to add the type definitions, add the imports, and build your project.
 
 Now you can use the more intuitive import statements in your YamJS project when working with GraalVM imports.
+
+For more information, see the [babel-plugin-transform-graal-imports](https://github.com/MercerK/babel-plugin-transform-graal-imports) repository.
