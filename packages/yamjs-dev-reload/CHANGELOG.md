@@ -1,11 +1,5 @@
 # @yam-js/dev-reload
 
-## 0.1.3
-
-### Patch Changes
-
-- [#52](https://github.com/Yam-JS/YamJS/pull/52) [`7c30de7`](https://github.com/Yam-JS/YamJS/commit/7c30de77098fb564fb2a0676ccd336a5bd8fdef4) Thanks [@MercerK](https://github.com/MercerK)! - swaps to new lifecycle
-
 ## 0.1.2
 
 ### Patch Changes
