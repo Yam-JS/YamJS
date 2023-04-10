@@ -1,15 +1,5 @@
 # @yam-js/plugin
 
-## 0.0.3
-
-### Patch Changes
-
-- [#69](https://github.com/Yam-JS/YamJS/pull/69) [`e353400`](https://github.com/Yam-JS/YamJS/commit/e353400da2c50a604ce985ccd0d08335db17d9cb) Thanks [@MercerK](https://github.com/MercerK)! - chore(deps): bump me.carleslc.Simple-YAML:Simple-Yaml from 1.8.3 to 1.8.4 in /packages/yamjs-plugin/paper
-
-- [#69](https://github.com/Yam-JS/YamJS/pull/69) [`e353400`](https://github.com/Yam-JS/YamJS/commit/e353400da2c50a604ce985ccd0d08335db17d9cb) Thanks [@MercerK](https://github.com/MercerK)! - Make build.gradle pull project version from package.json, fix Minestom output jar name
-
-- [#69](https://github.com/Yam-JS/YamJS/pull/69) [`e353400`](https://github.com/Yam-JS/YamJS/commit/e353400da2c50a604ce985ccd0d08335db17d9cb) Thanks [@MercerK](https://github.com/MercerK)! - fixes the zip file closed error
-
 ## 0.0.2
 
 ### Patch Changes
