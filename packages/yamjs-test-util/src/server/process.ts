@@ -3,14 +3,14 @@ import { testCache } from '../cache/cache'
 import { AppEvents } from '../util/events/events'
 
 export const startServerProcess = () => {
-  const process = spawn('java', ['-jar', 'server.jar', 'nogui'], {
+  const childProcess = spawn('java', ['-jar', 'server.jar', 'nogui'], {
     cwd: testCache.directoryMap.server.path,
     stdio: 'pipe',
     detached: false,
   })
-  process.stdin.setDefaultEncoding('utf8')
-  process.stdout.setEncoding('utf8')
-  process.stderr.setEncoding('utf8')
+  childProcess.stdin.setDefaultEncoding('utf8')
+  childProcess.stdout.setEncoding('utf8')
+  childProcess.stderr.setEncoding('utf8')
 
   let buffer = ''
 
@@ -24,13 +24,10 @@ export const startServerProcess = () => {
     buffer = lines[lines.length - 1]
   }
 
-  process.stdout.on('data', onData)
-  process.stderr.on('data', (err) => {
+  childProcess.stdout.on('data', onData)
+  childProcess.stderr.on('data', (err) => {
     console.log(err)
   })
-  // process.on('close', () => {
-  //   AppEvents.emit('server/log', ServerProcessClosed)
-  // })
 
-  return process
+  return childProcess
 }

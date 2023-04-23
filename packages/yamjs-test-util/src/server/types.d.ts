@@ -1,4 +1,4 @@
-interface ServerConfig {
+export interface ServerConfig {
   /**
    * If true, the server logs will be output to the console
    */
@@ -13,4 +13,9 @@ interface ServerConfig {
    * Path to the primary JS file
    */
   js?: string
+
+  /**
+   * JS Contents
+   */
+  rawJs?: string
 }
