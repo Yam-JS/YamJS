@@ -1,5 +1,11 @@
 # @yam-js/core
 
+## 0.1.4
+
+### Patch Changes
+
+- [#93](https://github.com/Yam-JS/YamJS/pull/93) [`93ee0bf`](https://github.com/Yam-JS/YamJS/commit/93ee0bf39125eb277073df59ecf64f04c5cbee49) Thanks [@MercerK](https://github.com/MercerK)! - adds declaration map
+
 ## 0.1.3
 
 ### Patch Changes

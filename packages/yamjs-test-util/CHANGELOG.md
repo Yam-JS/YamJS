@@ -1,5 +1,13 @@
 # @yam-js/test-util
 
+## 0.1.4
+
+### Patch Changes
+
+- [#94](https://github.com/Yam-JS/YamJS/pull/94) [`6d0ffd1`](https://github.com/Yam-JS/YamJS/commit/6d0ffd1a5e7b1cbb807a7475114e26c8ae4f8608) Thanks [@MercerK](https://github.com/MercerK)! - fixes double logging with outputLogs
+
+- [#91](https://github.com/Yam-JS/YamJS/pull/91) [`6f9ebe1`](https://github.com/Yam-JS/YamJS/commit/6f9ebe1ed3d1b9e3ce3bddff750d0852bcb3e8bd) Thanks [@MercerK](https://github.com/MercerK)! - adds missing typedef and adds `rawJs` property
+
 ## 0.1.3
 
 ### Patch Changes

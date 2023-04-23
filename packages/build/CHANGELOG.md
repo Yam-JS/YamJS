@@ -1,5 +1,13 @@
 # @yam-js/build
 
+## 0.1.4
+
+### Patch Changes
+
+- [#86](https://github.com/Yam-JS/YamJS/pull/86) [`4aadf40`](https://github.com/Yam-JS/YamJS/commit/4aadf403bea7aa28d0ba12c18103a3e12d0075f7) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps-dev): bump vite-plugin-dts from 2.1.0 to 2.3.0 in /packages/build
+
+- [#64](https://github.com/Yam-JS/YamJS/pull/64) [`9108f65`](https://github.com/Yam-JS/YamJS/commit/9108f65d096b7659753e4d8295fe2ad57877b5ce) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps-dev): bump typescript from 5.0.2 to 5.0.4 in /packages/build
+
 ## 0.1.3
 
 ### Patch Changes

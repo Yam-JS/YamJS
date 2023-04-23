@@ -1,5 +1,13 @@
 # @yam-js/plugin
 
+## 0.0.4
+
+### Patch Changes
+
+- [#60](https://github.com/Yam-JS/YamJS/pull/60) [`ed594cc`](https://github.com/Yam-JS/YamJS/commit/ed594cc873485e6590ec048a09c30e0af86ff732) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump me.carleslc.Simple-YAML:Simple-Yaml from 1.8.3 to 1.8.4 in /packages/yamjs-plugin/common
+
+- [#91](https://github.com/Yam-JS/YamJS/pull/91) [`6f9ebe1`](https://github.com/Yam-JS/YamJS/commit/6f9ebe1ed3d1b9e3ce3bddff750d0852bcb3e8bd) Thanks [@MercerK](https://github.com/MercerK)! - fixes an issue with initialization not logging/throwing errors
+
 ## 0.0.3
 
 ### Patch Changes
