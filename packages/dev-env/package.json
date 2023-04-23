@@ -1,0 +1,12 @@
+{
+  "name": "@yam-js/dev-env",
+  "private": true,
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^18.16.0",
+    "tsx": "^3.12.6",
+    "typescript": "^5.0.4"
+  }
+}
