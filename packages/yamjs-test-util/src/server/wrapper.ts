@@ -6,6 +6,7 @@ import { promiseObjectRace } from '../util/misc'
 import { waitForState } from '../util/proxy'
 import { startServerProcess } from './process'
 import { setupServer } from './setup'
+import { ServerConfig } from './types'
 
 const ServerProcessClosed = 'ServerProcessClosed'
 

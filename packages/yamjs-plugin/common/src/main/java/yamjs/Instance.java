@@ -169,7 +169,7 @@ public class Instance {
          JsError jsError = new JsError(polyglotException);
 
          try {
-            this.loggerFn.execute(jsError);
+            this.loggerFn.execute(jsError, true);
             return;
          } catch (Throwable errorError) {
             error.printStackTrace();

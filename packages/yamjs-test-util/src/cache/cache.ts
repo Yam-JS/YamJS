@@ -61,20 +61,19 @@ interface SetFileCacheOptions {
   name: string
   getContents: () => AllowedContentType | Promise<AllowedContentType>
   folder?: string
+
+  /**
+   * If true, the file will only be written if it doesn't exist.
+   */
+  ifMissing?: boolean
 }
 
-const setFileToCache = async ({ name, getContents, folder }: SetFileCacheOptions) => {
-  fs.writeFileSync(path.resolve(folderProp(folder), name), parseContent(await getContents()))
-}
-
-const setFileToCacheIfMissing = async ({ name, getContents, folder }: SetFileCacheOptions) => {
-  if (!fs.existsSync(path.resolve(folderProp(folder), name))) {
-    await setFileToCache({
-      name,
-      getContents,
-      folder,
-    })
+const setFileToCache = async ({ name, getContents, folder, ifMissing }: SetFileCacheOptions) => {
+  if (ifMissing === true && fs.existsSync(path.resolve(folderProp(folder), name))) {
+    return
   }
+
+  fs.writeFileSync(path.resolve(folderProp(folder), name), parseContent(await getContents()))
 }
 
 const setup = () => {
@@ -96,7 +95,6 @@ const createCache = () => {
   }
 
   return {
-    setFileToCacheIfMissing: wrapper(setFileToCacheIfMissing),
     setFile: wrapper(setFileToCache),
     remove: wrapper(purgeCacheFolder),
     directoryMap: cacheDirectoryMap,

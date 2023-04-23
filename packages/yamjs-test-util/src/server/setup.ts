@@ -5,6 +5,7 @@ import { appConfig } from '../config'
 import { createBukkitYml } from './setup/bukkitYml'
 import { downloadPaper, downloadYamJs } from './setup/download'
 import { createServerProperties } from './setup/serverProperties'
+import { ServerConfig } from './types'
 
 const addMap = () => {
   if (!appConfig.js) return
@@ -23,14 +24,16 @@ const addMap = () => {
 export const setupServer = (config: ServerConfig) => {
   return Promise.allSettled([
     // Server
-    testCache.setFileToCacheIfMissing({
+    testCache.setFile({
+      ifMissing: true,
       name: 'server.jar',
       getContents: () => downloadPaper(),
       folder: 'server',
     }),
 
     // Eula
-    testCache.setFileToCacheIfMissing({
+    testCache.setFile({
+      ifMissing: true,
       name: 'eula.txt',
       getContents: () => 'eula=true',
       folder: 'server',
@@ -53,32 +56,27 @@ export const setupServer = (config: ServerConfig) => {
       folder: 'server',
     }),
 
-    // Plugin
-    config.yamJsJar
-      ? // TODO: May be worth compressing down to a single function
-        testCache.setFile({
-          name: 'yamjs.jar',
-          getContents: () => {
-            if (!config.yamJsJar) throw new Error('This should not happen. YamJSJar is not defined')
+    testCache.setFile({
+      name: 'yamjs.jar',
+      getContents: () => {
+        if (config.yamJsJar) {
+          const targetPath = path.resolve(config.yamJsJar)
+          if (!existsSync(targetPath)) throw new Error('No yamjs.jar found')
 
-            const targetPath = path.resolve(config.yamJsJar)
-            if (!existsSync(targetPath)) throw new Error('No yamjs.jar found')
+          return readFileSync(targetPath)
+        }
 
-            return readFileSync(targetPath)
-          },
-          folder: 'server/plugins',
-        })
-      : testCache.setFileToCacheIfMissing({
-          name: 'yamjs.jar',
-          getContents: () => downloadYamJs(),
-          folder: 'server/plugins',
-        }),
+        return downloadYamJs()
+      },
+      folder: 'server/plugins',
+    }),
 
     // index.js
     config.js
       ? testCache.setFile({
           name: 'index.js',
           getContents: () => {
+            if (config.rawJs) return config.rawJs
             if (!config.js) throw new Error('This should not happen. js is not defined')
             return readFileSync(config.js, 'utf8')
           },
