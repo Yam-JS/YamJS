@@ -22,8 +22,12 @@ public class JsCallback<Args> {
     this.id = this.instance.id;
   }
 
+  public boolean hasCallback() {
+    return this.fn != null;
+  }
+
   public void execute(Args value) {
-    if (this.fn == null) {
+    if (this.hasCallback() == false) {
       return;
     }
 
