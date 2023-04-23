@@ -11,6 +11,8 @@
 
 YamJS is a fork of Grakkit, a popular Minecraft plugin for scripting with JavaScript. Our goal is to continue building on the great work that has already been done, while making it more relevant and useful for today's developers.
 
+For more information, please visit [website](https://yamjs.netlify.app/).
+
 ## Packages
 
 | Packages | Badges |
