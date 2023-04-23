@@ -108,6 +108,7 @@ describe('build is correct', () => {
   describe('YamJS-paper-legacy.jar', () => {
     beforeEach(async () => {
       await server.start({
+        outputLogs: true,
         yamJsJar: '../yamjs-plugin/paper/build/libs/yamjs-paper-legacy.jar',
       })
     })
@@ -133,5 +134,24 @@ describe('regression testing', () => {
 
     const logs = server.getLogs()
     assert(logs.find((log) => log.includes('zip file closed')) === undefined)
+  })
+
+  it('throws an error on startup', async () => {
+    await server.stop()
+
+    server.start({
+      outputLogs: true,
+      rawJs: `
+require('./bad.js') 
+      `,
+    })
+
+    await waitForEventPayload('server/log', (payload) =>
+      payload.includes(`Cannot load module: './bad.js'`)
+    )
+  })
+
+  after(async () => {
+    await server.stop()
   })
 })

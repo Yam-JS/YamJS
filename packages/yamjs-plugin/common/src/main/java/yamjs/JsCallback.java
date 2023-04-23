@@ -22,17 +22,25 @@ public class JsCallback<Args> {
     this.id = this.instance.id;
   }
 
-  public boolean hasCallback() {
-    return this.fn != null;
+  public void execute(Args value) {
+    this.execute(value, false);
   }
 
-  public void execute(Args value) {
+  public void execute(Args value, boolean throwError) {
     if (this.hasCallback() == false) {
+      if (throwError) {
+        throw new RuntimeException("No callback registered.");
+      }
+
       return;
     }
 
     // This can help catch race conditions, such as rapid reloads.
     if (this.id != this.instance.id) {
+      if (throwError) {
+        throw new RuntimeException("Callback registered to a different instance.");
+      }
+
       return;
     }
 
@@ -45,5 +53,9 @@ public class JsCallback<Args> {
         throw error;
       }
     }
+  }
+
+  private boolean hasCallback() {
+    return this.fn != null;
   }
 }

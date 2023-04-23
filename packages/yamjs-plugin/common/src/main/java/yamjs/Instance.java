@@ -168,15 +168,12 @@ public class Instance {
 
          JsError jsError = new JsError(polyglotException);
 
-         if (this.loggerFn.hasCallback()) {
-            try {
-               this.loggerFn.execute(jsError);
-            } catch (Throwable errorError) {
-               error.printStackTrace();
-               return;
-            }
-         } else {
+         try {
+            this.loggerFn.execute(jsError, true);
+            return;
+         } catch (Throwable errorError) {
             error.printStackTrace();
+            return;
          }
       }
 
