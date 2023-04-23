@@ -1,5 +1,15 @@
 # @yam-js/legacy
 
+## 0.1.3
+
+### Patch Changes
+
+- [#76](https://github.com/Yam-JS/YamJS/pull/76) [`ab842df`](https://github.com/Yam-JS/YamJS/commit/ab842dfda584907d6ecdbfbbdad0596223825f41) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps-dev): bump typescript from 5.0.2 to 5.0.4 in /packages/yamjs-legacy
+
+- [#75](https://github.com/Yam-JS/YamJS/pull/75) [`6c15d82`](https://github.com/Yam-JS/YamJS/commit/6c15d8237eb34466ef1f7c73103ed8f80da069d4) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps-dev): bump type-fest from 3.6.1 to 3.8.0 in /packages/yamjs-legacy
+
+- [#93](https://github.com/Yam-JS/YamJS/pull/93) [`93ee0bf`](https://github.com/Yam-JS/YamJS/commit/93ee0bf39125eb277073df59ecf64f04c5cbee49) Thanks [@MercerK](https://github.com/MercerK)! - adds declaration map
+
 ## 0.1.2
 
 ### Patch Changes
