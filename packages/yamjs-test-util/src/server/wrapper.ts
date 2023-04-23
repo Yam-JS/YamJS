@@ -1,7 +1,12 @@
 import { proxy } from 'valtio/vanilla'
 import { createBotInstance } from '../bot/bot'
 import { appConfig } from '../config'
-import { AppEvents, createEventStateListener, waitForEventPayload } from '../util/events/events'
+import {
+  AppEvents,
+  EventUnref,
+  createEventStateListener,
+  waitForEventPayload,
+} from '../util/events/events'
 import { promiseObjectRace } from '../util/misc'
 import { waitForState } from '../util/proxy'
 import { startServerProcess } from './process'
@@ -30,6 +35,7 @@ const createServer = () => {
     mcServer: undefined as undefined | ReturnType<typeof startServerProcess>,
     bots: new Set<ReturnType<typeof createBotInstance>>(),
     config: getDefaultConfig(),
+    unrefLogger: undefined as undefined | EventUnref,
     ...baseOptions,
   }
 
@@ -69,9 +75,12 @@ const createServer = () => {
     internal.mcServer = startServerProcess()
     state.isProcessRunning = true
 
+    if (internal.unrefLogger) {
+      internal.unrefLogger()
+    }
+
     if (config.outputLogs) {
-      // TODO: Exit on server close
-      AppEvents.on('server/log', (msg) => {
+      internal.unrefLogger = AppEvents.on('server/log', (msg) => {
         console.log(msg)
       })
     }

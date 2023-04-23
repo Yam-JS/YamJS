@@ -5,7 +5,7 @@ const createEventSystem = () => {
   const cache = new Map<EventNames, Map<Symbol, Function>>()
 
   return {
-    on: <K extends Events['type']>(name: K, callback: (event: EventMap[K]) => void) => {
+    on: <K extends Events['type']>(name: K, callback: (event: EventMap[K]) => void): EventUnref => {
       // create a unique symbol for the callback
       const symbol = Symbol()
 
@@ -32,13 +32,15 @@ const createEventSystem = () => {
   }
 }
 
+export type EventUnref = () => void
+
 export const AppEvents = createEventSystem()
 export const createEventStateListener = <K extends Events['type']>(name: K) => {
   const context = {
     events: [] as EventMap[K][],
   }
 
-  AppEvents.on(name, (event) => {
+  const unref = AppEvents.on(name, (event) => {
     context.events.push(event)
   })
 
@@ -47,6 +49,7 @@ export const createEventStateListener = <K extends Events['type']>(name: K) => {
     reset: () => {
       context.events = []
     },
+    unref,
   }
 }
 
