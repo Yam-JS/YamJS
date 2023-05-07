@@ -1,0 +1,4 @@
+name: ${yamjsPluginName}
+main: yamjs.Main
+version: ${yamjsVersion}
+api-version: ${yamjsApiVersion}

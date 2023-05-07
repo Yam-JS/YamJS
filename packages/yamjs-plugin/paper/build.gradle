@@ -6,7 +6,7 @@ plugins {
 }
 
 def pkgJson = new JsonSlurper().parseText(file('../package.json').text)
-def props = [yamjsVersion: pkgJson.version]
+def props = [yamjsVersion: pkgJson.version, yamjsApiVersion: '1.19']
 
 dependencies {
    // common lib deps
@@ -39,6 +39,10 @@ shadowJar {
 processResources {
    // populate version
    filesMatching('**/plugin.yml') {
+      expand props + [yamjsPluginName: 'YamJS']
+   }
+
+   filesMatching('**/paper-plugin.yml') {
       expand props + [yamjsPluginName: 'YamJS']
    }
 }
