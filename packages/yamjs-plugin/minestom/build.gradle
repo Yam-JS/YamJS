@@ -11,7 +11,7 @@ def props = [yamjsVersion: pkgJson.version]
 dependencies {
    // common lib deps
    implementation project(':common')
-   implementation "com.eclipsesource.minimal-json:minimal-json:0.9.1"
+   implementation "com.eclipsesource.minimal-json:minimal-json:0.9.5"
 
    // graal deps
    implementation "org.graalvm.js:js:${graalVersion}"
