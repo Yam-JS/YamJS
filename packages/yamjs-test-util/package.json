@@ -23,7 +23,7 @@
     "mineflayer": "^4.8.1",
     "tsx": "^3.12.6",
     "valtio": "^1.10.3",
-    "yaml": "^2.2.1"
+    "yaml": "^2.2.2"
   },
   "devDependencies": {
     "@yam-js/build": "^0.1.4",
