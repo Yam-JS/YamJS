@@ -35,7 +35,7 @@
     "@babel/preset-typescript": "^7.13.0",
     "@graal-types/java-16": "^1.0.0",
     "@graal-types/paper-1.19": "^1.0.1",
-    "@types/node": "^18.15.2",
+    "@types/node": "^20.3.1",
     "babel-loader": "^9.1.2",
     "babel-plugin-add-module-exports": "^1.0.4",
     "babel-plugin-transform-class-properties": "^6.24.1",
