@@ -1,5 +1,11 @@
 # @yam-js/legacy
 
+## 0.1.4
+
+### Patch Changes
+
+- [#126](https://github.com/Yam-JS/YamJS/pull/126) [`04d67a1`](https://github.com/Yam-JS/YamJS/commit/04d67a155d88a099f64f0bf4c2c6fb225a79ecd5) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps-dev): bump typescript from 5.0.2 to 5.1.3 in /packages/yamjs-legacy
+
 ## 0.1.3
 
 ### Patch Changes

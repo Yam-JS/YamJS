@@ -1,5 +1,21 @@
 # @yam-js/build
 
+## 0.1.5
+
+### Patch Changes
+
+- [#128](https://github.com/Yam-JS/YamJS/pull/128) [`b5fc54a`](https://github.com/Yam-JS/YamJS/commit/b5fc54afc62e93ef9999f185d885e41f4e6d7532) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps-dev): bump vite from 4.2.1 to 4.2.3
+
+- [#127](https://github.com/Yam-JS/YamJS/pull/127) [`1733cd0`](https://github.com/Yam-JS/YamJS/commit/1733cd042625d082de56e76ee73516ed40ed83c6) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps-dev): bump typescript from 5.0.2 to 5.1.3 in /packages/build
+
+- [#130](https://github.com/Yam-JS/YamJS/pull/130) [`f501bbc`](https://github.com/Yam-JS/YamJS/commit/f501bbceed89b4631de58571e5990bdf1b16e0f4) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps-dev): bump @babel/preset-env from 7.20.2 to 7.22.5 in /packages/build
+
+- [#99](https://github.com/Yam-JS/YamJS/pull/99) [`386eeb8`](https://github.com/Yam-JS/YamJS/commit/386eeb8df07faf4d3ab22127bdb8ce6360dcc542) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps-dev): bump vite from 4.2.1 to 4.3.3 in /packages/build
+
+- [#104](https://github.com/Yam-JS/YamJS/pull/104) [`2549d1b`](https://github.com/Yam-JS/YamJS/commit/2549d1b87dae0e3d31b2a0665406f3c597d6c820) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps-dev): bump vite from 4.2.1 to 4.3.5 in /packages/build
+
+- [#102](https://github.com/Yam-JS/YamJS/pull/102) [`8b66854`](https://github.com/Yam-JS/YamJS/commit/8b66854639fec652b2caa5ac516a2ebb7d6da4a9) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps-dev): bump @babel/preset-typescript from 7.21.0 to 7.21.5 in /packages/build
+
 ## 0.1.4
 
 ### Patch Changes

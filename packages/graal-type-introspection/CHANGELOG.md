@@ -1,5 +1,11 @@
 # @yam-js/graal-type-introspection
 
+## 0.1.3
+
+### Patch Changes
+
+- [#131](https://github.com/Yam-JS/YamJS/pull/131) [`d69ec64`](https://github.com/Yam-JS/YamJS/commit/d69ec64f48872b1225eb4e394c71acb0c8fd20f5) Thanks [@MercerK](https://github.com/MercerK)! - updates typescript
+
 ## 0.1.2
 
 ### Patch Changes
