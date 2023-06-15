@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "dotenv": "^16.0.3",
-    "got": "^12.6.0",
+    "got": "^13.0.0",
     "mineflayer": "^4.8.1",
     "tsx": "^3.12.6",
     "valtio": "^1.10.3",
