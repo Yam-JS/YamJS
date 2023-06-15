@@ -1,5 +1,13 @@
 # @yam-js/dev-reload
 
+## 0.1.5
+
+### Patch Changes
+
+- [#98](https://github.com/Yam-JS/YamJS/pull/98) [`baeb629`](https://github.com/Yam-JS/YamJS/commit/baeb629c55759fe06df8c095613c43464bedc6c8) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps-dev): bump tsx from 3.12.6 to 3.12.7 in /packages/yamjs-dev-reload
+
+- [#141](https://github.com/Yam-JS/YamJS/pull/141) [`f53a04e`](https://github.com/Yam-JS/YamJS/commit/f53a04e3457471b61253a9925a82b9cdaaa16b1b) Thanks [@MercerK](https://github.com/MercerK)! - fixes an issue with the imports not working correctly for dev-reload
+
 ## 0.1.4
 
 ### Patch Changes

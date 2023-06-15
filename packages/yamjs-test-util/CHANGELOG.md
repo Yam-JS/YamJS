@@ -1,5 +1,11 @@
 # @yam-js/test-util
 
+## 0.1.5
+
+### Patch Changes
+
+- [#96](https://github.com/Yam-JS/YamJS/pull/96) [`de015ee`](https://github.com/Yam-JS/YamJS/commit/de015ee651f464718ad3addba95d8601415b260c) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump yaml from 2.2.1 to 2.2.2
+
 ## 0.1.4
 
 ### Patch Changes
