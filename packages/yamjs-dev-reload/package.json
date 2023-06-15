@@ -4,8 +4,8 @@
   "main": "./dist/yamjs",
   "exports": {
     ".": {
-      "import": "./dist/index.es.js",
-      "require": "./dist/index.umd.js"
+      "import": "./dist/yamjs.es.js",
+      "require": "./dist/yamjs.umd.js"
     }
   },
   "license": "MIT",
