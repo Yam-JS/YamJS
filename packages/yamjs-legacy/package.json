@@ -23,7 +23,7 @@
     "@graal-types/paper-1.19": "^1.0.1",
     "@yam-js/build": "^0.1.5",
     "type-fest": "^3.8.0",
-    "typescript": "^5.1.3"
+    "typescript": "^5.1.6"
   },
   "peerDependencies": {
     "@yam-js/core": "^0.1.0",
