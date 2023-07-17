@@ -27,6 +27,6 @@
   },
   "devDependencies": {
     "@yam-js/build": "^0.1.5",
-    "@types/node": "^18.15.11"
+    "@types/node": "^20.4.2"
   }
 }
