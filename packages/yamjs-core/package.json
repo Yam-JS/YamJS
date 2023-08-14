@@ -22,7 +22,7 @@
     "@graal-types/java-16": "^1.0.0",
     "@graal-types/paper-1.19": "^1.0.1",
     "@yam-js/build": "^0.1.4",
-    "type-fest": "^3.6.1"
+    "type-fest": "^4.2.0"
   },
   "dependencies": {
     "@yam-js/graal-type-introspection": "^0.1.2",
