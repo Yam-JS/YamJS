@@ -20,7 +20,7 @@
   "devDependencies": {
     "@yam-js/build": "^0.1.5",
     "chokidar": "^3.5.3",
-    "tsx": "^3.12.7"
+    "tsx": "^3.12.8"
   },
   "peerDependencies": {
     "@yam-js/core": "^0.1.0"
