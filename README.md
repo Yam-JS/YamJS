@@ -24,15 +24,7 @@ For more information, please visit [website](https://yamjs.netlify.app/).
 | [@yam-js/test-util](https://www.npmjs.com/package/@yam-js/test-util) | <img alt="Version" src="https://img.shields.io/github/package-json/v/yam-js/yamjs?color=gray&filename=packages%2Fyamjs-test-util%2Fpackage.json&label=%20&style=plastic"/> <img alt="Test Util Download" src="https://img.shields.io/npm/dt/@yam-js/test-util?style=plastic"/> |
 | [@yam-js/graal-type-introspection](https://www.npmjs.com/package/@yam-js/graal-type-introspection) | <img alt="Version" src="https://img.shields.io/github/package-json/v/yam-js/yamjs?color=gray&filename=packages%2Fgraal-type-introspection%2Fpackage.json&label=%20&style=plastic"/> <img alt="Graal Type Download" src="https://img.shields.io/npm/dt/@yam-js/graal-type-introspection?style=plastic"/> |
 
-# Why a Fork?
-
-The original implementation is in maintenance mode, which means it is no longer being actively developed or updated. Our fork allows us to continue developing the project and providing new features and improvements.
-
-# Active Development
-
-YamJS is currently in alpha, so please note that there may be changes to the APIs and other aspects of the codebase as we continue to refine and improve it. While most APIs may be stable, it is possible that the next minor release may feature a breaking change during this phase.
-
-# What will be different?
+# What is different between this and Grakkit?
 
 - Improved stability
 
