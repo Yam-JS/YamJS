@@ -16,7 +16,7 @@ public class Config {
    public String pluginName = "YamJS";
 
    /**
-    * This property determines whether the JavaScript initialization
+    * This property determines whether or not the JavaScript initialization
     * function should be called.
     */
    public boolean initialize = true;
