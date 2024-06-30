@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 import { testCache } from '../cache/cache'
 import { appConfig } from '../config'
@@ -19,69 +19,70 @@ const addMap = () => {
   })
 }
 
-export const setupServer = async (config: ServerConfig) => {
-  try {
-    // Download and save server.jar (Directly)
-    const serverJarData = await downloadPaper()
-    const serverJarPath = path.join(testCache.directoryMap.server.path, 'server.jar')
-    writeFileSync(serverJarPath, serverJarData)
-    console.log('server.jar saved successfully:', serverJarPath)
+export const setupServer = (config: ServerConfig) => {
+  return Promise.allSettled([
+    // Server
+    testCache.setFile({
+      ifMissing: true,
+      name: 'server.jar',
+      getContents: () => downloadPaper(),
+      folder: 'server',
+    }),
 
     // Eula
-    await testCache.setFile({
+    testCache.setFile({
       ifMissing: true,
       name: 'eula.txt',
       getContents: () => 'eula=true',
       folder: 'server',
-    })
+    }),
 
     // Server.properties
-    await testCache.setFile({
+    testCache.setFile({
       name: 'server.properties',
       getContents: () =>
         createServerProperties({
           'query.port': appConfig.port,
         }),
       folder: 'server',
-    })
+    }),
 
     // Bukkit.yml
-    await testCache.setFile({
+    testCache.setFile({
       name: 'bukkit.yml',
       getContents: () => createBukkitYml(),
       folder: 'server',
-    })
+    }),
 
-    await testCache.setFile({
+    testCache.setFile({
       name: 'yamjs.jar',
       getContents: () => {
         if (config.yamJsJar) {
           const targetPath = path.resolve(config.yamJsJar)
           if (!existsSync(targetPath)) throw new Error('No yamjs.jar found')
+
           return readFileSync(targetPath)
         }
+
         return downloadYamJs()
       },
       folder: 'server/plugins',
-    })
+    }),
 
     // index.js
-    if (config.js) {
-      await testCache.setFile({
-        name: 'index.js',
-        getContents: () => {
-          if (config.rawJs) return config.rawJs
-          if (!config.js) throw new Error('This should not happen. js is not defined')
-          return readFileSync(config.js, 'utf8')
-        },
-        folder: 'server/plugins/YamJS',
-      })
-    }
+    config.js
+      ? testCache.setFile({
+          name: 'index.js',
+          getContents: () => {
+            if (config.rawJs) return config.rawJs
+            if (!config.js) throw new Error('This should not happen. js is not defined')
+            return readFileSync(config.js, 'utf8')
+          },
+          folder: 'server/plugins/YamJS',
+        })
+      : undefined,
 
     // index.js.map
-    addMap()
-  } catch (error) {
-    console.error('Error setting up server:', error.message)
-    throw error // Rethrow the error to stop execution if necessary
-  }
+    addMap(),
+  ])
 }
