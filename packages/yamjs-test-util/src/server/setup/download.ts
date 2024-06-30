@@ -1,5 +1,5 @@
 export const downloadPaper = async (
-  url = 'https://api.papermc.io/v2/projects/paper/versions/1.20.1/builds/177/downloads/paper-1.20.1-177.jar'
+  url = 'https://api.papermc.io/v2/projects/paper/versions/1.21/builds/39/downloads/paper-1.21-39.jar'
 ) => {
   const response = await fetch(url, { method: 'GET' })
 
