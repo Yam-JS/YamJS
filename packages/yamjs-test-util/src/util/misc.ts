@@ -21,10 +21,7 @@ export const promiseObjectRace = <T extends Record<string, Promise<any>>>(
   return (timeout > 0 ? promiseTimeout(promise, timeout) : promise) as any
 }
 
-export const promiseTimeout = <T>(
-  promise: Promise<T>,
-  timeout: number = appConfig.timeout
-): Promise<T> => {
+export const promiseTimeout = <T>(promise: Promise<T>, timeout: number = 250000): Promise<T> => {
   return new Promise((resolve, reject) => {
     const timeoutId = setTimeout(() => {
       reject(new Error('Promise timed out'))

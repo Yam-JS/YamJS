@@ -11,18 +11,30 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+        java-version: [21]
+
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: Setup Node.js 16.x
+      - name: Setup Node.js ${{ node-version }}
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: ${{ matrix.node-version }}
+
+      - name: Setup JDK ${{ matrix.java-version }}
+        uses: actions/setup-java@3
+        with:
+          java-version: ${{ matrix.java-version }}
+          distribution: 'temurin'
 
       - name: Install Dependencies
         run: |
-          yarn
+          yarn install
           chmod -R +x ./
           yarn build:libs
 
@@ -30,7 +42,6 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          # This expects you to have a script called release which does a build for your packages and calls changeset publish
           publish: yarn release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

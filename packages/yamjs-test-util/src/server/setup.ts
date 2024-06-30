@@ -14,9 +14,7 @@ const addMap = () => {
 
   return testCache.setFile({
     name: 'index.js.map',
-    getContents: () => {
-      return readFileSync(targetPath, 'utf8')
-    },
+    getContents: () => readFileSync(targetPath, 'utf8'),
     folder: 'server/plugins/YamJS',
   })
 }
