@@ -8,29 +8,23 @@ permissions:
   pull-requests: write
 
 jobs:
-  # changesets:
-  #   runs-on: ubuntu-latest
-  #   if: ${{ github.actor == 'dependabot[bot]' }}
-  #   steps:
-  #     - name: Dependabot Changesets
-  #       uses: feelepxyz/dependabot-changesets@v1
-
   checks:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
         node-version: [18.x]
+        java-version: [17]
 
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Set up JDK 17
+      - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          java-version: '17'
+          java-version: ${{ matrix.java-version }}
           distribution: 'temurin'
 
       - name: Yarn
@@ -58,16 +52,17 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x]
+        java-version: [17]
 
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Set up JDK 17
+      - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          java-version: '17'
+          java-version: ${{ matrix.java-version }}
           distribution: 'temurin'
 
       - name: Yarn
