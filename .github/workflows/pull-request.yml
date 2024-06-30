@@ -83,4 +83,4 @@ jobs:
 
       - name: Test
         run: |
-          yarn e2e ci:test
+          JAVA_HOME=${{ env.JAVA_HOME }} yarn e2e ci:test 
