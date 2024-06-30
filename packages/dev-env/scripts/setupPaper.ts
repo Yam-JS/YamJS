@@ -11,7 +11,7 @@ interface FileItem {
 
 const files: Record<string, FileItem> = {
   paper: {
-    url: 'https://api.papermc.io/v2/projects/paper/versions/1.19.3/builds/448/downloads/paper-1.19.3-448.jar',
+    url: 'https://api.papermc.io/v2/projects/paper/versions/1.20.4/builds/497/downloads/paper-1.20.4-497.jar',
     path: paths.server.path,
     name: 'server.jar',
   },
