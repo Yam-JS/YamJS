@@ -1,21 +1,21 @@
 export const downloadPaper = async (
-   url = 'https://api.papermc.io/v2/projects/paper/versions/1.20.1/builds/177/downloads/paper-1.20.1-177.jar'
+  url = 'https://api.papermc.io/v2/projects/paper/versions/1.20.1/builds/177/downloads/paper-1.20.1-177.jar'
 ) => {
-   const response = await fetch(url, { method: 'GET' });
+  const response = await fetch(url, { method: 'GET' })
 
-   if (!response) throw new Error(`Unable to get ${url}`);
+  if (!response) throw new Error(`Unable to get ${url}`)
 
-   return Buffer.from(await response.arrayBuffer());
-};
+  return Buffer.from(await response.arrayBuffer())
+}
 
 export const downloadYamJs = async (version: string = '0.0.1', isLegacy = false) => {
-   const response = await fetch(
-      `https://github.com/Yam-JS/YamJS/releases/download/${version}/yamjs-paper-${
-         isLegacy ? 'legacy-' : ''
-      }${version}.jar`
-   );
+  const response = await fetch(
+    `https://github.com/Yam-JS/YamJS/releases/download/${version}/yamjs-paper-${
+      isLegacy ? 'legacy-' : ''
+    }${version}.jar`
+  );
 
-   if (!response) throw new Error(`Unable to get YamJS plugin`);
+  if (!response) throw new Error(`Unable to get YamJS plugin`)
 
-   return Buffer.from(await response.arrayBuffer());
-};
+  return Buffer.from(await response.arrayBuffer())
+}
