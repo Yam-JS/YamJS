@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import fetch from 'node-fetch'
 
 export const downloadPaper = async (
   url = 'https://api.papermc.io/v2/projects/paper/versions/1.21/builds/39/downloads/paper-1.21-39.jar'
