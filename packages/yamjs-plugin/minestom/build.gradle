@@ -14,8 +14,9 @@ dependencies {
    implementation "com.eclipsesource.minimal-json:minimal-json:0.9.1"
 
    // graal deps
-   implementation "org.graalvm.js:js:${graalVersion}"
-   implementation "org.graalvm.sdk:graal-sdk:${graalVersion}"
+   implementation "org.graalvm.js:js-language:${graalVersion}"
+   implementation "org.graalvm.polyglot:polyglot:${graalVersion}"
+   implementation "org.graalvm.nativeimage:native-image-base:${graalVersion}"
    implementation "org.graalvm.truffle:truffle-api:${graalVersion}"
 
    // platform-specific deps
