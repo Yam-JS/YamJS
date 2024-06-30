@@ -1,10 +1,13 @@
 import { spawn } from 'node:child_process'
 import { testCache } from '../cache/cache'
 import { AppEvents } from '../util/events/events'
+import * as path from 'path';
 
 export const startServerProcess = () => {
-  const childProcess = spawn('java', ['-jar', 'server.jar', 'nogui'], {
-    cwd: testCache.directoryMap.server.path,
+  const serverJarPath = path.resolve(testCache.directoryMap.server.path, 'server.jar');
+
+  console.log('Absolute Path:', serverJarPath);
+  const childProcess = spawn('java', ['-jar', serverJarPath, 'nogui'], {
     stdio: 'pipe',
     detached: false,
   })
