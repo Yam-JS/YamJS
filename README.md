@@ -3,7 +3,7 @@
 <p align="center">
   <img alt="Github Stars" src="https://badgen.net/github/stars/yam-js/yamjs" />
   <img alt="Commits per month" src="https://img.shields.io/github/commit-activity/m/yam-js/yamjs" />
-  <a href="https://discord.gg/ntbqxNuNGE">
+  <a href="https://discord.gg/dBJffmUzGk">
     <img alt="Discord" src="https://img.shields.io/discord/1091549342239817919?color=7389D8&label=%20&logo=discord&logoColor=ffffff&style=plastic" />
   </a>
   <img alt="Vulnerabilities" src="https://img.shields.io/snyk/vulnerabilities/github/yam-js/yamjs?style=plastic" />
